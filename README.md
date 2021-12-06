@@ -1,4 +1,4 @@
-4-my-future
+4MyFuture
 ==================
 
 This app was initialized with [create-near-app]
