@@ -34,5 +34,6 @@ class Proposal {
     setPhotos(photos: Array<string>): void {
         this.photos = photos
     }
-
 }
+
+export default Proposal;
