@@ -1,27 +1,29 @@
 import { context } from "near-sdk-core";
+import User from "./User";
 
 @nearBindgen
 class Proposal {
-    user: string;
+    user: User;
     amountNeeded: number;
     title: string;
     description: string;
-    initDate: string;
+    initDate: number | string;
     finishDate: string;
     photos: Array<string>;
     status: number;
     index: number;
 
     constructor(
+        user: User,
         title: string,
         description: string,
         amountNeeded: number,
-        initDate: string,
+        initDate: number | string,
         finishDate: string,
         photos: Array<string>,
         index: number
     ){
-        this.user = context.sender;
+        this.user = user;
         this.title = title;
         this.description = description;
         this.amountNeeded = amountNeeded;
