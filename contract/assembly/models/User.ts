@@ -5,7 +5,6 @@ import Proposal from "./Proposal";
 
 class User {
     userId: string;
-    proposalActive: Proposal;
     contributions: Array<number>;
     rank: string;
 
@@ -22,4 +21,3 @@ class User {
 }
 
 export default User;
-export const userList = new PersistentVector<User>("u");
