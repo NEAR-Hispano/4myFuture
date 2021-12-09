@@ -13,7 +13,7 @@
  */
 
 import { context, Context, logging, storage } from 'near-sdk-as'
-import { userList } from './Storage';
+//import { userList } from './Storage';
 import User from './models/User'
 
 const DEFAULT_MESSAGE = 'Hello'
@@ -36,11 +36,11 @@ export function setGreeting(message: string): void {
 }
 
 
-export function getUsers(): User[] {
-  const result = new Array<User>(userList.length);
+// export function getUsers(): User[] {
+//   const result = new Array<User>(userList.length);
   
-  return result;
-}
+//   return result;
+// }
 
 
 export function createUser(): boolean {

@@ -5,7 +5,6 @@ import Proposal from "./Proposal";
 
 class User {
     id: string;
-    proposal: Proposal | null;
     contributions: Array<number>;
     rank: string;
    
