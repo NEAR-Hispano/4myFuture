@@ -12,7 +12,7 @@
  *
  */
 
-import { context, Context, logging, storage } from 'near-sdk-as'
+import { context, Context, logging, storage, u128 } from 'near-sdk-as'
 import { userList } from './models/User'
 import User from './models/User'
 
@@ -50,4 +50,14 @@ const newUser = new User()
 userList.push(newUser);
 return true
 }
+
+export function updateUserContribution(userId: string, amount: number): boolean {
+  const newUser = new User() 
+
+  newUser.updateContributions(userId, amount)
+  return true
+  }
+
+
+  export const ONE_NEAR = u128.from('10000000000000000')
 
