@@ -28,7 +28,6 @@ export function createProposal(
     amountNeeded: number,
 ): Proposal {
     assert(user.id === context.sender, "User not registered");
-    assert(user.proposal === null, "User already have a proposal created");
     assert(amountNeeded > 0, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(

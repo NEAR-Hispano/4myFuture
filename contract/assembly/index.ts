@@ -13,8 +13,10 @@
  */
 
 import { context, Context, logging, storage } from 'near-sdk-as'
-import { userList } from './Storage';
+//import { userList } from './Storage';
 import User from './models/User'
+import { userList } from './Storage'
+import { accountId } from './utils'
 
 const DEFAULT_MESSAGE = 'Hello'
 
@@ -36,16 +38,32 @@ export function setGreeting(message: string): void {
 }
 
 
-export function getUsers(): User[] {
-  const result = new Array<User>(userList.length);
+// export function getUsers(): User[] {
+//   const result = new Array<User>(userList.length);
   
-  return result;
-}
+//   return result;
+// }
 
 
 export function createUser(): boolean {
-const newUser = new User()  
-//userList.push(newUser);
+let newUser = new User(context.sender)  
+userList.set(context.sender, newUser)
 return true
 }
+
+export function getUser(userId: string): User| null {
+
+  return userList.get(userId)
+}
+
+export function updateUserContribution(userId: string, amount: number): boolean {
+  userList.get(userId)!.updateContributions(userId, amount)
+
+
+  
+  return true
+  }
+
+
+  //export const ONE_NEAR = u128.from('10000000000000000')
 

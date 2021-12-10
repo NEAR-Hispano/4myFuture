@@ -7,7 +7,7 @@ class Proposal {
     amountNeeded: number;
     title: string;
     description: string;
-    initDate: number | string;
+    initDate: string;
     finishDate: string;
     photos: Array<string>;
     status: number;
@@ -18,7 +18,7 @@ class Proposal {
         title: string,
         description: string,
         amountNeeded: number,
-        initDate: number | string,
+        initDate: string,
         finishDate: string,
         photos: Array<string>,
         index: number
