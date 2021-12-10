@@ -12,10 +12,9 @@ class User {
     rank: string;
 
     constructor(accountId: string){
-    this.contributions = [];
     this.rank = 'Básico';
     this.id = accountId;
-    this.contributions = new Array();
+    this.contributions = new Array<number>();
     }
 
     // getProposalActive(){
@@ -27,8 +26,11 @@ class User {
     
     // }
 
-    updateContributions(userId: string,amount: number): boolean{
-    userList.get(userId)!.contributions.push(amount)
+    updateContributions(amount: number): boolean{
+    
+    this.contributions.push(amount)
+        
+    
     return true
     }
 
@@ -43,6 +45,8 @@ class User {
     }
 
     changeRank(): boolean{
+
+       this.rank = 'Medio'
         return true
     }
 
