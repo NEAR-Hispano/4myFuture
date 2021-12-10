@@ -6,7 +6,7 @@ import Proposal from "./Proposal";
 @nearBindgen
 
 class User {
-    accountId: string;
+    id: string;
     contributions: Array<number>;
     proposal: Proposal | null;
     rank: string;
@@ -14,7 +14,7 @@ class User {
     constructor(accountId: string){
     this.contributions = [];
     this.rank = 'Básico';
-    this.accountId = accountId;
+    this.id = accountId;
     this.contributions = new Array();
     }
 
