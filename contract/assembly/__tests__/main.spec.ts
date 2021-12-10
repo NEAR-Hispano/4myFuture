@@ -1,9 +1,19 @@
-import { setGreeting } from '..'
-import { storage, Context } from 'near-sdk-as'
+import { createNewProposal, createUser, getAllProposals, getUser } from '..'; 
+import { storage, Context, logging } from 'near-sdk-as'
+import Proposal from '../models/Proposal';
+import User from '../models/User';
 
-describe('Greeting ', () => {
-  it('should be set and read', () => {
-    setGreeting('hello world')
-    storage.get<string>(Context.sender)
+const user = new User(Context.sender)
+const userId = "test.testnet"
+const proposal = new Proposal("", "I want to get my career", "I really want please", 1234.1, 9, "november", ["asd.img"], 0);
+
+
+describe('createUser', () => {
+  it('should return "User"', () => {
+    expect(createUser()).toBe(true);
+    it(`should return "Proposal"${Context.sender}`, () => {
+      expect(createNewProposal("I want to get my career", "I really want please", "november", ["asd.img"], 1231.1)).toStrictEqual(proposal);
+    })
   })
 })
+

@@ -1,10 +1,11 @@
-import { context, PersistentUnorderedMap } from "near-sdk-core";
+import { Context, PersistentUnorderedMap } from "near-sdk-core";
 import Proposal from './models/Proposal';
 import User from './models/User';
-import { proposals } from "./Storage";
+import { proposals, userList } from "./Storage";
 
-const index = proposals.length; // counter based on the proposals length created 
-const initDate = context.blockTimestamp;
+const index = i64(proposals.length); // counter based on the proposals length created 
+//const initDate = String(context.blockTimestamp);
+const initDate = 9
 
 /**
  * function implemented for create proposals
@@ -20,18 +21,18 @@ const initDate = context.blockTimestamp;
  * @returns Proposal Object created.
  */ 
 export function createProposal(
-    user: User,
+
     title: string,
     description: string,
     finishDate: string,
     photos: Array<string>,
     amountNeeded: number,
 ): Proposal {
-    assert(user.id === context.sender, "User not registered");
+    assert(userList.contains(Context.sender), "User not registered");
     assert(amountNeeded > 0, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
-        user,
+        Context.sender,
         title,
         description,
         amountNeeded,
@@ -39,11 +40,9 @@ export function createProposal(
         finishDate,
         photos,
         index);
+    proposals.set(Context.sender, newProposal);
 
     return newProposal;
 }
 
-export function getProposals(): PersistentUnorderedMap<any,Proposal> {
-    return proposals;
-}
 

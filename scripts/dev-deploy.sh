@@ -1,6 +1,5 @@
 set -e
 # Deploying contract on development environment
-clear
 echo
 echo "Deploying..."
 echo
