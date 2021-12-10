@@ -1,37 +1,52 @@
 import { context } from "near-sdk-core";
+import { userList } from "../Storage";
+import { accountId } from "../utils";
 import Proposal from "./Proposal";
 
 @nearBindgen
 
 class User {
-    id: string;
+    accountId: string;
     contributions: Array<number>;
+    proposal: Proposal | null;
     rank: string;
-   
-    //ranks: ['Patrocinador básico', 'Patrocinador constante', 'Patrocinador VIP']
 
-    constructor(){
-    this.contributions = [0];
-    this.rank = '';
-    this.id = context.sender;
+    constructor(accountId: string){
+    this.contributions = [];
+    this.rank = 'Básico';
+    this.accountId = accountId;
+    this.contributions = new Array();
     }
 
     // getProposalActive(){
 
     // }
 
-    updateContributions(userId: string,amount: number): boolean{
+    // getContributions(userid: string): Array<number> {
+    // userList.get(userid)
     
-    // for(let i = 0; i < userList.length; i++) {
-    //     if(userList[i].userId == userId){
-    //         logging.log("Exite el usuario")
-    //         userList[i].contributions.push(amount); 
-    //     }
-      
     // }
-    
-    return true;
+
+    updateContributions(userId: string,amount: number): boolean{
+    userList.get(userId)!.contributions.push(amount)
+    return true
     }
+
+    createProposal(): boolean{
+    
+    return true
+    }
+
+    addContribution(): boolean{
+
+        return true
+    }
+
+    changeRank(): boolean{
+        return true
+    }
+
+
 
 }
 
