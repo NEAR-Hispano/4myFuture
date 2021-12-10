@@ -3,25 +3,25 @@ import User from "./User";
 
 @nearBindgen
 class Proposal {
-    user: User;
+    user: string;
     amountNeeded: number;
     title: string;
     description: string;
-    initDate: string;
+    initDate: number; //while development
     finishDate: string;
     photos: Array<string>;
     status: number;
-    index: number;
+    index: i64;
 
     constructor(
-        user: User,
+        user: string,
         title: string,
         description: string,
         amountNeeded: number,
-        initDate: string,
+        initDate: number,
         finishDate: string,
         photos: Array<string>,
-        index: number
+        index: i64
     ){
         this.user = user;
         this.title = title;
@@ -34,9 +34,7 @@ class Proposal {
         this.index = index;
     }
 
-    setPhotos(photos: Array<string>): void {
-        this.photos = photos
-    }
+    
 }
 
 export default Proposal;

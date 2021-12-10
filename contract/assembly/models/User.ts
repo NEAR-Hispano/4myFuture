@@ -8,13 +8,15 @@ import Proposal from "./Proposal";
 class User {
     id: string;
     contributions: Array<number>;
-    proposal: Proposal | null;
+    proposal: Proposal;
     rank: string;
 
     constructor(accountId: string){
-    this.rank = 'Básico';
+
+    this.rank = 'basic';
     this.id = accountId;
     this.contributions = new Array<number>();
+
     }
 
     // getProposalActive(){

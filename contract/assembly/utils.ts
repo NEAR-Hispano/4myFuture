@@ -6,6 +6,4 @@ import { context } from "near-sdk-core";
 export type accountId = string;
 
 /* Generates a unique ID */
-export function getID(): string {
-  return `${context.blockTimestamp}-${context.blockIndex}`;
-}
+
