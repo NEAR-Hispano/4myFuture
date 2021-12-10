@@ -8,13 +8,13 @@ import Proposal from "./Proposal";
 class User {
     id: string;
     contributions: Array<number>;
-    proposal: Proposal | null;
+    proposal: Proposal;
     rank: string;
 
     constructor(accountId: string){
     this.contributions = [];
-    this.rank = 'Básico';
-    this.id = accountId;
+    this.rank = 'basic';
+    this.id = context.sender;
     this.contributions = new Array();
     }
 
