@@ -10,7 +10,7 @@ class Proposal {
     initDate: number; //while development
     finishDate: string;
     photos: Array<string>;
-    status: number;
+    status: i8;
     index: i64;
 
     constructor(
@@ -34,7 +34,9 @@ class Proposal {
         this.index = index;
     }
 
+    setStatus(newStatus: i8): void {
+        this.status = newStatus
+    }
     
 }
-
 export default Proposal;
