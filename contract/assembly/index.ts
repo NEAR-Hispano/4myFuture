@@ -12,14 +12,29 @@ export function createUser(): boolean {
   return true
 }
 
+export function cleanUsers(): boolean {
+  userList.clear
+  return true
+}
+
 export function getUser(userId: string): User| null {
   return userList.get(userId)
 }
 
-export function updateUserContribution(userId: string, amount: number): boolean {
-  userList.get(userId)!.updateContributions(userId, amount)
-  return true
-  }
+
+export function getUserContributionsLength(userId: string): number {
+
+  return userList.get(userId)!.contributions.length
+}
+
+export function updateUserContribution(userId: string, amount: number): User {
+  assert(userList.contains(userId), "El usuario no existe")
+  const userTemp = userList.getSome(userId)
+  userTemp.updateContributions(amount)
+
+  userList.set(userId, userTemp)
+ 
+
 
 
 export function createNewProposal(
@@ -44,7 +59,24 @@ export function createNewProposal(
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
+
 }
+
+
+export function changeRank (userId: string, rank: string): User{
+  assert(userList.contains(userId), "El usuario no existe")
+  const userTemp = userList.getSome(userId)
+  userTemp.rank = rank
+  userList.set(userId, userTemp)
+  return userTemp
+}
+
+export function showId (userId: string): string{
+
+  return userList.get(userId)!.id
+}
+
+
 
 
   //export const ONE_NEAR = u128.from('10000000000000000')

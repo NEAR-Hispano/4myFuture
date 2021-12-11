@@ -39,5 +39,4 @@ class Proposal {
     }
     
 }
-
 export default Proposal;
