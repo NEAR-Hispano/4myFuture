@@ -1,9 +1,10 @@
 import { context, Context, logging, storage, PersistentUnorderedMap } from 'near-sdk-as'
 //import { userList } from './Storage';
 import User from './models/User'
-import { userList, proposals } from './Storage'
+import { userList, proposals, contributions } from './Storage'
 import { createProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
+import Contribution from './models/Contribution';
 
 export function createUser(): boolean {
   assert(!userList.contains(Context.sender), "the user already exist")
@@ -21,18 +22,28 @@ export function getUser(userId: string): User| null {
   return userList.get(userId)
 }
 
-export function getUserContributionsLength(userId: string): number {
 
-  return userList.get(userId)!.contributions.length
-}
 
 export function updateUserContribution(userId: string, amount: number): User {
-  assert(userList.contains(userId), "El usuario no existe")
-  const userTemp = userList.getSome(userId)
-  userTemp.updateContributions(amount)
-
-  userList.set(userId, userTemp)
+  assert(userList.contains(userId), "El usuario no existe");
+  const userTemp = userList.getSome(userId);
+  const contribTemp = createContribution(userId, amount, userTemp.proposal);
+  userTemp.contributions.push(contribTemp);
+  userList.set(userId, userTemp);
+  contributions.set(userId, contribTemp);
  return userTemp
+}
+
+export function getamountContribut(userId: string): number{
+let contribTemp =+ contributions.get(userId)!.amount
+
+return contribTemp
+}
+
+export function createContribution(userId: string, amount: number, proposal: Proposal): Contribution {
+  
+
+  return new Contribution(userId, amount, proposal)
 }
 
 export function createNewProposal(
@@ -59,7 +70,7 @@ export function getAllProposals(): Array<Proposal> {
   
 }
 
-export function changeRank (userId: string, rank: string): User{
+export function changeRank (userId: string, rank: number): User{
   assert(userList.contains(userId), "El usuario no existe")
   const userTemp = userList.getSome(userId)
   userTemp.rank = rank
