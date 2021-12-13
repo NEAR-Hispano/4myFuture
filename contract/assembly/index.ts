@@ -53,6 +53,10 @@ export function createNewProposal(
     amountNeeded
   );
 }
+export function sting(): string {
+  const sender = Context.sender
+  return sender;
+}
 
 export function inactiveProposal(
   userId: string
@@ -75,6 +79,10 @@ export function activeProposal(
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
+};
+export function getAllUsers(): Array<User> {
+  return userList.values(0, userList.length);
+
 };
 
 export function changeRank (userId: string, rank: string): User{

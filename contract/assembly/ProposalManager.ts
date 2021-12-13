@@ -29,6 +29,7 @@ export function createProposal(
     amountNeeded: number,
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
+    //const userProposal = getProposal(Context.sender);
     assert(amountNeeded > 0, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
@@ -47,6 +48,11 @@ export function createProposal(
     return newProposal;
 }
 
+export function pushProposal(user: string , proposal: Proposal): Proposal {
+    proposals.set(user, proposal);
+    return proposal;
+}
+
 /**
  * function that remove form the storage one proposal (only for development purposes)
  * @param userId The proposal owner.
@@ -55,9 +61,6 @@ export function createProposal(
 export function deleteProposal(
     userId: string
 ): boolean {
-    assert(userList.contains(userId), "user not registered");
-    const userProposal = getProposal(userId);
-    assert(Context.sender === userProposal.user, "You need to be the proposal owner" )
     proposals.delete(userId);
     return true;
 }
@@ -85,8 +88,11 @@ export function setProposalStatus(
      assert(proposals.contains(userId), "proposal not registered");
      const userProposal = getProposal(userId);
      const owner = userProposal.user;
-     assert(owner === Context.sender, "You need to be the proposal owner")
+     assert(owner == Context.sender, "You need to be the proposal owner")
      userProposal.setStatus(newStatus);
+     deleteProposal(userId);
+     pushProposal(owner, userProposal);
+
      return true;
  }
 
