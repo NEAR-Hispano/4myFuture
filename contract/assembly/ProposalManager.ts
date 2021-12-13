@@ -41,27 +41,10 @@ export function createProposal(
         photos,
         index);
     proposals.set(Context.sender, newProposal);
-
+    const userTemp = userList.getSome(Context.sender);
+    userTemp.proposal = newProposal;
+    userList.set(userTemp.id, userTemp);
     return newProposal;
 }
-
-export function deleteProposal(
-    userId: string
-): boolean {
-    assert(userList.contains(userId), "user not registered")
-    proposals.delete(userId);
-    return true;
-}
-
-export function setProposalStatus(
-    userId: string,
-    newStatus: i8
- ): bool {
-     assert(userList.contains(userId), "user not registered");
-     assert(proposals.contains(userId), "proposal not registered");
-     const userProposal = proposals.get(userId);
-     userProposal?.setStatus(newStatus);
-     return true;
- }
 
 
