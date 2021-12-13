@@ -9,9 +9,9 @@ const proposal = new Proposal("", "I want to get my career", "I really want plea
 
 
 describe('createUser', () => {
-  it('should return "User"', () => {
+  it('should return "True"', () => {
     expect(createUser()).toBe(true);
-    it(`should return "Proposal"${Context.sender}`, () => {
+    it(`should return "Proposal`, () => {
       expect(createNewProposal("I want to get my career", "I really want please", "november", ["asd.img"], 1231.1)).toStrictEqual(proposal);
     })
   })

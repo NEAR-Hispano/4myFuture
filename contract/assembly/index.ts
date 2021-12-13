@@ -27,13 +27,13 @@ export function getUserContributionsLength(userId: string): number {
   return userList.get(userId)!.contributions.length
 }
 
-export function updateUserContribution(userId: string, amount: number): User {
+export function updateUserContribution(userId: string, amount: number): void {
   assert(userList.contains(userId), "El usuario no existe")
   const userTemp = userList.getSome(userId)
   userTemp.updateContributions(amount)
 
   userList.set(userId, userTemp)
- 
+}
 
 
 
