@@ -56,10 +56,19 @@ export function deleteProposal(
     userId: string
 ): boolean {
     assert(userList.contains(userId), "user not registered");
-    const proposalOwner = proposals.get(userId)?.user;
-    assert(Context.sender == proposalOwner, "You are not the proposal owner")
+    const userProposal = getProposal(userId);
+    assert(Context.sender === userProposal.user, "You need to be the proposal owner" )
     proposals.delete(userId);
     return true;
+}
+
+/**
+ * Get one proposal 
+ * @param userId user ID.
+ * @returns Proposal | Null.
+ */ 
+export function getProposal(userId: string): Proposal {
+    return proposals.getSome(userId);
 }
 
 /**
@@ -74,10 +83,10 @@ export function setProposalStatus(
  ): bool {
      assert(userList.contains(userId), "user not registered");
      assert(proposals.contains(userId), "proposal not registered");
-     const userProposal = proposals.get(userId);
-     const proposalOwner = proposals.get(userId)?.user;
-     assert(Context.sender == proposalOwner, "You are not the proposal owner")
-     userProposal?.setStatus(newStatus);
+     const userProposal = getProposal(userId);
+     const owner = userProposal.user;
+     assert(owner === Context.sender, "You need to be the proposal owner")
+     userProposal.setStatus(newStatus);
      return true;
  }
 

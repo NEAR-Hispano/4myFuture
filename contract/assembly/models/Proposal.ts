@@ -5,6 +5,7 @@ import User from "./User";
 class Proposal {
     user: string;
     amountNeeded: number;
+    amountAchieved: number;
     title: string;
     description: string;
     initDate: number; //while development
@@ -27,6 +28,7 @@ class Proposal {
         this.title = title;
         this.description = description;
         this.amountNeeded = amountNeeded;
+        this.amountAchieved = 0;
         this.initDate = initDate;
         this.finishDate = finishDate;
         this.photos = photos;
@@ -36,6 +38,10 @@ class Proposal {
 
     setStatus(newStatus: i8): void {
         this.status = newStatus
+    }
+
+    setAmountAchieved(amount: i64): void {
+        this.amountAchieved += amount;
     }
     
 }
