@@ -41,7 +41,9 @@ export function createProposal(
         photos,
         index);
     proposals.set(Context.sender, newProposal);
-
+    const userTemp = userList.getSome(Context.sender);
+    userTemp.proposal = newProposal;
+    userList.set(userTemp.id, userTemp);
     return newProposal;
 }
 

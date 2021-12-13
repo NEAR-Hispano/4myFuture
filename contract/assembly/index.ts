@@ -21,21 +21,19 @@ export function getUser(userId: string): User| null {
   return userList.get(userId)
 }
 
-
 export function getUserContributionsLength(userId: string): number {
 
   return userList.get(userId)!.contributions.length
 }
 
-export function updateUserContribution(userId: string, amount: number): void {
+export function updateUserContribution(userId: string, amount: number): User {
   assert(userList.contains(userId), "El usuario no existe")
   const userTemp = userList.getSome(userId)
   userTemp.updateContributions(amount)
 
   userList.set(userId, userTemp)
+ return userTemp
 }
-
-
 
 export function createNewProposal(
   title: string,
@@ -59,9 +57,7 @@ export function createNewProposal(
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
-
 }
-
 
 export function changeRank (userId: string, rank: string): User{
   assert(userList.contains(userId), "El usuario no existe")
