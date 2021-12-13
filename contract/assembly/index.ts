@@ -2,7 +2,7 @@ import { context, Context, logging, storage, PersistentUnorderedMap } from 'near
 //import { userList } from './Storage';
 import User from './models/User'
 import { userList, proposals } from './Storage'
-import { createProposal } from './ProposalManager';
+import { createProposal, setProposalStatus } from './ProposalManager';
 import Proposal from './models/Proposal';
 
 export function createUser(): boolean {
@@ -54,10 +54,28 @@ export function createNewProposal(
   );
 }
 
+export function inactiveProposal(
+  userId: string
+  ): bool {
+  return setProposalStatus(userId, 1);
+};
+
+export function pauseProposal(
+  userId: string
+  ): bool {
+  return setProposalStatus(userId, 2);
+};
+
+export function activeProposal(
+  userId: string
+  ): bool {
+  return setProposalStatus(userId, 0);
+};
+
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
-}
+};
 
 export function changeRank (userId: string, rank: string): User{
   assert(userList.contains(userId), "El usuario no existe")

@@ -47,4 +47,47 @@ export function createProposal(
     return newProposal;
 }
 
+/**
+ * function that remove form the storage one proposal (only for development purposes)
+ * @param userId The proposal owner.
+ * @returns boolean.
+ */ 
+export function deleteProposal(
+    userId: string
+): boolean {
+    assert(userList.contains(userId), "user not registered");
+    const userProposal = getProposal(userId);
+    assert(Context.sender === userProposal.user, "You need to be the proposal owner" )
+    proposals.delete(userId);
+    return true;
+}
+
+/**
+ * Get one proposal 
+ * @param userId user ID.
+ * @returns Proposal | Null.
+ */ 
+export function getProposal(userId: string): Proposal {
+    return proposals.getSome(userId);
+}
+
+/**
+ * Set the proposal status to the user or admin election
+ * @param userId The proposal owner.
+ * @param newStatus number of the next proposal status.
+ * @returns boolean.
+ */ 
+export function setProposalStatus(
+    userId: string,
+    newStatus: i8
+ ): bool {
+     assert(userList.contains(userId), "user not registered");
+     assert(proposals.contains(userId), "proposal not registered");
+     const userProposal = getProposal(userId);
+     const owner = userProposal.user;
+     assert(owner === Context.sender, "You need to be the proposal owner")
+     userProposal.setStatus(newStatus);
+     return true;
+ }
+
 
