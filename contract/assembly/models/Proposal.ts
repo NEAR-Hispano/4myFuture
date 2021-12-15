@@ -1,27 +1,28 @@
-import { context } from "near-sdk-core";
+import { context, u128 } from "near-sdk-core";
 import User from "./User";
 
 @nearBindgen
 class Proposal {
     user: string;
-    amountNeeded: number;
+    amountNeeded: u128;
+    founds: u128;
     title: string;
     description: string;
     initDate: number; //while development
     finishDate: string;
     photos: Array<string>;
-    status: i8;
-    index: i64;
+    status: boolean;
+    index: number;
 
     constructor(
         user: string,
         title: string,
         description: string,
-        amountNeeded: number,
+        amountNeeded: u128,
         initDate: number,
         finishDate: string,
         photos: Array<string>,
-        index: i64
+        index: number
     ){
         this.user = user;
         this.title = title;
@@ -30,13 +31,14 @@ class Proposal {
         this.initDate = initDate;
         this.finishDate = finishDate;
         this.photos = photos;
-        this.status = 0;
+        this.status = true;
         this.index = index;
+        this.founds = u128.Zero;
     }
 
-    setStatus(newStatus: i8): void {
-        this.status = newStatus
-    }
+    // setStatus(newStatus: i8): void {
+    //     this.status = newStatus
+    // }
     
 }
 export default Proposal;

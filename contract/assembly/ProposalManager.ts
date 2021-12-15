@@ -1,4 +1,4 @@
-import { Context, PersistentUnorderedMap } from "near-sdk-core";
+import { Context, PersistentUnorderedMap, u128 } from "near-sdk-core";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList } from "./Storage";
@@ -26,10 +26,10 @@ export function createProposal(
     description: string,
     finishDate: string,
     photos: Array<string>,
-    amountNeeded: number,
+    amountNeeded: u128,
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
-    assert(amountNeeded > 0, "Invalid proposal amount");
+    assert(amountNeeded > u128.Zero, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
         Context.sender,
@@ -39,8 +39,8 @@ export function createProposal(
         initDate,
         finishDate,
         photos,
-        index);
-    proposals.set(Context.sender, newProposal);
+        proposals.length+1);
+    proposals.set(proposals.length +1, newProposal);
     const userTemp = userList.getSome(Context.sender);
     userTemp.proposal = newProposal;
     userList.set(userTemp.id, userTemp);

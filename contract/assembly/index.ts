@@ -1,4 +1,4 @@
-import { context, Context, logging, storage, PersistentUnorderedMap } from 'near-sdk-as'
+import { context, Context, logging, storage, PersistentUnorderedMap, u128 } from 'near-sdk-as'
 //import { userList } from './Storage';
 import User from './models/User'
 import { userList, proposals, contributions } from './Storage'
@@ -13,6 +13,37 @@ export function createUser(): boolean {
   return true
 }
 
+export function deleteUser(): boolean{
+  userList.delete(context.sender)
+  return true
+}
+
+export function unitConverter(value: number): void {
+  
+  assert(context.attachedDeposit >= u128.from(value), "Attached deposit doesn't match contribution amount");
+  logging.log(u128.from(value).toU128);
+  //logging.log(typeof(u128.from(value)))
+  logging.log(context.attachedDeposit)
+  //logging.log(typeof(context.attachedDeposit))
+  
+}
+
+export function listProposal(): Array<number>{
+  return proposals.keys();
+}
+
+export function clearAll(): boolean {
+  proposals.clear();
+  contributions.clear();
+  userList.clear();
+  return true
+}
+
+export function getProposal(proposalId: number): Proposal{
+
+  return proposals.getSome(proposalId);
+}
+
 export function cleanUsers(): boolean {
   userList.clear
   return true
@@ -24,26 +55,39 @@ export function getUser(userId: string): User| null {
 
 
 
-export function updateUserContribution(userId: string, amount: number): User {
-  assert(userList.contains(userId), "El usuario no existe");
-  const userTemp = userList.getSome(userId);
-  const contribTemp = createContribution(userId, amount, userTemp.proposal);
-  userTemp.contributions.push(contribTemp);
-  userList.set(userId, userTemp);
-  contributions.set(userId, contribTemp);
- return userTemp
-}
+// export function updateUserContribution(userId: string, amount: number): User {
+//   assert(userList.contains(userId), "El usuario no existe");
+//   const userTemp = userList.getSome(userId);
+//   let tempIndex = contributions.length + 1;
+//   const contribTemp = createContribution(userTemp.proposal.index, amount, userTemp.id);
+//   userTemp.contributions.push(contribTemp);
+//   userList.set(userId, userTemp);
+//   contributions.set(contribTemp.idContribution, contribTemp);
+//  return userTemp
+// }
 
-export function getamountContribut(userId: string): number{
-let contribTemp =+ contributions.get(userId)!.amount
 
-return contribTemp
-}
-
-export function createContribution(userId: string, amount: number, proposal: Proposal): Contribution {
+export function createContribution(proposalId: string, amount: string, userRefound: string): Contribution {
+  //amount must be more than 0
   
+  let amountU128 = u128.from((parseInt(amount)));
+  assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
-  return new Contribution(userId, amount, proposal)
+  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount");
+  //get Proposal
+  let proposal = proposals.getSome(parseInt(proposalId));
+
+
+  assert(proposal.status == true, "Can't contribut to a frozen proposal");
+
+  let  contribution = new Contribution(contributions.length+1,parseInt(proposalId), amountU128, userRefound)
+  proposal.founds = u128.add(proposal.founds, amountU128)
+  proposals.set(proposal.index, proposal)
+  contributions.set(contributions.length+1, contribution)
+  let  userTemp = userList.getSome(userRefound)
+  userTemp.contributions.push(contribution)
+  userList.set(userRefound, userTemp)
+  return contribution
 }
 
 export function createNewProposal(
@@ -61,13 +105,23 @@ export function createNewProposal(
     description,
     finishDate,
     photos,
-    amountNeeded
+    u128.from(amountNeeded+0.1)
   );
 }
 
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
+}
+
+export function getProposalById(id: string): Proposal{
+
+  return proposals.getSome(parseInt(id))
+}
+
+export function dateRetun(): Date {
+
+  return new Date(0)
 }
 
 export function changeRank (userId: string, rank: number): User{

@@ -1,3 +1,4 @@
+import { datetime, u128 } from "near-sdk-as";
 import Proposal from "./Proposal";
 
 
@@ -5,16 +6,18 @@ import Proposal from "./Proposal";
 @nearBindgen
 
 class Contribution {
-    amount: number;
-    proposal: Proposal;
-    user: string;
+    idContribution: number;
+    proposalId: number;
+    amount: u128;
+    userRefound: string;
 
     
-    constructor(accountId: string,amount: number, proposal: Proposal){
+    constructor(idContribution: number, proposalId: number, amount: u128, userRefound: string ){
 
-        this.user = accountId;
-        this.proposal = proposal;
+        this.idContribution = idContribution;
+        this.proposalId = proposalId;
         this.amount = amount;
+        this.userRefound = userRefound;
     
         }
 
