@@ -29,7 +29,7 @@ export function createProposal(
     amountNeeded: number,
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
-    //const userProposal = getProposal(Context.sender);
+    assert(getUser(Context.sender).proposal == null, "User has one proposal active" ) //Check if user have one proposal in account
     assert(amountNeeded > 0, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
