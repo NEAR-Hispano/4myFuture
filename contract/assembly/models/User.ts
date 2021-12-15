@@ -1,4 +1,5 @@
 import { context } from "near-sdk-core";
+import { setProposalStatus } from "../ProposalManager";
 import { userList } from "../Storage";
 import { accountId } from "../utils";
 import Proposal from "./Proposal";
@@ -27,6 +28,11 @@ class User {
     // userList.get(userid)
     
     // }
+
+    setProposal(proposal: Proposal): boolean{
+        this.proposal = proposal;
+        return true
+    }
 
     updateContributions(amount: number): boolean{
     
