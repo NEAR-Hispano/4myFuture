@@ -11,7 +11,7 @@ class Proposal {
     initDate: number; //while development
     finishDate: string;
     photos: Array<string>;
-    status: boolean;
+    status: i8;
     index: number;
 
     constructor(
@@ -31,14 +31,18 @@ class Proposal {
         this.initDate = initDate;
         this.finishDate = finishDate;
         this.photos = photos;
-        this.status = true;
+        this.status = 0;
         this.index = index;
         this.founds = u128.Zero;
     }
 
-    // setStatus(newStatus: i8): void {
-    //     this.status = newStatus
-    // }
+    setStatus(newStatus: i8): void {
+        this.status = newStatus
+    }
+
+    setAmountAchieved(amount: u128): void {
+        this.founds= u128.add(this.founds, amount);
+    }
     
 }
 export default Proposal;

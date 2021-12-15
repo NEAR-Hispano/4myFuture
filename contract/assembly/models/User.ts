@@ -20,29 +20,16 @@ class User {
 
     }
 
-    // getProposalActive(){
 
-    // }
-
-    // getContributions(userid: string): Array<number> {
-    // userList.get(userid)
-    
-    // }
-
-    updateContributions(amount: number): boolean{
-  
-    //this.contributions!.push()
-        
-    
-    return true
-    }
-
-
-    changeRank(): boolean{
-
-       this.rank = 1
+    setProposal(proposal: Proposal): boolean{
+        this.proposal = proposal;
         return true
     }
+
+    
+
+
+   
 
 
 
