@@ -53,6 +53,19 @@ export function pushProposal(user: string , proposal: Proposal): Proposal {
     return proposal;
 }
 
+export function pushUpdatedUser(user: User | null): bool {
+    if(user){
+        userList.set( user.id ,user);
+        return true;
+    }
+    return false;
+}
+
+export function deleteUser(user: string): bool {
+    userList.delete(user);
+    return true;
+}
+
 /**
  * function that remove form the storage one proposal (only for development purposes)
  * @param userId The proposal owner.
@@ -74,6 +87,10 @@ export function getProposal(userId: string): Proposal {
     return proposals.getSome(userId);
 }
 
+export function getUser(userId: string): User {
+    return userList.getSome(userId);
+}
+
 /**
  * Set the proposal status to the user or admin election
  * @param userId The proposal owner.
@@ -84,14 +101,19 @@ export function setProposalStatus(
     userId: string,
     newStatus: i8
  ): bool {
-     assert(userList.contains(userId), "user not registered");
-     assert(proposals.contains(userId), "proposal not registered");
-     const userProposal = getProposal(userId);
-     const owner = userProposal.user;
-     assert(owner == Context.sender, "You need to be the proposal owner")
-     userProposal.setStatus(newStatus);
-     deleteProposal(userId);
-     pushProposal(owner, userProposal);
+     assert(userList.contains(userId), "user not registered"); //Check if userId exist within storage
+     assert(proposals.contains(userId), "proposal not registered"); //Check if userId has a proposal registered and within storage
+     const userProposal = getProposal(userId); 
+     const owner = userProposal.user;  
+     assert(owner == Context.sender, "You need to be the proposal owner") //Check the owner is the function caller
+     const user = getUser(Context.sender); 
+     deleteUser(userId);  
+     userProposal.setStatus(newStatus); //Set the updated proposal status with newStatus(number)
+     user.setProposal(userProposal); //Set the updated proposal in User data
+     pushUpdatedUser(user); //Push the user with the proposal status updated into storage
+     deleteProposal(userId);  
+     pushProposal(owner, userProposal); //Push the updated proposal into storage
+
 
      return true;
  }
