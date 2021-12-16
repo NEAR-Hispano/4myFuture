@@ -2,7 +2,7 @@ import { context, Context, logging, storage, PersistentUnorderedMap, u128 } from
 //import { userList } from './Storage';
 import User from './models/User'
 import { userList, proposals, contributions } from './Storage'
-import { createProposal, setProposalStatus } from './ProposalManager';
+import { createProposal, inactiveProposal, getFundsToSuccess } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 
@@ -30,9 +30,6 @@ export function createNewProposal(
   photos: Array<string>,
   amountNeeded: number
   ): Proposal {
-    logging.log(Context.sender);
-    logging.log(userList.get(Context.sender));
-    logging.log(userList.contains(Context.sender));
  return createProposal(
     title,
     description,
@@ -51,15 +48,16 @@ export function getProposalUser(): number{
 
 export function createContribution(proposalId: u32, amount: u32, userRefound: string): Contribution {
   //amount must be more than 0
-  
   let amountU128 = u128.from(amount);
+
+  let  fundsToSuccess = getFundsToSuccess(proposalId);
   // parse amount to u128
   assert(amountU128 > u128.Zero, "Invalid contribution amount");
-
+  assert(amountU128 <= fundsToSuccess, "The contributions is higher than the requirement");
 
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
-  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount");
+  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount"); 
   //get Proposal
   let proposal = proposals.getSome(proposalId);
 
@@ -80,29 +78,9 @@ export function sting(): string {
   return sender;
 }
 
-export function inactiveProposal(
-  userId: string,
-  index: u32
-  ): Proposal {
-  assert(userId == context.sender, "Only creator can inactive proposal");
-  return setProposalStatus(userId, index, 1);
-};
-
-export function pauseProposal(
-  userId: string,
-  index: u32
-  ): Proposal {
-    assert(context.sender == 'blacks.testnet' || context.sender == 'edward.testnet', "Only admins can pause proposal");
-  return setProposalStatus(userId, index, 2);
-};
-
-export function activeProposal(
-  userId: string,
-  index: u32
-  ): Proposal {
-  assert(userId == context.sender, "Only creator can active proposal");  
-  return setProposalStatus(userId, index, 0);
-};
+export function inactiveOneProposal(userId: string, index: u32): Proposal {
+  return inactiveProposal(userId, index)
+}
 
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
@@ -122,7 +100,6 @@ export function changeRank (userId: string, rank: number): User{
 }
 
 export function showId (userId: string): string{
-
   return userList.get(userId)!.id
 }
 

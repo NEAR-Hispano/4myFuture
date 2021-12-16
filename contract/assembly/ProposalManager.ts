@@ -1,4 +1,4 @@
-import { Context, PersistentUnorderedMap, u128 } from "near-sdk-core";
+import { Context, PersistentUnorderedMap, u128, math } from "near-sdk-core";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList } from "./Storage";
@@ -29,8 +29,9 @@ export function createProposal(
     amountNeeded: u128,
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
-    
-    //assert(getUser(Context.sender).proposal == null, "User has one proposal active" ) //Check if user have one proposal in account
+    const user = Context.sender;
+    const userLogged = getUser(user); 
+    assert(!userLogged.withActiveProposal, "User already have one active proposal")
     assert(amountNeeded > u128.Zero, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
@@ -43,12 +44,48 @@ export function createProposal(
         photos,
         proposals.length+1);
     proposals.set(proposals.length +1, newProposal);
+    userLogged.setProposal(true);
+    deleteUser(user);
+    pushUpdatedUser(userLogged);
     return newProposal;
-}
+};
+
+export function inactiveProposal(
+    userId: string,
+    index: u32
+    ): Proposal {
+    assert(userId == Context.sender, "Only creator can inactive proposal");
+    const userLogged = getUser(Context.sender);
+    userLogged.setProposal(false);
+    updateUser(userId, userLogged);
+    return setProposalStatus(index, 1);
+  };
+  
+  export function pauseProposal(
+    userId: string,
+    index: u32
+    ): Proposal {
+      assert(Context.sender == 'blacks.testnet' || Context.sender == 'edward.testnet', "Only admins can pause proposal");
+    return setProposalStatus(index, 2);
+  };
+  
+  export function activeProposal(
+    userId: string,
+    index: u32
+    ): Proposal {
+    assert(userId == Context.sender, "Only creator can active proposal");  
+    return setProposalStatus(index, 0);
+  };
 
 export function pushProposal(index: number , proposal: Proposal): Proposal {
     proposals.set(index, proposal);
     return proposal;
+}
+
+export function updateUser(userId: string, user:User):bool {
+    userList.delete(userId);
+    userList.set(userId,user)
+    return true;
 }
 
 export function pushUpdatedUser(user: User | null): bool {
@@ -62,6 +99,18 @@ export function pushUpdatedUser(user: User | null): bool {
 export function deleteUser(user: string): bool {
     userList.delete(user);
     return true;
+}
+
+export function substract(num1: u128, num2: u128): u128  {
+    return u128.sub(num1,num2);
+}
+
+export function getFundsToSuccess(proposalId: u32): u128 {
+    const proposal = getProposal(proposalId);
+    const request = proposal.amountNeeded;
+    const funds = proposal.founds;
+    var fundsToSuccess = substract(request, funds);
+    return fundsToSuccess; 
 }
 
 /**
@@ -96,25 +145,15 @@ export function getUser(userId: string): User {
  * @returns boolean.
  */ 
 export function setProposalStatus(
-    userId: string,
     index: u32,
     newStatus: i8
  ): Proposal {
-     assert(userList.contains(userId), "user not registered"); //Check if userId exist within storage
      assert(proposals.contains(index), "proposal not registered"); //Check if userId has a proposal registered and within storage
      const userProposal = proposals.getSome(index)
-     
-     //const owner = userProposal.user;  
      assert(userProposal.user == Context.sender, "You need to be the proposal owner") //Check the owner is the function caller
-    //  const user = getUser(Context.sender); 
-    //  deleteUser(userId);
      userProposal.setStatus(newStatus) 
-     //userProposal.setStatus(newStatus); //Set the updated proposal status with newStatus(number)
-     //pushUpdatedUser(user); //Push the user with the proposal status updated into storage
      deleteProposal(index); 
      proposals.set(index, userProposal) 
-     //pushProposal(index, userProposal); //Push the updated proposal into storage
-
 
      return userProposal;
  }
