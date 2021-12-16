@@ -9,7 +9,6 @@ import Proposal from "./Proposal";
 class User {
     id: string;
     contributions: Array<Contribution>;
-    proposal: Proposal;
     rank: number;
 
     constructor(accountId: string){
@@ -21,10 +20,7 @@ class User {
     }
 
 
-    setProposal(proposal: Proposal): boolean{
-        this.proposal = proposal;
-        return true
-    }
+ 
 
     
 

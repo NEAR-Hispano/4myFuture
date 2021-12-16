@@ -41,21 +41,32 @@ export function createNewProposal(
     u128.from(amountNeeded)
   );
 }
+export function getProposalUser(): number{
 
-export function createContribution(proposalId: string, amount: string, userRefound: string): Contribution {
+  return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
+}
+
+
+
+
+export function createContribution(proposalId: u32, amount: u32, userRefound: string): Contribution {
   //amount must be more than 0
   
-  let amountU128 = u128.from((parseInt(amount)));
-  assert(amountU128 > u128.from(0), "Contribution will be not zero");
+  let amountU128 = u128.from(amount);
+  // parse amount to u128
+  assert(amountU128 > u128.Zero, "Invalid contribution amount");
+
+
+ // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
   assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount");
   //get Proposal
-  let proposal = proposals.getSome(parseInt(proposalId));
+  let proposal = proposals.getSome(proposalId);
 
 
   assert(proposal.status == 0, "Can't contribut to a frozen proposal");
 
-  let  contribution = new Contribution(contributions.length+1,parseInt(proposalId), amountU128, userRefound)
+  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound)
   proposal.founds = u128.add(proposal.founds, amountU128)
   proposals.set(proposal.index, proposal)
   contributions.set(contributions.length+1, contribution)
@@ -71,24 +82,24 @@ export function sting(): string {
 
 export function inactiveProposal(
   userId: string,
-  index: number
-  ): bool {
+  index: u32
+  ): Proposal {
   assert(userId == context.sender, "Only creator can inactive proposal");
   return setProposalStatus(userId, index, 1);
 };
 
 export function pauseProposal(
   userId: string,
-  index: number
-  ): bool {
+  index: u32
+  ): Proposal {
     assert(context.sender == 'blacks.testnet' || context.sender == 'edward.testnet', "Only admins can pause proposal");
   return setProposalStatus(userId, index, 2);
 };
 
 export function activeProposal(
   userId: string,
-  index: number
-  ): bool {
+  index: u32
+  ): Proposal {
   assert(userId == context.sender, "Only creator can active proposal");  
   return setProposalStatus(userId, index, 0);
 };

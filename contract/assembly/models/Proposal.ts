@@ -1,4 +1,5 @@
 import { context, u128 } from "near-sdk-core";
+import { userList } from "../Storage";
 import User from "./User";
 
 @nearBindgen
@@ -42,6 +43,12 @@ class Proposal {
 
     setAmountAchieved(amount: u128): void {
         this.founds= u128.add(this.founds, amount);
+    }
+
+    //get user contributions
+    getUserContributions(): User {
+        let user = userList.getSome(this.user);
+        return user;
     }
     
 }

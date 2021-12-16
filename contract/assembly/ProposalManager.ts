@@ -29,7 +29,8 @@ export function createProposal(
     amountNeeded: u128,
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
-    assert(getUser(Context.sender).proposal == null, "User has one proposal active" ) //Check if user have one proposal in account
+    
+    //assert(getUser(Context.sender).proposal == null, "User has one proposal active" ) //Check if user have one proposal in account
     assert(amountNeeded > u128.Zero, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
@@ -42,9 +43,6 @@ export function createProposal(
         photos,
         proposals.length+1);
     proposals.set(proposals.length +1, newProposal);
-    const userTemp = userList.getSome(Context.sender);
-    userTemp.proposal = newProposal;
-    userList.set(userTemp.id, userTemp);
     return newProposal;
 }
 
@@ -99,24 +97,26 @@ export function getUser(userId: string): User {
  */ 
 export function setProposalStatus(
     userId: string,
-    index: number,
+    index: u32,
     newStatus: i8
- ): bool {
+ ): Proposal {
      assert(userList.contains(userId), "user not registered"); //Check if userId exist within storage
      assert(proposals.contains(index), "proposal not registered"); //Check if userId has a proposal registered and within storage
-     const userProposal = getProposal(index); 
-     const owner = userProposal.user;  
-     assert(owner == Context.sender, "You need to be the proposal owner") //Check the owner is the function caller
-     const user = getUser(Context.sender); 
-     deleteUser(userId);  
-     userProposal.setStatus(newStatus); //Set the updated proposal status with newStatus(number)
-     user.setProposal(userProposal); //Set the updated proposal in User data
-     pushUpdatedUser(user); //Push the user with the proposal status updated into storage
-     deleteProposal(index);  
-     pushProposal(index, userProposal); //Push the updated proposal into storage
+     const userProposal = proposals.getSome(index)
+     
+     //const owner = userProposal.user;  
+     assert(userProposal.user == Context.sender, "You need to be the proposal owner") //Check the owner is the function caller
+    //  const user = getUser(Context.sender); 
+    //  deleteUser(userId);
+     userProposal.setStatus(newStatus) 
+     //userProposal.setStatus(newStatus); //Set the updated proposal status with newStatus(number)
+     //pushUpdatedUser(user); //Push the user with the proposal status updated into storage
+     deleteProposal(index); 
+     proposals.set(index, userProposal) 
+     //pushProposal(index, userProposal); //Push the updated proposal into storage
 
 
-     return true;
+     return userProposal;
  }
 
 
