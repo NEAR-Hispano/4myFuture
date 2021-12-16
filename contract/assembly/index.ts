@@ -1,9 +1,10 @@
 import { context, Context, logging, storage, PersistentUnorderedMap, u128 } from 'near-sdk-as'
 //import { userList } from './Storage';
 import User from './models/User'
-import { userList, proposals } from './Storage'
+import { userList, proposals, contributions } from './Storage'
 import { createProposal, setProposalStatus } from './ProposalManager';
 import Proposal from './models/Proposal';
+import Contribution from './models/Contribution';
 
 export function createUser(): boolean {
   assert(!userList.contains(Context.sender), "the user already exist")
@@ -39,6 +40,29 @@ export function createNewProposal(
     photos,
     u128.from(amountNeeded)
   );
+}
+
+export function createContribution(proposalId: string, amount: string, userRefound: string): Contribution {
+  //amount must be more than 0
+  
+  let amountU128 = u128.from((parseInt(amount)));
+  assert(amountU128 > u128.from(0), "Contribution will be not zero");
+
+  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount");
+  //get Proposal
+  let proposal = proposals.getSome(parseInt(proposalId));
+
+
+  assert(proposal.status == 0, "Can't contribut to a frozen proposal");
+
+  let  contribution = new Contribution(contributions.length+1,parseInt(proposalId), amountU128, userRefound)
+  proposal.founds = u128.add(proposal.founds, amountU128)
+  proposals.set(proposal.index, proposal)
+  contributions.set(contributions.length+1, contribution)
+  let  userTemp = userList.getSome(userRefound)
+  userTemp.contributions.push(contribution)
+  userList.set(userRefound, userTemp)
+  return contribution
 }
 export function sting(): string {
   const sender = Context.sender
