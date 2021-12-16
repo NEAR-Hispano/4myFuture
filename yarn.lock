@@ -5842,10 +5842,10 @@
   "resolved" "https://registry.npmjs.org/ncp/-/ncp-2.0.0.tgz"
   "version" "2.0.0"
 
-"near-api-js@^0.44.1":
-  "integrity" "sha512-c3kE5tBdlQJTKk9gC9CnToMnO2fSAuM/PRuAhMme2PUV+1KcRtmgczG9Q4kZi2KyeSYQFnlkyYyolz66iNhpxw=="
-  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.1.tgz"
-  "version" "0.44.1"
+"near-api-js@^0.43.1":
+  "integrity" "sha512-bgFuboD/a3eintaWqWMN9oWcGHkxbrKiJhxkJwHmwJrYx49y9QvWwEtoxeHSjKskJHUVXGKvaYRsc9XirrJ5JQ=="
+  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.43.1.tgz"
+  "version" "0.43.1"
   dependencies:
     "bn.js" "5.2.0"
     "borsh" "^0.6.0"
@@ -5859,10 +5859,10 @@
     "text-encoding-utf-8" "^1.0.2"
     "tweetnacl" "^1.0.1"
 
-"near-api-js@~0.43.1":
-  "integrity" "sha512-bgFuboD/a3eintaWqWMN9oWcGHkxbrKiJhxkJwHmwJrYx49y9QvWwEtoxeHSjKskJHUVXGKvaYRsc9XirrJ5JQ=="
-  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.43.1.tgz"
-  "version" "0.43.1"
+"near-api-js@^0.44.1":
+  "integrity" "sha512-c3kE5tBdlQJTKk9gC9CnToMnO2fSAuM/PRuAhMme2PUV+1KcRtmgczG9Q4kZi2KyeSYQFnlkyYyolz66iNhpxw=="
+  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.1.tgz"
+  "version" "0.44.1"
   dependencies:
     "bn.js" "5.2.0"
     "borsh" "^0.6.0"
@@ -5891,7 +5891,6 @@
     "mixpanel" "^0.13.0"
     "ncp" "^2.0.0"
     "near-api-js" "^0.44.1"
-    "near-ledger-js" "^0.2.0"
     "near-seed-phrase" "^0.2.0"
     "open" "^8.0.7"
     "rimraf" "^3.0.0"

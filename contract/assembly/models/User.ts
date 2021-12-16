@@ -9,6 +9,7 @@ import Proposal from "./Proposal";
 class User {
     id: string;
     contributions: Array<Contribution>;
+    withActiveProposal: bool;
     rank: number;
 
     constructor(accountId: string){
@@ -16,10 +17,12 @@ class User {
     this.rank = 0;
     this.id = accountId;
     this.contributions = new Array<Contribution>();
-
+    this.withActiveProposal = false;
     }
 
-
+    setProposal(isActive: bool): void{
+        this.withActiveProposal = isActive;
+    }
  
 
     

@@ -10,7 +10,7 @@ echo
 echo -n "PLEASE ENTER YOUR DEV ACCOUNT: " 
 read account
 contract=$(cat ./neardev/dev-account)
-scripts/test.sh $contract $account
+scripts/test1.sh $contract $account
 echo
 echo --------------------- 
 echo TESTS COMPLETED 🚀👽
