@@ -1,4 +1,5 @@
-import { Context, PersistentUnorderedMap, u128, math } from "near-sdk-core";
+import { Context, PersistentUnorderedMap, u128, ContractPromiseBatch } from "near-sdk-core";
+import Contribution from "./models/Contribution";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList } from "./Storage";
@@ -88,6 +89,11 @@ export function updateUser(userId: string, user:User):bool {
     return true;
 }
 
+export function updateProposal(proposalId: u32, proposal: Proposal):bool {
+    proposals.set(proposalId, proposal)
+    return true;
+}
+
 export function pushUpdatedUser(user: User | null): bool {
     if(user){
         userList.set( user.id ,user);
@@ -111,6 +117,18 @@ export function getFundsToSuccess(proposalId: u32): u128 {
     const funds = proposal.founds;
     var fundsToSuccess = substract(request, funds);
     return fundsToSuccess; 
+}
+
+export function proposalCompleted(proposalId: u32): bool {
+    const proposal = getProposal(proposalId);
+    proposal.setStatus(3);
+    updateProposal(proposalId, proposal);
+    return payStudent(proposal.user, proposal);
+}
+
+export function payStudent(student: string, proposal: Proposal): bool {
+    ContractPromiseBatch.create(student).transfer(proposal.founds);
+    return true
 }
 
 /**

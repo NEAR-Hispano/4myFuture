@@ -1,8 +1,9 @@
-import { context, Context, logging, storage, PersistentUnorderedMap, u128 } from 'near-sdk-as'
+import { context, Context, logging, storage, util, u128, ContractPromiseBatch } from 'near-sdk-as'
+
 //import { userList } from './Storage';
 import User from './models/User'
 import { userList, proposals, contributions } from './Storage'
-import { createProposal, inactiveProposal, getFundsToSuccess } from './ProposalManager';
+import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 
@@ -45,12 +46,11 @@ export function getProposalUser(): number{
 
 
 
-
 export function createContribution(proposalId: u32, amount: u32, userRefound: string): Contribution {
   //amount must be more than 0
   let amountU128 = u128.from(amount);
-
   let  fundsToSuccess = getFundsToSuccess(proposalId);
+
   // parse amount to u128
   assert(amountU128 > u128.Zero, "Invalid contribution amount");
   assert(amountU128 <= fundsToSuccess, "The contributions is higher than the requirement");
@@ -64,18 +64,29 @@ export function createContribution(proposalId: u32, amount: u32, userRefound: st
 
   assert(proposal.status == 0, "Can't contribut to a frozen proposal");
 
-  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound)
-  proposal.founds = u128.add(proposal.founds, amountU128)
-  proposals.set(proposal.index, proposal)
-  contributions.set(contributions.length+1, contribution)
-  let  userTemp = userList.getSome(userRefound)
-  userTemp.contributions.push(contribution)
-  userList.set(userRefound, userTemp)
+  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
+  proposal.founds = u128.add(proposal.founds, amountU128);
+  proposals.set(proposal.index, proposal);
+  contributions.set(contributions.length+1, contribution);
+  let  userTemp = userList.getSome(userRefound);
+  userTemp.contributions.push(contribution);
+  userList.set(userRefound, userTemp);
+  if(fundsToSuccess == u128.from(0)){
+    proposalCompleted(proposalId);
+    logging.log('se pago mi panaxxxxxx')
+  }
+
   return contribution
 }
 export function sting(): string {
   const sender = Context.sender
   return sender;
+}
+
+export function getM(): void {
+  const amount = u128.from(10);
+  ContractPromiseBatch.create('lexdev.testnet').transfer(amount);
+  
 }
 
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
