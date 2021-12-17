@@ -14,8 +14,8 @@ export function asNEAR(amount: u128): u128 {
     return u128.div(amount, ONE_NEAR);
   }
 
-  export function toYocto(amount: i32): u128 {
-    return u128.mul(ONE_NEAR, u128.fromF64(amount))
+  export function toYocto(amount: u128): u128 {
+    return u128.mul(ONE_NEAR, amount)
   }
 
 

@@ -21,8 +21,14 @@ export function getUser(userId: string): User {
 }
 
 export function getUserContributionsLength(userId: string): number {
-
+  assert(userList.contains(userId), "user not registered")
   return userList.get(userId)!.contributions.length
+}
+
+export function getUserContributions(userId: string): Array<Contribution>{
+  assert(userList.contains(userId), "user not registered")
+  const user = getUser(userId);
+  return user.contributions
 }
 
 
@@ -46,13 +52,12 @@ export function getProposalUser(): number{
   return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
 }
 
-// export function comprobateUnit(proposalId: u32, value: u32): void {
-//   logging.log(getFundsToSuccess(proposalId))
-//   logging.log( u128.from(value))
-//   logging.log(value)
-// }
-
-
+export function proposalSuccess(proposalId: i32): bool {
+  if (proposalCompleted(proposalId)){
+    return true;
+  }
+  return false;
+} 
 
 export function createContribution(proposalId: u32, amount: i32, userRefound: string): Contribution {
   //amount must be more than 0
@@ -71,7 +76,7 @@ export function createContribution(proposalId: u32, amount: i32, userRefound: st
   let proposal = proposals.getSome(proposalId);
 
 
-  assert(proposal.status == 0, "Can't contribut to a frozen proposal");
+  assert(proposal.status != 0, "Can't contribute to this proposal");
 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
@@ -80,17 +85,15 @@ export function createContribution(proposalId: u32, amount: i32, userRefound: st
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
-  if(fundsToSuccess == u128.from(0)){
-    proposalCompleted(proposalId);
-    logging.log('se pago mi panaxxxxxx')
-  }
-
   return contribution
 }
+
+
 export function sting(): string {
   const sender = Context.sender
   return sender;
 }
+
 
 // export function getM(value: i32): void {
 //   const amount = toYocto(value);
