@@ -1,11 +1,13 @@
 import { context, Context, logging, storage, util, u128, ContractPromiseBatch } from 'near-sdk-as'
 
-//import { userList } from './Storage';
+
 import User from './models/User'
 import { userList, proposals, contributions } from './Storage'
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
+import { asNEAR, ONE_NEAR, toYocto } from './utils';
+
 
 export function createUser(): boolean {
   assert(!userList.contains(Context.sender), "the user already exist")
@@ -44,20 +46,27 @@ export function getProposalUser(): number{
   return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
 }
 
+// export function comprobateUnit(proposalId: u32, value: u32): void {
+//   logging.log(getFundsToSuccess(proposalId))
+//   logging.log( u128.from(value))
+//   logging.log(value)
+// }
 
 
-export function createContribution(proposalId: u32, amount: u32, userRefound: string): Contribution {
+
+export function createContribution(proposalId: u32, amount: i32, userRefound: string): Contribution {
   //amount must be more than 0
+  
   let amountU128 = u128.from(amount);
   let  fundsToSuccess = getFundsToSuccess(proposalId);
 
   // parse amount to u128
-  assert(amountU128 > u128.Zero, "Invalid contribution amount");
-  assert(amountU128 <= fundsToSuccess, "The contributions is higher than the requirement");
+  assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
+  assert(amountU128 <  fundsToSuccess, "The contributions is higher than the requirement");
 
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
-  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount"); 
+  assert(asNEAR(Context.attachedDeposit) == amountU128, "Attached deposit mus be same than contribution amount"); 
   //get Proposal
   let proposal = proposals.getSome(proposalId);
 
@@ -83,11 +92,11 @@ export function sting(): string {
   return sender;
 }
 
-export function getM(): void {
-  const amount = u128.from(10);
-  ContractPromiseBatch.create('lexdev.testnet').transfer(amount);
+// export function getM(value: i32): void {
+//   const amount = toYocto(value);
+//  ContractPromiseBatch.create('blacks.testnet').transfer(amount);
   
-}
+// }
 
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
   return inactiveProposal(userId, index)
