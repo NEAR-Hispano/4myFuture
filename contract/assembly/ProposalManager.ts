@@ -3,6 +3,7 @@ import Contribution from "./models/Contribution";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList } from "./Storage";
+import { asNEAR, toYocto } from './utils'
 
 const index = i64(proposals.length); // counter based on the proposals length created 
 //const initDate = String(context.blockTimestamp);
@@ -120,14 +121,18 @@ export function getFundsToSuccess(proposalId: u32): u128 {
 }
 
 export function proposalCompleted(proposalId: u32): bool {
+    assert(proposals.contains(proposalId), "Proposal inexistent");
+    assert(getFundsToSuccess(proposalId) == u128.from(0), "Insufficient funds")
     const proposal = getProposal(proposalId);
+    assert(proposal.status == 0, "Proposal not active")
     proposal.setStatus(3);
     updateProposal(proposalId, proposal);
     return payStudent(proposal.user, proposal);
 }
 
 export function payStudent(student: string, proposal: Proposal): bool {
-    ContractPromiseBatch.create(student).transfer(proposal.founds);
+    const amount = toYocto(proposal.founds);
+    ContractPromiseBatch.create(student).transfer(amount);
     return true
 }
 

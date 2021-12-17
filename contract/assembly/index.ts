@@ -1,11 +1,13 @@
 import { context, Context, logging, storage, util, u128, ContractPromiseBatch } from 'near-sdk-as'
 
-//import { userList } from './Storage';
+
 import User from './models/User'
 import { userList, proposals, contributions } from './Storage'
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
+import { asNEAR, ONE_NEAR, toYocto } from './utils';
+
 
 export function createUser(): boolean {
   assert(!userList.contains(Context.sender), "the user already exist")
@@ -19,8 +21,14 @@ export function getUser(userId: string): User {
 }
 
 export function getUserContributionsLength(userId: string): number {
-
+  assert(userList.contains(userId), "user not registered")
   return userList.get(userId)!.contributions.length
+}
+
+export function getUserContributions(userId: string): Array<Contribution>{
+  assert(userList.contains(userId), "user not registered")
+  const user = getUser(userId);
+  return user.contributions
 }
 
 
@@ -44,25 +52,31 @@ export function getProposalUser(): number{
   return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
 }
 
+export function proposalSuccess(proposalId: i32): bool {
+  if (proposalCompleted(proposalId)){
+    return true;
+  }
+  return false;
+} 
 
-
-export function createContribution(proposalId: u32, amount: u32, userRefound: string): Contribution {
+export function createContribution(proposalId: u32, amount: i32, userRefound: string): Contribution {
   //amount must be more than 0
+  
   let amountU128 = u128.from(amount);
   let  fundsToSuccess = getFundsToSuccess(proposalId);
 
   // parse amount to u128
-  assert(amountU128 > u128.Zero, "Invalid contribution amount");
-  assert(amountU128 <= fundsToSuccess, "The contributions is higher than the requirement");
+  assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
+  assert(amountU128 <  fundsToSuccess, "The contributions is higher than the requirement");
 
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
-  assert(Context.attachedDeposit >= amountU128, "Attached deposit is lower than contribution amount"); 
+  assert(asNEAR(Context.attachedDeposit) == amountU128, "Attached deposit mus be same than contribution amount"); 
   //get Proposal
   let proposal = proposals.getSome(proposalId);
 
 
-  assert(proposal.status == 0, "Can't contribut to a frozen proposal");
+  assert(proposal.status != 0, "Can't contribute to this proposal");
 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
@@ -71,23 +85,21 @@ export function createContribution(proposalId: u32, amount: u32, userRefound: st
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
-  if(fundsToSuccess == u128.from(0)){
-    proposalCompleted(proposalId);
-    logging.log('se pago mi panaxxxxxx')
-  }
-
   return contribution
 }
+
+
 export function sting(): string {
   const sender = Context.sender
   return sender;
 }
 
-export function getM(): void {
-  const amount = u128.from(10);
-  ContractPromiseBatch.create('lexdev.testnet').transfer(amount);
+
+// export function getM(value: i32): void {
+//   const amount = toYocto(value);
+//  ContractPromiseBatch.create('blacks.testnet').transfer(amount);
   
-}
+// }
 
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
   return inactiveProposal(userId, index)
