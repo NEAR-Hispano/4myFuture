@@ -2,11 +2,12 @@ import { context, Context, logging, storage, util, u128, ContractPromiseBatch } 
 
 
 import User from './models/User'
-import { userList, proposals, contributions } from './Storage'
-import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted } from './ProposalManager';
+import { userList, proposals, contributions, contractValue, payments } from './Storage'
+import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
-import { asNEAR, ONE_NEAR, toYocto } from './utils';
+import { asNEAR, ONE_NEAR, toYocto, onlyAdmins } from './utils';
+import Payment from './models/Payment';
 
 
 export function createUser(): boolean {
@@ -67,7 +68,7 @@ export function createContribution(proposalId: u32, amount: i32, userRefound: st
 
   // parse amount to u128
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
-  assert(amountU128 <  fundsToSuccess, "The contributions is higher than the requirement");
+  assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
 
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
@@ -76,7 +77,7 @@ export function createContribution(proposalId: u32, amount: i32, userRefound: st
   let proposal = proposals.getSome(proposalId);
 
 
-  assert(proposal.status != 0, "Can't contribute to this proposal");
+  assert(proposal.status == 0, "Can't contribute to this proposal");
 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
@@ -104,6 +105,9 @@ export function sting(): string {
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
   return inactiveProposal(userId, index)
 }
+export function pauseoneproposal(index: u32): Proposal {
+  return pauseProposal(index)
+}
 
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
@@ -126,8 +130,22 @@ export function showId (userId: string): string{
   return userList.get(userId)!.id
 }
 
+export function onlyManager(): bool {
+  onlyAdmins()
+  logging.log( 'Eres admin');
+  return true
+}
 
+export function projectContribution(): bool {
+  assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
+  contractValue.set(Context.attachedDeposit);
+  return true;
+};
 
+export function getContractValue(): u128 {
+  return contractValue;
+}
 
-  //export const ONE_NEAR = u128.from('10000000000000000')
-
+export function getAllPayments(): Array<Payment>{
+  return payments.values(0, payments.length);
+}

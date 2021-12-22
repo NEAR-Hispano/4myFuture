@@ -1,9 +1,11 @@
 import { Context, PersistentUnorderedMap, u128, ContractPromiseBatch } from "near-sdk-core";
+import { onlyManager } from ".";
 import Contribution from "./models/Contribution";
+import Payment from "./models/Payment";
 import Proposal from './models/Proposal';
 import User from './models/User';
-import { proposals, userList } from "./Storage";
-import { asNEAR, toYocto } from './utils'
+import { proposals, userList, payments } from "./Storage";
+import { asNEAR, onlyAdmins, toYocto } from './utils'
 
 const index = i64(proposals.length); // counter based on the proposals length created 
 //const initDate = String(context.blockTimestamp);
@@ -56,7 +58,7 @@ export function inactiveProposal(
     userId: string,
     index: u32
     ): Proposal {
-    assert(userId == Context.sender, "Only creator can inactive proposal");
+    assert(userId == Context.sender || onlyAdmins(), "Only creator can inactive proposal");
     const userLogged = getUser(Context.sender);
     userLogged.setProposal(false);
     updateUser(userId, userLogged);
@@ -64,10 +66,9 @@ export function inactiveProposal(
   };
   
   export function pauseProposal(
-    userId: string,
     index: u32
     ): Proposal {
-      assert(Context.sender == 'blacks.testnet' || Context.sender == 'edward.testnet', "Only admins can pause proposal");
+      assert(onlyAdmins(), "Only admins can pause proposal");
     return setProposalStatus(index, 2);
   };
   
@@ -131,6 +132,8 @@ export function proposalCompleted(proposalId: u32): bool {
 }
 
 export function payStudent(student: string, proposal: Proposal): bool {
+    const payment = new Payment(student, proposal.founds, ('December 17, 1995 03:24:00'))
+    payments.set(payments.length, payment);
     const amount = toYocto(proposal.founds);
     ContractPromiseBatch.create(student).transfer(amount);
     return true
