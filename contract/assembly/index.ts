@@ -1,12 +1,11 @@
-import { context, Context, logging, storage, util, u128, ContractPromiseBatch } from 'near-sdk-as'
-
-
+import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import User from './models/User'
-import { userList, proposals, contributions } from './Storage'
-import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted } from './ProposalManager';
+import { userList, proposals, contributions, contractValue, payments } from './Storage'
+import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
-import { asNEAR, BASE_TO_CONVERT, ONE_NEAR, toYocto, toYoctob128 } from './utils';
+import { asNEAR, BASE_TO_CONVERT, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
+import Payment from './models/Payment';
 
 let propId: i32;
 export function createUser(userId: string): User {
@@ -46,7 +45,6 @@ export function transferToRefound(value: u128, userRefound: string): boolean {
 export function testAmount(amount: number): u128{
   logging.log(context.attachedDeposit)
   let amountF = (amount*BASE_TO_CONVERT);
-
   logging.log(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) )
   logging.log(asNEAR(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT))))
   ContractPromiseBatch.create('blacks.testnet').transfer(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) );
@@ -64,8 +62,14 @@ export function getUser(userId: string): User {
 }
 
 export function getUserContributionsLength(userId: string): number {
-
+  assert(userList.contains(userId), "user not registered")
   return userList.get(userId)!.contributions.length
+}
+
+export function getUserContributions(userId: string): Array<Contribution>{
+  assert(userList.contains(userId), "user not registered")
+  const user = getUser(userId);
+  return user.contributions
 }
 
 
@@ -91,13 +95,12 @@ export function getProposalUser(): number{
   return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
 }
 
-// export function comprobateUnit(proposalId: u32, value: u32): void {
-//   logging.log(getFundsToSuccess(proposalId))
-//   logging.log( u128.from(value))
-//   logging.log(value)
-// }
-
-
+export function proposalSuccess(proposalId: i32): bool {
+  if (proposalCompleted(proposalId)){
+    return true;
+  }
+  return false;
+} 
 
 export function createContribution(proposalId: u32, amount: f64, userRefound: string): Contribution {
   //amount must be more than 0
@@ -109,7 +112,7 @@ export function createContribution(proposalId: u32, amount: f64, userRefound: st
 
   // parse amount to u128
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
-  assert(amountU128 <  fundsToSuccess, "The contributions is higher than the requirement");
+  assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
 
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
 
@@ -118,7 +121,7 @@ export function createContribution(proposalId: u32, amount: f64, userRefound: st
   let proposal = proposals.getSome(proposalId);
 
 
-  assert(proposal.status == 0, "Can't contribut to a frozen proposal");
+  assert(proposal.status == 0, "Can't contribute to this proposal");
 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
@@ -127,13 +130,10 @@ export function createContribution(proposalId: u32, amount: f64, userRefound: st
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
-  if(fundsToSuccess == u128.from(0)){
-    proposalCompleted(proposalId);
-    logging.log('se pago mi panaxxxxxx')
-  }
-
   return contribution
 }
+
+
 export function sting(): string {
   const sender = Context.sender
   return sender;
@@ -142,6 +142,9 @@ export function sting(): string {
 
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
   return inactiveProposal(userId, index)
+}
+export function pauseoneproposal(index: u32): Proposal {
+  return pauseProposal(index)
 }
 
 export function getAllProposals(): Array<Proposal> {
@@ -176,8 +179,22 @@ export function showId (userId: string): string{
   return userList.get(userId)!.id
 }
 
+export function onlyManager(): bool {
+  onlyAdmins()
+  logging.log( 'Eres admin');
+  return true
+}
 
+export function projectContribution(): bool {
+  assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
+  contractValue.set(Context.attachedDeposit);
+  return true;
+};
 
+export function getContractValue(): u128 {
+  return contractValue;
+}
 
-  //export const ONE_NEAR = u128.from('10000000000000000')
-
+export function getAllPayments(): Array<Payment>{
+  return payments.values(0, payments.length);
+}
