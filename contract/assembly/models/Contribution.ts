@@ -10,6 +10,7 @@ class Contribution {
     proposalId: number;
     amount: u128;
     userRefound: string;
+    
 
     
     constructor(idContribution: number, proposalId: number, amount: u128, userRefound: string ){

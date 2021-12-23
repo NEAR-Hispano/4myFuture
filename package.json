@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "near-api-js": "^0.43.1",
-    "regenerator-runtime": "~0.13.5"
+    "regenerator-runtime": "~0.13.5",
+    "source-map-support": "^0.5.21"
   },
   "jest": {
     "testEnvironment": "near-cli/test_environment",
