@@ -58,7 +58,8 @@ export function inactiveProposal(
     userId: string,
     index: u32
     ): Proposal {
-    assert(userId == Context.sender || onlyAdmins(), "Only creator can inactive proposal");
+    const  isAdmin = onlyAdmins();
+    assert(userId == Context.sender || isAdmin, "Only creator can inactive proposal");
     const userLogged = getUser(Context.sender);
     userLogged.setProposal(false);
     updateUser(userId, userLogged);
@@ -68,7 +69,8 @@ export function inactiveProposal(
   export function pauseProposal(
     index: u32
     ): Proposal {
-      assert(onlyAdmins(), "Only admins can pause proposal");
+    const isAdmin = onlyAdmins();
+    assert(isAdmin, "Only admins can pause proposal");
     return setProposalStatus(index, 2);
   };
   
@@ -76,7 +78,8 @@ export function inactiveProposal(
     userId: string,
     index: u32
     ): Proposal {
-    assert(userId == Context.sender, "Only creator can active proposal");  
+    const  isAdmin = onlyAdmins();
+    assert(isAdmin, "Only admins can active proposal");  
     return setProposalStatus(index, 0);
   };
 

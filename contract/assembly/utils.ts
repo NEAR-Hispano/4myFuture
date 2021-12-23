@@ -8,7 +8,8 @@ export type accountId = string;
 
 
 //ADMIN ACCOUNTS IN SYSTEM
-const ADMIN_ACCOUNT = '4myfuture.sputnikv2.testnet';
+const ADMIN_ACCOUNT_1 = 'lexdev.testnet';
+const ADMIN_ACCOUNT_2 = 'blacks.testnet';
 
 /* Generates a unique ID */
 
@@ -23,7 +24,7 @@ export function asNEAR(amount: u128): u128 {
   }
 
   export function onlyAdmins(): bool {
-    if(Context.sender == ADMIN_ACCOUNT){
+    if(Context.sender == ADMIN_ACCOUNT_1 || Context.sender == ADMIN_ACCOUNT_2){
       return true;
     } 
     return false;
