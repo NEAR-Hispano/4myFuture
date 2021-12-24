@@ -135,7 +135,7 @@ export function proposalCompleted(proposalId: u32): bool {
 }
 
 export function payStudent(student: string, proposal: Proposal): bool {
-    const payment = new Payment(student, proposal.founds, ('December 17, 1995 03:24:00'))
+    const payment = new Payment(student, proposal.founds, ('December 17, 1995 03:24:00'), "founds")
     payments.set(payments.length, payment);
     const amount = proposal.founds;
     ContractPromiseBatch.create(student).transfer(amount);

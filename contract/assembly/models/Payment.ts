@@ -7,11 +7,13 @@ class Payment{
     to: string;
     amount: u128;
     date: string;
+    type: string;
 
-    constructor(to: string, amount: u128, date: string){
+    constructor(to: string, amount: u128, date: string, type: string){
         this.to = to;
         this.amount = amount;
         this.date = date;
+        this.type = type;
     }
 }
 export default Payment;

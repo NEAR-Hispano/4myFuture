@@ -12,7 +12,13 @@ export function createUser(userId: string): User {
   assert(!userList.contains(userId), "the user already exist")
   let newUser = new User(userId)  
   userList.set(userId, newUser)
+
   return newUser
+}
+
+export function calculateTime(): void{
+  logging.log( Context.blockIndex)
+ 
 }
 
 
@@ -24,6 +30,9 @@ export function refound(proposalId: i32): boolean{
   for (let index = 0; index < contribTemp.length; index++) {
     ContractPromiseBatch.create(contribTemp[index].userRefound).transfer(contribTemp[index].amount);
     logging.log(contribTemp[index])
+    let pay = new Payment(contribTemp[index].userRefound, contribTemp[index].amount,"", "refound" )
+    payments.set(payments.length+1, pay)
+   
   }
   return true
 }
