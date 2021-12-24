@@ -8,10 +8,10 @@ import { asNEAR, BASE_TO_CONVERT, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } f
 import Payment from './models/Payment';
 
 let propId: i32;
-export function createUser(userId: string): User {
-  assert(!userList.contains(userId), "the user already exist")
-  let newUser = new User(userId)  
-  userList.set(userId, newUser)
+export function createUser(): User {
+  assert(!userList.contains(Context.sender), "the user already exist")
+  let newUser = new User(Context.sender)  
+  userList.set(Context.sender, newUser)
 
   return newUser
 }
