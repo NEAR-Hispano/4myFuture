@@ -4,7 +4,7 @@ import { userList, proposals, contributions, contractValue, payments } from './S
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
-import { asNEAR, BASE_TO_CONVERT, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
+import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
 
 let propId: i32;
@@ -21,6 +21,28 @@ export function calculateTime(): void{
  
 }
 
+export function generatePayFromProposal(proposalId: i32): string{
+  assert(proposals.contains(proposalId), "Proposal is not registered")
+  let temProposal = proposals.getSome(proposalId)
+  let progress = getProgressProposal(proposalId)
+
+  if(timeToProcessProposal(proposalId)){
+    if(getProgressProposal(proposalId)>=70){
+      PayToCreator(proposalId)
+      return "Proposal goal is complete!, creator will recibe amount";
+    }else{
+      refound(proposalId)
+      return "Proposal goal is not complete, contributors will recibe their amount";
+    }
+  }else{
+    return "Proposal is not finish yet";
+  }
+}
+
+export function PayToCreator(proposalId: i32): boolean{
+  ContractPromiseBatch.create(proposals.getSome(proposalId).user).transfer(proposals.getSome(proposalId).founds);
+  return true;
+}
 
 
 
@@ -47,13 +69,59 @@ export function getAllContribution(): Array<Contribution>{
 
 export function transferToRefound(value: u128, userRefound: string): boolean {
   const amount = toYoctob128(value);
- ContractPromiseBatch.create(userRefound).transfer(amount);
+  ContractPromiseBatch.create(userRefound).transfer(amount);
   return true
 }
 
-export function testAmount(amount: number): u128{
+export function comprobeTimeProposal(proposalId: i32): boolean{
+  let TimeTemp = Context.blockTimestamp;
+  
+  if(proposals.getSome(proposalId).finishDate > i64(TimeTemp)){
+    return true
+  }else{
+    return false
+  }
+
+}
+
+export function changetimeProposal(proposalId: i32, time: i32, scale: string): Proposal{
+  let newTime = i64(Context.blockTimestamp);
+  let temProposal = proposals.getSome(proposalId)
+  if(scale == "s"){
+    newTime = newTime + ( i64(time)* i64(NANOSEC_SEC))
+  }else if(scale == "m"){
+    newTime = newTime + ( i64(time) * i64(NANOSEC_MIN))
+  }else if(scale == "h"){
+    newTime =  newTime + ( i64(time)* i64(NANOSEC_HOR) )
+  }else if(scale == "d"){
+    newTime =  newTime + ( i64(time)* i64(NANOSEC_DIA) )
+  }
+  temProposal.finishDate = newTime;
+  proposals.set(proposalId, temProposal)
+  
+  return temProposal
+}
+export function timeToProcessProposal(proposalId: i32): boolean{
+  let temProposal = proposals.getSome(proposalId)
+  if(temProposal.finishDate < i64(Context.blockTimestamp)){
+    return true
+  }else{
+    return false
+  }
+}
+
+export function testAmount(amount: string): u128{
+  let baseTime = 1640309634937914624;
+  let newTime = Context.blockTimestamp;
+  let finalTime = (newTime - baseTime);
+  logging.log(baseTime)
+  logging.log(newTime)
+  logging.log(finalTime)
+  logging.log(finalTime / NANOSEC_DIA)
+  logging.log(context.blockTimestamp)
+  //logging.log(context.epochHeight)
   logging.log(context.attachedDeposit)
-  let amountF = (amount*BASE_TO_CONVERT);
+  let amountF = (parseFloat(amount)*BASE_TO_CONVERT);
   logging.log(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) )
   logging.log(asNEAR(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT))))
   ContractPromiseBatch.create('blacks.testnet').transfer(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) );
@@ -85,16 +153,17 @@ export function getUserContributions(userId: string): Array<Contribution>{
 export function createNewProposal(
   title: string,
   description: string,
-  finishDate: string,
+  finishDate: i32,
   photos: Array<string>,
-  amountNeeded: f64
+  amountNeeded: string
   ): Proposal {
 
-    let amountf = amountNeeded* BASE_TO_CONVERT;
+    let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
+    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_MIN);
  return createProposal(
     title,
     description,
-    finishDate,
+    fninalDate,
     photos,
     u128.div(toYoctob128(u128.from(amountf)), u128.from(BASE_TO_CONVERT))
   );
@@ -111,9 +180,9 @@ export function proposalSuccess(proposalId: i32): bool {
   return false;
 } 
 
-export function createContribution(proposalId: u32, amount: f64, userRefound: string): Contribution {
+export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
   //amount must be more than 0
-  let amountBase = (amount*BASE_TO_CONVERT);
+  let amountBase = (parseFloat(amount)*BASE_TO_CONVERT);
   let amountU128 = u128.div(toYoctob128(u128.from(amountBase)), u128.from(BASE_TO_CONVERT));
 
   
@@ -165,15 +234,11 @@ export function getAllUsers(): Array<User> {
 
 };
 
-export function getProgressProposal(proposalId: i32): u128{
+export function getProgressProposal(proposalId: i32): number{
   let proposalTemp = proposals.getSome(proposalId)
-  logging.log(proposalTemp.founds)
-  logging.log(proposalTemp.amountNeeded)
-  
- 
   let progress =  u128.div(u128.mul((proposalTemp.founds), u128.from(100)) , (proposalTemp.amountNeeded))
-  logging.log(progress) 
-  return progress
+  logging.log(progress)
+  return progress.toF64()
 }
 
 export function changeRank (userId: string, rank: number): User{

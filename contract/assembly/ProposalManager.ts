@@ -9,7 +9,7 @@ import { asNEAR, onlyAdmins, toYocto } from './utils'
 
 const index = i64(proposals.length); // counter based on the proposals length created 
 //const initDate = String(context.blockTimestamp);
-const initDate = 9
+const initDate = Context.blockTimestamp;
 
 /**
  * function implemented for create proposals
@@ -28,9 +28,9 @@ export function createProposal(
 
     title: string,
     description: string,
-    finishDate: string,
+    finishDate: i64,
     photos: Array<string>,
-    amountNeeded: u128,
+    amountNeeded: u128
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
     const user = Context.sender;
