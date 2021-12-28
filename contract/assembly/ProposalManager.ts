@@ -6,8 +6,9 @@ import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
 import { asNEAR, onlyAdmins, toYocto } from './utils'
 
-
-const initDate = 9
+const index = i64(proposals.length); // counter based on the proposals length created 
+//const initDate = String(context.blockTimestamp);
+const initDate = Context.blockTimestamp;
 
 /**
  * CALLABLE FUNCTIONS <-----------------------------------
@@ -30,9 +31,9 @@ export function createProposal(
 
     title: string,
     description: string,
-    finishDate: string,
+    finishDate: i64,
     photos: Array<string>,
-    amountNeeded: u128,
+    amountNeeded: u128
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
     const user = Context.sender;
