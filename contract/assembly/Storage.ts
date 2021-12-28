@@ -9,4 +9,4 @@ export const proposals = new PersistentUnorderedMap<number,Proposal>("proposals"
 export const userList = new PersistentUnorderedMap<string, User>("users");
 export const contributions = new PersistentUnorderedMap<number, Contribution>("contributions");
 export const payments = new PersistentUnorderedMap<number, Payment>("payments");
-export const contractValue: u128 = u128.from(0);
+export const value = new PersistentUnorderedMap<number, u128>("value");

@@ -121,8 +121,8 @@ export function generatePayFromProposal(proposalId: i32): string{
     return u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) 
   }
   
-  export function transfer(): boolean{
-    ContractPromiseBatch.create('myfuture.testnet').transfer(ONE_NEAR);
+  export function transfer(user: string, amount: u128): boolean{
+    ContractPromiseBatch.create(user).transfer(amount);
     return true
   }
   

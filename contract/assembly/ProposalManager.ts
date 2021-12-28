@@ -75,6 +75,7 @@ export function inactiveProposal(
     return setProposalStatus(index, 1);
   };
   
+  
   /**
  * function implemented for set proposal status to pause 
  * Only Admins can call this function

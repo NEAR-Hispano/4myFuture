@@ -1,12 +1,14 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import User from './models/User'
-import { userList, proposals, contributions, contractValue, payments } from './Storage'
+import { userList, proposals, contributions, payments, value } from './Storage'
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
-import { generatePayFromProposal } from './FundsManager';
+import { generatePayFromProposal, transfer } from './FundsManager';
+
+const adminDAO = "4myfuture.sputnikv2.testnet";
 
 
 //USER FUNCTIONS <------------------------------ REVIEW 
@@ -123,9 +125,10 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
 }
 
 
-export function getTip(): bool {
+export function giveTip(): bool {
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
-  contractValue.set(Context.attachedDeposit);
+
+  value.set(0,Context.attachedDeposit);
   return true;
 };
 
@@ -139,3 +142,11 @@ export function getAllPayments(): Array<Payment>{
 export function refundPayments(proposalId: i32): string {
  return generatePayFromProposal(proposalId)
 }
+
+
+// export function withdrawAll(): void {
+//   assert(Context.sender == 'lexdev.testnet' || Context.sender == 'blacks.testnet', "only admins can withdraw");
+//   if(value.get(0) != null){
+//     transfer(adminDAO, value.get(0, u128.from(0)))
+//   }
+
