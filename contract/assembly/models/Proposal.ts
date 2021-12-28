@@ -9,8 +9,8 @@ class Proposal {
     founds: u128;
     title: string;
     description: string;
-    initDate: number; //while development
-    finishDate: string;
+    initDate: i64; //while development
+    finishDate: i64;
     photos: Array<string>;
     status: i8;
     index: number;
@@ -20,8 +20,8 @@ class Proposal {
         title: string,
         description: string,
         amountNeeded: u128,
-        initDate: number,
-        finishDate: string,
+        initDate: i64,
+        finishDate: i64,
         photos: Array<string>,
         index: number
     ){

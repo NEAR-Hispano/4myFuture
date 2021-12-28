@@ -6,8 +6,9 @@ import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
 import { asNEAR, onlyAdmins, toYocto } from './utils'
 
-
-const initDate = 9
+const index = i64(proposals.length); // counter based on the proposals length created 
+//const initDate = String(context.blockTimestamp);
+const initDate = Context.blockTimestamp;
 
 /**
  * CALLABLE FUNCTIONS <-----------------------------------
@@ -30,9 +31,9 @@ export function createProposal(
 
     title: string,
     description: string,
-    finishDate: string,
+    finishDate: i64,
     photos: Array<string>,
-    amountNeeded: u128,
+    amountNeeded: u128
 ): Proposal {
     assert(userList.contains(Context.sender), "User not registered");
     const user = Context.sender;
@@ -99,8 +100,8 @@ export function inactiveProposal(
     ): Proposal {
     const  isAdmin = onlyAdmins();
     assert(isAdmin, "Only admins can active proposal");  
-    const proposal = proposals.get(index);
-    assert(proposal?.status != 0, "Proposal already active")
+    const proposal = proposals.getSome(index);
+    assert(proposal.status != 0, "Proposal already active")
     return setProposalStatus(index, 0);
   };
 
@@ -262,3 +263,14 @@ export function deleteUser(user: string): bool {
 export function substract(num1: u128, num2: u128): u128  {
     return u128.sub(num1,num2);
 }
+
+/**
+ * Get the progress percentage of an proposal in relation with the funds achieved 
+ * @param proposalId Proposal ID 
+ * @returns F64
+ */
+export function getProgressProposal(proposalId: i32): number{
+    let proposalTemp = proposals.getSome(proposalId)
+    let progress =  u128.div(u128.mul((proposalTemp.founds), u128.from(100)) , (proposalTemp.amountNeeded))
+    return progress.toF64()
+  }

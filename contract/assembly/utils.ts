@@ -15,6 +15,10 @@ const ADMIN_ACCOUNT_2 = 'blacks.testnet';
 
 export const ONE_NEAR = u128.from("1000000000000000000000000");
 export const BASE_TO_CONVERT = 1000000.0;
+export const NANOSEC_SEC = 1000000000;
+export const NANOSEC_MIN = 60000000000;
+export const NANOSEC_HOR = 3600000000000;
+export const NANOSEC_DIA = 86400000000000;
 
 export function asNEAR(amount: u128): u128 {
     return u128.div(amount, ONE_NEAR);
