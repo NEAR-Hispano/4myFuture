@@ -1,6 +1,6 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import { proposals, contributions, payments } from './Storage'
-import { getProgressProposal, inactiveProposal, proposalCompleted } from './ProposalManager';
+import { getFundsToSuccess, getProgressProposal, inactiveProposal, inactiveProposalAfterTime, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
@@ -12,14 +12,14 @@ let propId: i32;
 
 
 export function generatePayFromProposal(proposalId: i32): string{
-    assert(proposals.contains(proposalId), "Proposal is not registered")
-    const proposal = proposals.getSome(proposalId);
-    if(timeToProcessProposal(proposalId)){
+    assert(proposals.contains(proposalId), "Proposal is not registered");
+    assert(proposals.getSome(proposalId).status == 0, "Can't generate payment from this proposal");
+    if(timeToProcessProposal(proposalId) || getFundsToSuccess(proposalId) == u128.from(0)){
       if(proposalCompleted(proposalId)){ 
         return "Proposal goal is complete!, creator will recibe amount";
       }else{
         refound(proposalId)
-        inactiveProposal(proposal.user, proposalId);
+        inactiveProposalAfterTime(proposalId);
         return "Proposal goal is not complete, contributors will recibe their amount";
       }
     }else{

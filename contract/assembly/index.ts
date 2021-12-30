@@ -6,7 +6,7 @@ import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
-import { generatePayFromProposal, transfer } from './FundsManager';
+import { generatePayFromProposal, timeToProcessProposal, transfer } from './FundsManager';
 
 const adminDAO = "4myfuture.sputnikv2.testnet";
 
@@ -65,8 +65,11 @@ export function createNewProposal(
   amountNeeded: string
   ): Proposal {
 
+    assert(finishDate > 0, "Invalid finishDate")
     let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
     let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_MIN);
+    assert(amountf > 0, "invalid amount introduced");
+
  return createProposal(
     title,
     description,
@@ -102,6 +105,11 @@ export function getAllProposals(): Array<Proposal> {
 //PROPOSAL CONTRIBUTIONS <------------------------------- REVIEW
 
 export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
+  assert(proposals.contains(proposalId), "Inexistent proposal");
+  //get Proposal
+  let proposal = proposals.getSome(proposalId);
+  assert(proposal.status == 0, "Can't contribute to this proposal");
+  assert(!timeToProcessProposal(proposalId), "Proposal time objective completed");
   //amount must be more than 0
   if(!userList.contains(Context.sender)){ //CREATING USER FOR CONTRIBUTE
     let newUser = new User(Context.sender)  
@@ -115,9 +123,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
   assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
-  //get Proposal
-  let proposal = proposals.getSome(proposalId);
-  assert(proposal.status == 0, "Can't contribute to this proposal");
+
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
