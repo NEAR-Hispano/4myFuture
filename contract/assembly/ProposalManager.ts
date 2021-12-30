@@ -68,12 +68,20 @@ export function inactiveProposal(
     userId: string,
     index: u32
     ): Proposal {
-    assert(userId == Context.sender, "Only creator can inactive proposal");
     const userLogged = getUser(Context.sender);
+    assert(userLogged.id == Context.sender, "You need to be the proposal owner")
     userLogged.setProposal(false);
     updateUser(userId, userLogged);
     return setProposalStatus(index, 1);
   };
+
+  export function inactiveProposalAfterTime(proposalId: u32): void { //REVIEW
+    setProposalStatus(proposalId, 1);
+    const userProposal = proposals.getSome(proposalId)
+    const userLogged = userList.getSome(userProposal.user)
+    userLogged.setProposal(false);
+    updateUser(userProposal.user, userLogged); 
+  }
   
   
   /**
@@ -129,11 +137,14 @@ export function proposalCompleted(proposalId: u32): bool {
     if((getProgressProposal(proposalId) < 70)){
         return false;
     }
-    assert(getFundsToSuccess(proposalId) == u128.from(0), "Insufficient funds")
+    assert(getProgressProposal(proposalId) >= 70, "Insufficient funds")
     const proposal = getProposal(proposalId);
     assert(proposal.status == 0, "Proposal not active")
     proposal.setStatus(3);
     updateProposal(proposalId, proposal);
+    const user = getUser(proposal.user) ;
+    user.setProposal(false);
+    updateUser(user.id, user);
     return payStudent(proposal.user, proposal);
 }
 
@@ -155,7 +166,6 @@ export function proposalCompleted(proposalId: u32): bool {
  ): Proposal {
      assert(proposals.contains(index), "proposal not registered"); //Check if userId has a proposal registered and within storage
      const userProposal = proposals.getSome(index)
-     assert(userProposal.user == Context.sender, "You need to be the proposal owner") //Check the owner is the function caller
      userProposal.setStatus(newStatus) 
      deleteProposal(index); 
      proposals.set(index, userProposal) 
