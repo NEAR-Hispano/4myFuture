@@ -1,6 +1,6 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import { proposals, contributions, payments } from './Storage'
-import { getProgressProposal } from './ProposalManager';
+import { getProgressProposal, inactiveProposal, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
@@ -13,15 +13,13 @@ let propId: i32;
 
 export function generatePayFromProposal(proposalId: i32): string{
     assert(proposals.contains(proposalId), "Proposal is not registered")
-    let temProposal = proposals.getSome(proposalId)
-    let progress = getProgressProposal(proposalId)
-  
+    const proposal = proposals.getSome(proposalId);
     if(timeToProcessProposal(proposalId)){
-      if(getProgressProposal(proposalId)>=70){
-        PayToCreator(proposalId)
+      if(proposalCompleted(proposalId)){ 
         return "Proposal goal is complete!, creator will recibe amount";
       }else{
         refound(proposalId)
+        inactiveProposal(proposal.user, proposalId);
         return "Proposal goal is not complete, contributors will recibe their amount";
       }
     }else{
