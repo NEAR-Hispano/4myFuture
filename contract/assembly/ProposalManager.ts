@@ -126,6 +126,9 @@ export function getFundsToSuccess(proposalId: u32): u128 {
  */ 
 export function proposalCompleted(proposalId: u32): bool {
     assert(proposals.contains(proposalId), "Proposal inexistent");
+    if((getProgressProposal(proposalId) < 70)){
+        return false;
+    }
     assert(getFundsToSuccess(proposalId) == u128.from(0), "Insufficient funds")
     const proposal = getProposal(proposalId);
     assert(proposal.status == 0, "Proposal not active")

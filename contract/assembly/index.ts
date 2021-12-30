@@ -103,6 +103,10 @@ export function getAllProposals(): Array<Proposal> {
 
 export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
   //amount must be more than 0
+  if(!userList.contains(Context.sender)){ //CREATING USER FOR CONTRIBUTE
+    let newUser = new User(Context.sender)  
+    userList.set(Context.sender, newUser)
+  }
   let amountBase = (parseFloat(amount)*BASE_TO_CONVERT);
   let amountU128 = u128.div(toYoctob128(u128.from(amountBase)), u128.from(BASE_TO_CONVERT));
   let  fundsToSuccess = getFundsToSuccess(proposalId);
