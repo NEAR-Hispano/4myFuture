@@ -6,8 +6,6 @@ import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
 import { asNEAR, onlyAdmins, toYocto } from './utils'
 
-const index = i64(proposals.length); // counter based on the proposals length created 
-//const initDate = String(context.blockTimestamp);
 const initDate = Context.blockTimestamp;
 
 /**
@@ -75,6 +73,11 @@ export function inactiveProposal(
     return setProposalStatus(index, 1);
   };
 
+  /**
+ * Set proposal status inactive from check payment function
+ * @param proposalId proposal ID
+ * @returns null
+ */ 
   export function inactiveProposalAfterTime(proposalId: u32): void { //REVIEW
     setProposalStatus(proposalId, 1);
     const userProposal = proposals.getSome(proposalId)
@@ -180,7 +183,7 @@ export function proposalCompleted(proposalId: u32): bool {
  * @returns payStudent(student, proposal)
  */ 
 export function payStudent(student: string, proposal: Proposal): bool {
-    const payment = new Payment(student, proposal.founds, ('December 17, 1995 03:24:00'), "founds")
+    const payment = new Payment(student, '4MyFuture' , proposal.founds, "", "FundsReached")
     payments.set(payments.length, payment);
     const amount = proposal.founds;
     ContractPromiseBatch.create(student).transfer(amount);
