@@ -4,14 +4,17 @@ import { userList, proposals, contributions, payments, value } from './Storage'
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
-import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
+import { adminDAO, asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
 import { generatePayFromProposal, timeToProcessProposal, transfer } from './FundsManager';
 
-const adminDAO = "4myfuture.sputnikv2.testnet";
 
 
 //USER FUNCTIONS <------------------------------ REVIEW 
+/**
+ * Create and save an user into 4MyFuture 
+ * @returns  User
+ */ 
 export function createUser(): User {
   assert(!userList.contains(Context.sender), "the user already exist")
   let newUser = new User(Context.sender)  
@@ -19,29 +22,51 @@ export function createUser(): User {
   return newUser
 }
 
-
+/**
+ * Get a specific user object
+ * @param userId user ID
+ * @returns  User
+ */ 
 export function getUser(userId: string): User {
   return userList.getSome(userId)
 }
 
+/**
+ * Get the quantity of contributions given by an user 
+ * @param userId user ID
+ * @returns  number
+ */ 
 export function getUserContributionsLength(userId: string): number {
   assert(userList.contains(userId), "user not registered")
   return userList.get(userId)!.contributions.length
 }
 
+/**
+ * Get the contributions given by an user 
+ * @param userId user ID
+ * @returns  Array<Contribution>
+ */ 
 export function getUserContributions(userId: string): Array<Contribution>{
   assert(userList.contains(userId), "user not registered")
   const user = getUser(userId);
   return user.contributions
 }
 
-
+/**
+ * Get all User saved 
+ * @returns  Array<User>
+ */ 
 export function getAllUsers(): Array<User> {
   return userList.values(0, userList.length);
 
 };
 
-
+/**
+ * Change the user rank 
+ * @param userId user ID
+ * @param rank new rank assigned  
+ * @returns  User
+ */ 
 export function changeRank (userId: string, rank: number): User{
   assert(userList.contains(userId), "El usuario no existe")
   const userTemp = userList.getSome(userId)
@@ -50,13 +75,19 @@ export function changeRank (userId: string, rank: number): User{
   return userTemp
 }
 
-export function showId (userId: string): string{
-  return userList.get(userId)!.id
-}
 
 
 //PROPOSAL FUNCTIONS <------------------------------ REVIEW
 
+/**
+ * Create a new student proposal
+ * @param title proposal title
+ * @param description history description
+ * @param finishDate months the proposal will be active
+ * @param photos history support
+ * @param amountNeeded funds need it to cover de need   
+ * @returns  Proposal
+ */ 
 export function createNewProposal(
   title: string,
   description: string,
@@ -78,24 +109,29 @@ export function createNewProposal(
     u128.div(toYoctob128(u128.from(amountf)), u128.from(BASE_TO_CONVERT))
   );
 }
-export function getProposalUser(): number{
-  return proposals.values(0,proposals.length).filter(propo => propo.user == Context.sender).filter(prop => prop.status == 1).length
-}
 
-export function proposalSuccess(proposalId: i32): bool {
-  if (proposalCompleted(proposalId)){
-    return true;
-  }
-  return false;
-} 
-
+/**
+ * Set proposal status to inactive (Status=1)
+ * @param index proposal ID to pause   
+ * @returns  Array<Proposal>
+ */ 
 export function inactiveOneProposal(userId: string, index: u32): Proposal {
   return inactiveProposal(userId, index)
 }
+
+/**
+ * Set proposal status to pause (status=2)
+ * @param index proposal ID to pause   
+ * @returns  Array<Proposal>
+ */ 
 export function pauseoneproposal(index: u32): Proposal {
   return pauseProposal(index)
 }
 
+/**
+ * Get all proposal saved  
+ * @returns  Array<Proposal>
+ */ 
 export function getAllProposals(): Array<Proposal> {
     return proposals.values(0, proposals.length);
   
@@ -104,6 +140,13 @@ export function getAllProposals(): Array<Proposal> {
 
 //PROPOSAL CONTRIBUTIONS <------------------------------- REVIEW
 
+/**
+ * Refund users contribution once me
+ * @param proposalId proposal index
+ * @param amount amount for contribution
+ * @param userRefound Student ID  
+ * @returns Contribution
+ */ 
 export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
   assert(proposals.contains(proposalId), "Inexistent proposal");
   //get Proposal
@@ -123,7 +166,6 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
   assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
-
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
@@ -134,29 +176,57 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   return contribution
 }
 
-
+/**
+ * Contribute to 4MyFutureDApp and save it  
+ * @returns true
+ */ 
 export function giveTip(): bool {
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
-
-  value.set(0,Context.attachedDeposit);
+  const payment = new Payment('4MyFuture', Context.sender, Context.attachedDeposit, '', 'ProjectContribution');
+  payments.set(payments.length, payment);
+  const sum = u128.add(value.getSome(0), Context.attachedDeposit);
+  value.set(0, sum);
   return true;
 };
 
 
 
-//CONTRACT PAYMENTS
+//CONTRACT PAYMENTS 
+
+/**
+ * Get all the Project Payments
+ * @returns Array<Payment>
+ */ 
 export function getAllPayments(): Array<Payment>{
   return payments.values(0, payments.length);
 }
 
-export function refundPayments(proposalId: i32): string {
+/**
+ * Fund users contribution once finished the proposal time
+ * @param proposalId proposal 
+ * @returns payStudent(student, proposal)
+ */ 
+export function fund(proposalId: i32): string {
  return generatePayFromProposal(proposalId)
 }
 
+/**
+ * Get the contributions total amount
+ * @returns Array<u128> with total amount 
+ */ 
+export function getTotalTips(): Array<u128>{
+  return value.values(0,payments.length);
+}
 
-// export function withdrawAll(): void {
-//   assert(Context.sender == 'lexdev.testnet' || Context.sender == 'blacks.testnet', "only admins can withdraw");
-//   if(value.get(0) != null){
-//     transfer(adminDAO, value.get(0, u128.from(0)))
-//   }
-
+/**
+ * Withdraw all NEARs amount by project contributions to DAO contract  
+ */ 
+export function withdrawAll(): void {
+  const isAdmin = onlyAdmins();
+  assert(isAdmin, "Only admins can call this function");  
+  assert(value.getSome(0) > u128.from(0), "The contract value equals to 0")
+  transfer(adminDAO, value.getSome(0));
+  const payment = new Payment(adminDAO, '4MyFuture', value.getSome(0), '', 'WithdrawTip');
+  payments.set(payments.length, payment);
+  value.set(0, u128.from(0));
+}

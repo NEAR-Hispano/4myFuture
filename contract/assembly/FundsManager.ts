@@ -10,7 +10,11 @@ let propId: i32;
 
 //CALLABLE FUNCTIONS <---------------------------- REVIEW
 
-
+/**
+ * Check time and funds needed, after the verification pay the student or refund users, depends on the funds reached at the moment
+ * @param proposalId proposal ID
+ * @returns string
+ */ 
 export function generatePayFromProposal(proposalId: i32): string{
     assert(proposals.contains(proposalId), "Proposal is not registered");
     assert(proposals.getSome(proposalId).status == 0, "Can't generate payment from this proposal");
@@ -18,7 +22,7 @@ export function generatePayFromProposal(proposalId: i32): string{
       if(proposalCompleted(proposalId)){ 
         return "Proposal goal is complete!, creator will recibe amount";
       }else{
-        refound(proposalId)
+        refund(proposalId)
         inactiveProposalAfterTime(proposalId);
         return "Proposal goal is not complete, contributors will recibe their amount";
       }
@@ -31,50 +35,41 @@ export function generatePayFromProposal(proposalId: i32): string{
 
   //BUILT IN FUNCTIONS <------------------------------------ REVIEW
 
+  /**
+ * Transfer the student funds
+ * @param proposalId proposal Owner
+ * @returns boolean.
+ */ 
   export function PayToCreator(proposalId: i32): boolean{
     ContractPromiseBatch.create(proposals.getSome(proposalId).user).transfer(proposals.getSome(proposalId).founds);
     return true;
   }
   
-  
-  export function refound(proposalId: i32): boolean{
+  /**
+ * Refund contributors if the proposal doesn't get the funds needed
+ * @param proposalId proposal ID
+ * @returns bool
+ */ 
+  export function refund(proposalId: i32): boolean{
     propId = proposalId
     let contribTemp = contributions.values(0,contributions.length).filter(contrib => contrib.proposalId == propId)
     for (let index = 0; index < contribTemp.length; index++) {
       ContractPromiseBatch.create(contribTemp[index].userRefound).transfer(contribTemp[index].amount);
       logging.log(contribTemp[index])
-      let pay = new Payment(contribTemp[index].userRefound, contribTemp[index].amount,"", "refound" )
+      let pay = new Payment(contribTemp[index].userRefound, '4MyFuture', contribTemp[index].amount,"", "refund" )
       payments.set(payments.length+1, pay)
      
     }
     return true
   }
   
-  
-  export function getAllContribution(): Array<Contribution>{
-    logging.log(contributions.length)
-    let contribTemp = contributions.values(0,contributions.length).filter(contrib => contrib.proposalId == 1)
-    logging.log(contribTemp.length)
-    return contributions.values(0,contributions.length)
-  }
-  
-  export function transferToRefound(value: u128, userRefound: string): boolean {
-    const amount = toYoctob128(value);
-    ContractPromiseBatch.create(userRefound).transfer(amount);
-    return true
-  }
-  
-  export function comprobeTimeProposal(proposalId: i32): boolean{
-    let TimeTemp = Context.blockTimestamp;
-    
-    if(proposals.getSome(proposalId).finishDate > i64(TimeTemp)){
-      return true
-    }else{
-      return false
-    }
-  
-  }
-  
+  /**
+ * Change the scale unit time for a proposal
+ * @param proposalId proposal ID
+ * @param time time in the specified unit
+ * @param scale time unit
+ * @returns Proposal
+ */ 
   export function changetimeProposal(proposalId: i32, time: i32, scale: string): Proposal{
     let newTime = i64(Context.blockTimestamp);
     let temProposal = proposals.getSome(proposalId)
@@ -92,6 +87,13 @@ export function generatePayFromProposal(proposalId: i32): string{
     
     return temProposal
   }
+
+
+  /**
+ * Checks if the proposal is over time 
+ * @param proposalId proposal ID
+ * @returns bool
+ */ 
   export function timeToProcessProposal(proposalId: i32): boolean{
     let temProposal = proposals.getSome(proposalId)
     if(temProposal.finishDate < i64(Context.blockTimestamp)){
@@ -101,24 +103,12 @@ export function generatePayFromProposal(proposalId: i32): string{
     }
   }
   
-  export function testAmount(amount: string): u128{
-    let baseTime = 1640309634937914624;
-    let newTime = Context.blockTimestamp;
-    let finalTime = (newTime - baseTime);
-    logging.log(baseTime)
-    logging.log(newTime)
-    logging.log(finalTime)
-    logging.log(finalTime / NANOSEC_DIA)
-    logging.log(context.blockTimestamp)
-    //logging.log(context.epochHeight)
-    logging.log(context.attachedDeposit)
-    let amountF = (parseFloat(amount)*BASE_TO_CONVERT);
-    logging.log(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) )
-    logging.log(asNEAR(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT))))
-    ContractPromiseBatch.create('blacks.testnet').transfer(u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) );
-    return u128.div(toYoctob128(u128.from(amountF)), u128.from(BASE_TO_CONVERT)) 
-  }
-  
+ /**
+ * Transfer from contract to an specific user 
+ * @param user transfer recipient 
+ * @param amount to transfer
+ * @returns bool
+ */ 
   export function transfer(user: string, amount: u128): boolean{
     ContractPromiseBatch.create(user).transfer(amount);
     return true
