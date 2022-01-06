@@ -5868,10 +5868,10 @@
     "text-encoding-utf-8" "^1.0.2"
     "tweetnacl" "^1.0.1"
 
-"near-api-js@^0.44.1":
-  "integrity" "sha512-c3kE5tBdlQJTKk9gC9CnToMnO2fSAuM/PRuAhMme2PUV+1KcRtmgczG9Q4kZi2KyeSYQFnlkyYyolz66iNhpxw=="
-  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.1.tgz"
-  "version" "0.44.1"
+"near-api-js@^0.44.2":
+  "integrity" "sha512-eMnc4V+geggapEUa3nU2p8HSHn/njtloI4P2mceHQWO8vDE1NGpnAw8FuTBrLmXSgIv9m6oocgFc9t3VNf5zwg=="
+  "resolved" "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.2.tgz"
+  "version" "0.44.2"
   dependencies:
     "bn.js" "5.2.0"
     "borsh" "^0.6.0"
@@ -5885,10 +5885,10 @@
     "text-encoding-utf-8" "^1.0.2"
     "tweetnacl" "^1.0.1"
 
-"near-cli@^3.0.1":
-  "integrity" "sha512-dWxffOboKHr3NhP/+avamt4W3yZK90XQmFTbWszS+XmjoQ9k6gNqfw6msqJBGM0DkRQyZhw3mcj1q0QqcqDubA=="
-  "resolved" "https://registry.npmjs.org/near-cli/-/near-cli-3.0.1.tgz"
-  "version" "3.0.1"
+"near-cli@^3.1.0":
+  "integrity" "sha512-84JSg9qwIOfHH1gzA6OQNqb0HE6fO6jxDz950CSukNs27LFQ2NEySAyhbB1z1uF60Fxh1rOlkRb4zbsasPDH7A=="
+  "resolved" "https://registry.npmjs.org/near-cli/-/near-cli-3.1.0.tgz"
+  "version" "3.1.0"
   dependencies:
     "@ledgerhq/hw-transport-node-hid" "^6.1.0"
     "ascii-table" "0.0.9"
@@ -5900,7 +5900,7 @@
     "jest-environment-node" "^27.0.6"
     "mixpanel" "^0.13.0"
     "ncp" "^2.0.0"
-    "near-api-js" "^0.44.1"
+    "near-api-js" "^0.44.2"
     "near-ledger-js" "^0.2.0"
     "near-seed-phrase" "^0.2.0"
     "open" "^8.0.7"
@@ -6483,6 +6483,11 @@
   "integrity" "sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ=="
   "resolved" "https://registry.npmjs.org/parseurl/-/parseurl-1.3.3.tgz"
   "version" "1.3.3"
+
+"particles.js@^2.0.0":
+  "integrity" "sha1-IThsQyjWx/lngKIB6W7t/AnHNvY="
+  "resolved" "https://registry.npmjs.org/particles.js/-/particles.js-2.0.0.tgz"
+  "version" "2.0.0"
 
 "pascalcase@^0.1.1":
   "integrity" "sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ="
