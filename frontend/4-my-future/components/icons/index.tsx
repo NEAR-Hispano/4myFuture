@@ -6,7 +6,6 @@ import UploadIcon from './UploadIcon';
 import CloseIcon from './CloseIcon';
 import PageIcon from './PageIcon';
 import CopyIcon from './CopyIcon';
-import ShoppingCartIcon from './ShoppingCartIcon';
 import StarIcon from './StarIcon';
 import LogOutIcon from './LogOutIcon';
 import LoginIcon from './LoginIcon';
@@ -23,7 +22,6 @@ export {
   CloseIcon,
   PageIcon,
   CopyIcon,
-  ShoppingCartIcon,
   StarIcon,
   LogOutIcon,
   LoginIcon,
