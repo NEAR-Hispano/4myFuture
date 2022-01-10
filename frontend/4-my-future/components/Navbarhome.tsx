@@ -1,6 +1,6 @@
 import React from "react";
 
-function Navbar() {
+function Navbarhome() {
   const [user, setUser] = React.useState("");
   return (
     <div className="mt-3">
@@ -48,4 +48,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Navbarhome;
