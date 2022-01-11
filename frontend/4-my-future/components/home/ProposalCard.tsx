@@ -1,5 +1,9 @@
 import React from "react";
 
+const ONE_NEAR_IN_YOCTO= 1000000000000000000000000;
+const NANOSEC_DIA = 86400000000000;
+
+
 interface ProposalCardInfoProps {
   index: number;
   user: string;
@@ -8,7 +12,18 @@ interface ProposalCardInfoProps {
   title: string;
   photos: string[];
   initDate: string;
+  finishDate: string;
 }
+
+
+function toNEAR(value: string): string{
+  return (parseFloat(value)/ONE_NEAR_IN_YOCTO).toFixed(2)
+}
+
+function toDay_from_nano(start: string, end: string): string{
+return ((parseInt(end) -parseInt(start) )/NANOSEC_DIA).toFixed()
+}
+
 
 function ProposalCard({
   index,
@@ -18,25 +33,26 @@ function ProposalCard({
   title,
   photos,
   initDate,
+  finishDate
 }: ProposalCardInfoProps) {
   return (
-    <div className="w-1/4 h-2/3 pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2 border-green-600 shadow-2xl font-sans">
+    <div className="w-1/4 h-2/3 pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2 border-green-600 shadow-2xl font-sans mt-2 mr-2">
       <div className="flex flex-col w-full h-1/4 border-b-2 ">
-        <div className="font-extralight mb-1">{index}</div>
+        <div className="font-extralight mb-1"> Nr: {index}</div>
         <div className="flex justify-between">
-          <div className="text-3xl font-bold text-green-500">{title}</div>
-          <div className="text-xl font-thin">{initDate}</div>
+          <div className="text-sm font-bold text-green-500">{title}</div>
+          <div className="text-sm font-thin">Días para que expire la propuesta: {toDay_from_nano(initDate, finishDate)}</div>
         </div>
-        <div className="text-xl font-thin">{user}</div>
+        <div className="text-xl font-thin">Autor: {user}</div>
       </div>
 
       <div className="h-1/2 mt-1 ">
-        <img src={photos[0]} alt="Proposal" className="h-full w-full" />
+        <img src={photos[0]} alt="Proposal" className="h-60 w-50 m-auto" />
       </div>
       <div className="flex flex-col items-center text-xl  font-medium text-green-500">
         <div>
           Required:{" "}
-          <span className="font-bold text-black">{amountNeeded} NEARs</span>
+          <span className="font-bold text-black">{toNEAR(amountNeeded)} NEARs</span>
         </div>
         <div className="flex w-full justify-between pl-8 pr-8 mt-8">
           <button className="p-3 pl-5 pr-5 hover:bg-slate-400  border-0 rounded-xl text-black bg-slate-300">
