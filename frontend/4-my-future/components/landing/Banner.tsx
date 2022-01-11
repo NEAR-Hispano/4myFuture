@@ -1,6 +1,6 @@
 import React from "react";
 import Particles from "react-tsparticles";
-import Particle from "./Particles";
+import Particle from "../common/Particles";
 
 function Banner() {
   const [user, setUser] = React.useState("");

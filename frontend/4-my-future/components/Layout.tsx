@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from './common/Navbar';
+import Footer from './common/Footer';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -10,12 +10,12 @@ function Layout({children}: LayoutProps) {
     
     React.useEffect(
         () => {
-            
+
         }, []
     )
 
     return (
-        <div className='w-screen h-screen flex flex-col'>
+        <div className='w-screen flex flex-col'>
             <Navbar/>
                 {children}
             <Footer/>

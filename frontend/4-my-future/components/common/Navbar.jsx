@@ -1,6 +1,6 @@
 import React from 'react'
-import { initContract } from './near';
-import { LogOutIcon, LoginIcon } from './icons';
+import { initContract } from '../near';
+import { LogOutIcon, LoginIcon } from '../icons';
 import { functionCallAccessKey } from 'near-api-js/lib/transaction';
 
 function Navbar() {
@@ -38,7 +38,8 @@ function Navbar() {
 
     React.useEffect(
         () => {
-            userLogged()
+            userLogged();
+            
         }, []
     )
 
