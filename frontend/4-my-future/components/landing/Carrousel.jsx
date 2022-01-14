@@ -43,7 +43,7 @@ function Carrousel() {
   }, [])
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-11">
       {proposals.length > 0 ?
         <div className="flex w-full scroll-x scrollbar-hide p-auto m-auto justify-center items-center align-middle">
           {proposals?.map((proposal) => (
