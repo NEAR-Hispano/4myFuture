@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Banner from '../components/landing/Banner'
-import Carrousel from '../components/landing/Carrousel'
+import Carrousel from '../components/landing/Carrousel.jsx'
 import Footer from '../components/common/Footer'
 import Items from '../components/landing/Items'
 import Navbar from '../components/landing/Navbarhome'
