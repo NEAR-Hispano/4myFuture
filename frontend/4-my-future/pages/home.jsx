@@ -32,7 +32,7 @@ function home() {
                         <ProposalsGeneral proposals={proposals}></ProposalsGeneral>
                     </div>
                     :
-                    <div className="w-screen h-full p-0 bg-gray-200">
+                    <div className="w-screen h-screen flex justify-center items-center align-middle p-0 bg-gray-200">
                         <Loading></Loading>
                     </div>
                 }
