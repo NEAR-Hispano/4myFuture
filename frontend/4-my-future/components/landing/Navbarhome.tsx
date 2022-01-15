@@ -4,7 +4,7 @@ function Navbarhome() {
   const [user, setUser] = React.useState("");
   return (
     <div className="text-white text-xl font-sans bg-primary-50">
-      <ul className="grid grid-flow-col text-center border-b border-gray-200 text-gray-500 text-white">
+      <ul className="grid grid-flow-col text-center border-b border-gray-200 text-white">
         {" "}
         <li>
           {" "}
