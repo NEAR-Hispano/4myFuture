@@ -1,10 +1,8 @@
 import React from "react";
 import Proposal from '../../models/Proposal';
 import { useRouter } from 'next/router';
+import { toDay_from_nano, toNEAR } from '../utils'
 
-
-const ONE_NEAR_IN_YOCTO = 1000000000000000000000000;
-const NANOSEC_DIA = 86400000000000;
 
 interface ProposalCardInfoProps {
   index: number;
@@ -15,14 +13,6 @@ interface ProposalCardInfoProps {
   photos: string[];
   initDate: string;
   finishDate: string;
-}
-
-function toNEAR(value: string): string {
-  return (parseFloat(value) / ONE_NEAR_IN_YOCTO).toFixed(2);
-}
-
-function toDay_from_nano(start: string, end: string): string {
-  return ((parseInt(end) - parseInt(start)) / NANOSEC_DIA).toFixed();
 }
 
 function ProposalCard({
@@ -42,7 +32,7 @@ function ProposalCard({
     <div className="w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2 border-green-600 shadow-2xl font-sans mt-2 mr-2 m-8">
       <div className="flex flex-col w-full h-1/4 border-b-2 ">
         <div className="flex justify-between">
-          <div className="font-extralight mb-1"> {index}</div>
+          <div className="font-extralight mb-1"> ID{index}</div>
           <div className="text-base font-thin">
             Days left: {toDay_from_nano(initDate, finishDate)}
           </div>
@@ -66,8 +56,9 @@ function ProposalCard({
         <div className="flex w-full justify-between pl-8 pr-8 mt-8 ">
           <button
             className="p-3 pl-12 pr-12 hover:bg-slate-400  border-0 rounded-xl text-black bg-slate-300"
-            onClick={() => {
-              router.push(`/proposals/${index}`);
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/proposal/${index}`);
             }}
           >
             Details
