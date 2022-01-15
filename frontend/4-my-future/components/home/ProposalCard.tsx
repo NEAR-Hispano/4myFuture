@@ -2,6 +2,7 @@ import React from "react";
 import Proposal from '../../models/Proposal';
 import { useRouter } from 'next/router';
 import { toDay_from_nano, toNEAR } from '../utils'
+import { HeartIcon } from '../icons';
 
 
 interface ProposalCardInfoProps {
@@ -63,8 +64,9 @@ function ProposalCard({
           >
             Details
           </button>
-          <button className="p-3 pl-12 pr-12 font-bold hover:bg-green-400 border-2 border-black rounded-xl text-black bg-green-300">
+          <button className="p-3 flex pl-12 pr-12 font-bold hover:bg-green-400 border-2 border-black rounded-lg shadow-xl text-black bg-green-300">
             Fund
+            <HeartIcon className="w-6"></HeartIcon>
           </button>
         </div>
       </div>
