@@ -137,6 +137,16 @@ export function getAllProposals(): Array<Proposal> {
   
 };
 
+/**
+ * Get one proposal by Id  
+ * @returns  Proposal
+ */ 
+export function getProposal(proposalId: u32): Proposal {
+  const proposal = proposals.getSome(proposalId);
+  return proposal;
+
+}
+
 
 //PROPOSAL CONTRIBUTIONS <------------------------------- REVIEW
 
