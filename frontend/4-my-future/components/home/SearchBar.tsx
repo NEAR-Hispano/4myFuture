@@ -1,12 +1,14 @@
 import React from "react";
 import Proposal from "../../models/Proposal";
 
+
 interface SearchProps {
   data?: Proposal[];
 }
 
 export default function Search({ data }: SearchProps) {
   const [searchTerm, setSearchTerm] = React.useState([]);
+  
 
   const handleFilter = (e: any) => {
     const searchWord = e.target.value;
