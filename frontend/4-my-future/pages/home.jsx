@@ -9,10 +9,12 @@ function home() {
 
     const [proposals, setProposals] = React.useState([]);
     const [contract, setContract] = React.useState(null);
+   
 
     const init = async () => {
         const { contract } = await initContract();
         contract.getAllProposals().then(setProposals)
+      
     }
 
 

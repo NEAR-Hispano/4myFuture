@@ -1,7 +1,6 @@
 import React from "react";
-import Proposal from '../../models/Proposal';
-import { useRouter } from 'next/router';
-
+import Proposal from "../../models/Proposal";
+import { useRouter } from "next/router";
 
 const ONE_NEAR_IN_YOCTO = 1000000000000000000000000;
 const NANOSEC_DIA = 86400000000000;
@@ -25,6 +24,10 @@ function toDay_from_nano(start: string, end: string): string {
   return ((parseInt(end) - parseInt(start)) / NANOSEC_DIA).toFixed();
 }
 
+const found = (value) => {
+  console.log(value);
+};
+
 function ProposalCard({
   index,
   user,
@@ -35,7 +38,6 @@ function ProposalCard({
   initDate,
   finishDate,
 }: ProposalCardInfoProps) {
-
   const router = useRouter();
 
   return (
@@ -63,6 +65,10 @@ function ProposalCard({
             {toNEAR(amountNeeded)} NEARs
           </span>
         </div>
+        <div className="mt-4 border-b-2 w-full ">
+          Actual founds:{" "}
+          <span className="font-bold text-black">{toNEAR(founds)} NEARs</span>
+        </div>
         <div className="flex w-full justify-between pl-8 pr-8 mt-8 ">
           <button
             className="p-3 pl-12 pr-12 hover:bg-slate-400  border-0 rounded-xl text-black bg-slate-300"
@@ -72,7 +78,10 @@ function ProposalCard({
           >
             Details
           </button>
-          <button className="p-3 pl-12 pr-12 font-bold hover:bg-green-400 border-2 border-black rounded-xl text-black bg-green-300">
+          <button
+            className="p-3 pl-12 pr-12 font-bold hover:bg-green-400 border-2 border-black rounded-xl text-black bg-green-300"
+            onClick={() => found(index)}
+          >
             Fund
           </button>
         </div>

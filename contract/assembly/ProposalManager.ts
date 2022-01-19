@@ -33,10 +33,10 @@ export function createProposal(
     photos: Array<string>,
     amountNeeded: u128
 ): Proposal {
-    assert(userList.contains(Context.sender), "User not registered");
+    // assert(userList.contains(Context.sender), "User not registered");
     const user = Context.sender;
     const userLogged = getUser(user); 
-    assert(!userLogged.withActiveProposal, "User already have one active proposal")
+    // assert(!userLogged.withActiveProposal, "User already have one active proposal")
     assert(amountNeeded > u128.Zero, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(

@@ -1,8 +1,9 @@
 import React from 'react';
-import ProposalDetails from '../../components/proposals/ProposalDetails';
+
 import Layout from '../../components/Layout';
 import Proposal from '../../models/Proposal';
 import { useRouter } from 'next/router';
+import ProposalDetails from '../../components/proposals/ProposalDetails';
 
 
 

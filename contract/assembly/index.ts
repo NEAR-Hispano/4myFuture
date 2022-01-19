@@ -98,7 +98,7 @@ export function createNewProposal(
 
     assert(finishDate > 0, "Invalid finishDate")
     let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
-    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_MIN);
+    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_DIA);
     assert(amountf > 0, "invalid amount introduced");
 
  return createProposal(
@@ -239,4 +239,8 @@ export function withdrawAll(): void {
   const payment = new Payment(adminDAO, '4MyFuture', value.getSome(0), '', 'WithdrawTip');
   payments.set(payments.length, payment);
   value.set(0, u128.from(0));
+}
+
+export function getTime(): number {
+  return Context.blockTimestamp;
 }
