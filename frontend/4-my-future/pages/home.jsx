@@ -19,8 +19,6 @@ function home() {
         contract.getAllPayments().then(setPayments)
     }
 
-
-
     React.useEffect(
         () => {
             init()
