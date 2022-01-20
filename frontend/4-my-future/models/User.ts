@@ -1,7 +1,7 @@
 import Contribution from './Contribution';
 
 export default interface User {
-    username: string;
+    id: string;
     contributions: Contribution[];
     withActiveProposal: boolean;
     rank: number;
