@@ -58,7 +58,10 @@ function Navbar() {
         <div className='w-full h-16 flex bg-primary-50 text-white pl-8 pr-8 border-0 shadow-2xl'>
             <div className='flex justify-between items-center align-middle w-full h-full'>
                 <div>
-                    <p className='text-3xl font-bold '>4MyFutureDApp</p>
+                   <a href="/home" className='text-3xl font-bold'> 4MyFutureDApp </a>
+                </div>
+                <div>
+                    <a href="/proposals" className='text-2xl font-bold'> My proposals </a>
                 </div>
                 <div className='flex text-xl font-extralight items-center align-middle h-full'>
                     {!logged ? (

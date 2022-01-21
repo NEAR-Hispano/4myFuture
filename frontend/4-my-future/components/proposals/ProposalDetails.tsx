@@ -44,10 +44,10 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
           <div className="w-full p-6 flex text-black  font-thin justify-center items-center">
         <span className="font-bold">{fundsLeft} NEARs left</span>
           </div>
-          <button className="flex mb-5 m-auto p-3 w-3/4 items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500">
+          {/* <button className="flex mb-5 m-auto p-3 w-3/4 items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500">
             Fund
             <HeartIcon className="w-6"></HeartIcon>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

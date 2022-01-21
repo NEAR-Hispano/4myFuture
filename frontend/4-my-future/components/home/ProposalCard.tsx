@@ -28,7 +28,6 @@ function ProposalCard({
   finishDate,
   status
 }: ProposalCardInfoProps) {
-
   const router = useRouter();
 
   return (
@@ -55,6 +54,10 @@ function ProposalCard({
           <span className="font-bold text-black">
             {toNEAR(amountNeeded)} NEARs
           </span>
+        </div>
+        <div className="mt-4 border-b-2 w-full ">
+          Actual founds:{" "}
+          <span className="font-bold text-black">{toNEAR(founds)} NEARs</span>
         </div>
         <div className="flex w-full justify-between pl-8 pr-8 mt-8 ">
           <button

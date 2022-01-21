@@ -7,19 +7,17 @@ import React from "react";
 // Initializing contract
 export const initContract = async() => {  
   
-  // get network configuration values from config.js
-  // based on the network ID we pass to getConfig()
-  const nearConfig = getConfig(process.env.NEAR_ENV || 'testnet');
+    // create a keyStore for signing transactions using the user's key
+    // which is located in the browser local storage after user logs in
+    const nearConfig = getConfig(process.env.NEAR_ENV || 'testnet');
+    const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
-  // create a keyStore for signing transactions using the user's key
-  // which is located in the browser local storage after user logs in
-  const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+    // Initializing connection to the NEAR testnet
+    const near = await nearAPI.connect({ keyStore, ...nearConfig });
+    
 
-  // Initializing connection to the NEAR testnet
-  const near = await nearAPI.connect({ keyStore, ...nearConfig });
-
-  // Initialize wallet connection
-  const walletConnection = new nearAPI.WalletConnection(near);
+    // Initialize wallet connection
+    const walletConnection = new nearAPI.WalletConnection(near);
 
   // Load in user's account data
   let currentUser;
@@ -44,7 +42,7 @@ export const initContract = async() => {
       // View methods are read-only – they don't modify the state, but usually return some value
       viewMethods: ['getAllProposals', 'getProposal', 'getAllUsers', 'getAllPayments', 'getUser'],
       // Change methods can modify the state, but you don't receive the returned value when called
-      changeMethods: ['createUser'],
+      changeMethods: ['createUser', 'createNewProposal', 'createContribution'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
       sender: walletConnection.getAccountId(),
