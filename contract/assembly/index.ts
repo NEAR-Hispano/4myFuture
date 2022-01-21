@@ -141,8 +141,10 @@ export function getAllProposals(): Array<Proposal> {
  * Get one proposal by Id  
  * @returns  Proposal
  */ 
-export function getProposal(proposalId: u32): Proposal {
-  const proposal = proposals.getSome(proposalId);
+export function getProposal(proposalId: string): Proposal {
+  const idNumber = parseFloat(proposalId)
+  const id = u32(idNumber);
+  const proposal = proposals.getSome(id);
   return proposal;
 
 }

@@ -22,6 +22,7 @@ function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
               photos={proposal?.photos}
               user={proposal?.user}
               founds="23"
+              status={proposal.status}
             ></ProposalCard>
           
         ))}
