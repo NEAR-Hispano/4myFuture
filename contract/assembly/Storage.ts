@@ -18,3 +18,6 @@ export const payments = new PersistentUnorderedMap<number, Payment>("payments");
 
 //Project total tip amounts
 export const value = new PersistentUnorderedMap<number, u128>("value");
+
+//Total NEARS contriuted to students
+export const totalAmountContributed = new PersistentUnorderedMap<number, u128>("contributed");
