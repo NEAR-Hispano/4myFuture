@@ -13,6 +13,7 @@ function ProposalIdDetails() {
     const [proposal, setProposal] = React.useState(null);
     const [amounttoContribute, setAmounttoContribute] = React.useState();
     const [user, setUser] = React.useState("");
+    
 
     const start = async () => {
         const { contract } = await initContract();
@@ -31,19 +32,24 @@ function ProposalIdDetails() {
     const id = router.query.id;
 
     const setNewContribution = async () => {
-       
+        var amountTemp = BigInt(toYocto(amounttoContribute)).toString();
+        const contribution = {
+            proposalId: parseInt(id),
+            amount: amounttoContribute,
+            userRefound: user
+          };
+          console.log(amountTemp)
+
         const { contract } = await initContract();
+        contract.createContribution(contribution,300000000000000,amountTemp);
        
-        // const contribution = {
-        //   proposalId: parseInt(id),
-        //   amount: amounttoContribute,
-        //   userRefound: user
-        // };
-        let amountTemp = (parseInt(amounttoContribute)*1000000000000000000000000);
-         contract.account.sendMoney("dev-1642423516270-21946079884438", "1000000000000000000000000")
+   
+        
+       
+        // contract.account.sendMoney("dev-1642423516270-21946079884438", amounttoContribute)
     
         // console.log(contribution)
-       // contract.createContribution(contribution,300000000000000,1000000000000000000000000);
+       
         
       };
 

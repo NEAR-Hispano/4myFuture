@@ -195,6 +195,14 @@ function ProposalsAdd() {
           </div>
         </div>
       </div>
+      {/* <button
+              className="text-white py-2 px-4 uppercase rounded bg-green-500 hover:bg-green-200 hover:text-green-500 shadow disabled:bg-green-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
+              onClick={createUser} 
+
+            >
+              {" "}
+              Create User{" "}
+            </button> */}
     </div>
   );
 }

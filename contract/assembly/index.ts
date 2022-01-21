@@ -175,7 +175,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
-  assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
+  // assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
@@ -241,6 +241,6 @@ export function withdrawAll(): void {
   value.set(0, u128.from(0));
 }
 
-export function getTime(): number {
-  return Context.blockTimestamp;
-}
+// export function getTime(): number {
+//   return Context.blockTimestamp;
+// }

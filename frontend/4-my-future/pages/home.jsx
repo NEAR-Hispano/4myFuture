@@ -30,7 +30,7 @@ function home() {
     return (
         <div>
             <Layout>
-                <SearchHome data={proposals} payments={payments} users={users}/>
+                {/* <SearchHome data={proposals} payments={payments} users={users}/> */}
                 {proposals.length > 0 ?
                     <div>
                         <ProposalsGeneral proposals={proposals}></ProposalsGeneral>
