@@ -98,7 +98,7 @@ export function createNewProposal(
 
     assert(finishDate > 0, "Invalid finishDate")
     let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
-    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_MIN);
+    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_DIA);
     assert(amountf > 0, "invalid amount introduced");
 
  return createProposal(
@@ -141,8 +141,10 @@ export function getAllProposals(): Array<Proposal> {
  * Get one proposal by Id  
  * @returns  Proposal
  */ 
-export function getProposal(proposalId: u32): Proposal {
-  const proposal = proposals.getSome(proposalId);
+export function getProposal(proposalId: string): Proposal {
+  const idNumber = parseFloat(proposalId)
+  const id = u32(idNumber);
+  const proposal = proposals.getSome(id);
   return proposal;
 
 }
@@ -175,7 +177,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
-  assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
+  // assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
@@ -240,3 +242,7 @@ export function withdrawAll(): void {
   payments.set(payments.length, payment);
   value.set(0, u128.from(0));
 }
+
+// export function getTime(): number {
+//   return Context.blockTimestamp;
+// }

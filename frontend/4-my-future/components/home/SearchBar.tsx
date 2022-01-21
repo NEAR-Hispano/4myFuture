@@ -1,5 +1,6 @@
 import React from "react";
 import Proposal from "../../models/Proposal";
+import {useRouter} from 'next/router';
 
 
 interface SearchProps {
@@ -8,6 +9,7 @@ interface SearchProps {
 
 export default function Search({ data }: SearchProps) {
   const [searchTerm, setSearchTerm] = React.useState([]);
+  const router = useRouter();
   
 
   const handleFilter = (e: any) => {
@@ -37,14 +39,13 @@ export default function Search({ data }: SearchProps) {
         </button>
       </div>
       {searchTerm?.length !== 0 && (
-        <div className=" w-1/4 h-32 bg-gray-50 z-50 absolute overflow-hidden overflow-y-auto text-sm p-2 mt-1 shadow-lg scrollbar-hide">
+        <div className=" w-1/4 h-32 bg-gray-50 z-50 absolute overflow-hidden overflow-y-auto text-lg p-2 mt-1 shadow-lg scrollbar-hide">
           {searchTerm?.map((value) => (
-            <a
-              // href={`/product/${value._id}`} //FIXME
-              className="w-full flex items-center border-b-2 border-primary-blue-400 hover:bg-gray-100 hover:text-black text-gray-500 scrollbar-hide"
-            >
-              <a>{value.title}</a>
-            </a>
+            <button
+              onClick={() => {router.push(`/proposal/${value.index}`)}} //FIXME
+              className="w-ful flex items-center border-b-2 p-3 border-primary-blue-400 hover:bg-gray-100 hover:text-black text-gray-500 scrollbar-hide"
+            >{value.title}
+            </button>
           ))}
         </div>
       )}

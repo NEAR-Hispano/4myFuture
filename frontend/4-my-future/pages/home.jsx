@@ -30,7 +30,7 @@ function home() {
             <Layout>
                 <SearchHome data={proposals} payments={payments} users={users}/>
                 {proposals.length > 0 ?
-                    <div>
+                    <div className='bg-gray-100'>
                         <ProposalsGeneral proposals={proposals}></ProposalsGeneral>
                     </div>
                     :
