@@ -14,10 +14,11 @@ export async function initContract() {
 
     // Initializing connection to the NEAR testnet
     const near = await nearAPI.connect({ keyStore, ...nearConfig });
+    
 
     // Initialize wallet connection
     const walletConnection = new nearAPI.WalletConnection(near);
-
+  
     // Load in user's account data
     let currentUser;
     if (walletConnection.getAccountId()) {
@@ -39,9 +40,9 @@ export async function initContract() {
     nearConfig.contractName,
     {
       // View methods are read-only – they don't modify the state, but usually return some value
-      viewMethods: ['getAllProposals', 'getTime'],
+      viewMethods: ['getAllProposals', 'getProposal', 'getAllUsers', 'getAllPayments'],
       // Change methods can modify the state, but you don't receive the returned value when called
-      changeMethods: ['createUser', 'getProposal', 'createNewProposal'],
+      changeMethods: ['createUser', 'createNewProposal', 'createContribution'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
       sender: walletConnection.getAccountId(),
