@@ -3,15 +3,17 @@ import Proposal from '../../models/Proposal';
 import SearchBar from './SearchBar';
 import User from '../../models/User';
 import Payments from '../../models/Payment';
+import Contribution from '../../models/Contribution';
 import AppSummary from './AppSummary';
 
 interface SearchHomeProps {
     data?: Proposal[];
     payments?: Payments[];
     users?: User[];
+    contributions?: Contribution[];
 }
 
-function SearchHome({data, payments, users}: SearchHomeProps) {
+function SearchHome({data, payments, users, contributions}: SearchHomeProps) {
     return (
         <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-11 bg-gray-200 shadow-xl'>
                 <div className='text-7xl font-sans font-thin'>
@@ -19,7 +21,7 @@ function SearchHome({data, payments, users}: SearchHomeProps) {
                 </div>
                 {/* FIXME PENDIENTE A TAMANIO*/}
                 <div className='mt-16 w-2/3'> 
-                    <AppSummary payments={payments} proposals={data} users={users}></AppSummary>
+                    <AppSummary payments={payments} proposals={data} users={users} contributions={contributions}></AppSummary>
                 </div>
             <div className='flex w-full justify-center h-96 items-center align-middle'>
                 <div className=' w-2/5 flex'>

@@ -22,7 +22,7 @@ function ProposalIdDetails() {
         if (id) {
             const proposal = await contract.getProposal(
                 {
-                    proposalId: parseInt(id)
+                    proposalId: id
                 }
             )
             setProposal(proposal)

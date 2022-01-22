@@ -181,7 +181,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
-  contributions.set(contributions.length+1, contribution);
+  contributions.set(contributions.length, contribution);
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
