@@ -213,6 +213,10 @@ export function getAllPayments(): Array<Payment>{
   return payments.values(0, payments.length);
 }
 
+export function getAllContributions(): Array<Contribution>{
+  return contributions.values(0, contributions.length);
+}
+
 /**
  * Fund users contribution once finished the proposal time
  * @param proposalId proposal 
@@ -243,6 +247,6 @@ export function withdrawAll(): void {
   value.set(0, u128.from(0));
 }
 
-// export function getTime(): number {
-//   return Context.blockTimestamp;
-// }
+export function getTime(): number {
+  return f64(Context.blockTimestamp);
+}

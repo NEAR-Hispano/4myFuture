@@ -5,9 +5,10 @@ import ProposalCard from "./ProposalCard";
 
 interface ProposalGeneralProps {
   proposals: Proposal[];
+  time: string;
 }
 
-function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
+function ProposalsGeneral({ proposals, time }: ProposalGeneralProps) {
   return (
     <div className="">
       <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle">
@@ -17,7 +18,7 @@ function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
               title={proposal?.title}
               amountNeeded={proposal?.amountNeeded}
               index={proposal?.index}
-              initDate={proposal?.initDate}
+              initDate={time}
               finishDate={proposal?.finishDate}
               photos={proposal?.photos}
               user={proposal?.user}

@@ -13,16 +13,18 @@ function ProposalIdDetails() {
     const [proposal, setProposal] = React.useState(null);
     const [amounttoContribute, setAmounttoContribute] = React.useState();
     const [user, setUser] = React.useState("");
+    const [time, setTime] = React.useState();
     
 
     const start = async () => {
         const { contract } = await initContract();
+        contract.getTime().then(setTime)
         const idInt = await router.query.id;
         const id = String(idInt);
         if (id) {
             const proposal = await contract.getProposal(
                 {
-                    proposalId: parseInt(id)
+                    proposalId: id
                 }
             )
             setProposal(proposal)
@@ -81,7 +83,7 @@ function ProposalIdDetails() {
             <Layout>
                 <div className='w-screen h-screen flex justify-center items-center align-middle'>
                 {proposal ?
-                    <ProposalDetails proposal={proposal} />
+                    <ProposalDetails proposal={proposal} time={time} />
                     :
                     <div>
                         <Loading />

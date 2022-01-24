@@ -5,6 +5,7 @@ import { toDay_from_nano, toNEAR } from '../utils'
 import { HeartIcon } from '../icons';
 
 
+
 interface ProposalCardInfoProps {
   index: number;
   user: string;
@@ -61,7 +62,7 @@ function ProposalCard({
         </div>
         <div className="flex w-full justify-between pl-8 pr-8 mt-8 ">
           <button
-            className="p-3 pl-12 pr-12 hover:bg-slate-400  border-0 rounded-xl text-black bg-slate-300"
+            className="p-3 pl-12 pr-12 hover:bg-slate-400  w-full border-0 rounded-xl text-black bg-slate-300"
             onClick={(e) => {
               e.preventDefault();
               router.push(`/proposal/${index}`);
@@ -69,7 +70,7 @@ function ProposalCard({
           >
             Details
           </button>
-          {status == 0 ?
+          {/* status == 0 ?
           <button className="p-3 flex pl-12 pr-12 font-bold hover:bg-green-400 border-2 border-black rounded-lg shadow-xl text-black bg-green-300">
             Fund
             <HeartIcon className="w-6"></HeartIcon>
@@ -78,9 +79,9 @@ function ProposalCard({
           <div className="p-3 flex pl-12 pr-12 font-bold border-2 border-black rounded-lg shadow-xl text-gray-100 bg-gray-300">
             Fund
             <HeartIcon className="w-6"></HeartIcon>
-          </div>
-          }
-
+          </div> */}
+          
+          
         </div>
       </div>
     </div>

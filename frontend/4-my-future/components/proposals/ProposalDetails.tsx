@@ -6,9 +6,10 @@ import { HeartIcon } from "../icons";
 
 interface ProposalDetailsProps {
   proposal: Proposal;
+  time: string;
 }
 
-function ProposalDetails({ proposal }: ProposalDetailsProps) {
+function ProposalDetails({ proposal,time }: ProposalDetailsProps) {
   const fundsLeft =
     Number(toNEAR(proposal.amountNeeded)) - Number(toNEAR(proposal.founds));
   return (
@@ -17,7 +18,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         <div className="flex justify-between">
           <div className="font-extralight mb-1"> #ID{proposal.index}</div>
           <div className="text-base font-thin">
-            Days left: {toDay_from_nano(proposal.initDate, proposal.finishDate)}
+            Days left: {toDay_from_nano(time, proposal.finishDate)}
           </div>
         </div>
         <div className="flex justify-between">

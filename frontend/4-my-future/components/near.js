@@ -40,7 +40,7 @@ export const initContract = async() => {
     nearConfig.contractName,
     {
       // View methods are read-only – they don't modify the state, but usually return some value
-      viewMethods: ['getAllProposals', 'getProposal', 'getAllUsers', 'getAllPayments', 'getUser'],
+      viewMethods: ['getAllProposals', 'getProposal', 'getAllUsers', 'getAllPayments', 'getUser', 'getAllContributions', 'getTime'],
       // Change methods can modify the state, but you don't receive the returned value when called
       changeMethods: ['createUser', 'createNewProposal', 'createContribution'],
       // Sender is the account ID to initialize transactions.

@@ -9,14 +9,17 @@ import AppSummary from '../components/home/AppSummary';
 function home() {
 
     const [proposals, setProposals] = React.useState([]);
-    const [payments, setPayments] = React.useState(null);
+    const [contribution, setContribution] = React.useState(null);
     const [users, setUsers] = React.useState(null);
+    const [time, setTime] = React.useState();
 
     const init = async () => {
         const { contract } = await initContract();
         contract.getAllProposals().then(setProposals);
         contract.getAllUsers().then(setUsers);
-        contract.getAllPayments().then(setPayments)
+        contract.getAllContributions ().then(setContribution)
+        contract.getTime().then(setTime)
+        console.log(contract.getTime())
     }
 
     React.useEffect(
@@ -28,10 +31,10 @@ function home() {
     return (
         <div>
             <Layout>
-                <SearchHome data={proposals} payments={payments} users={users}/>
+                <SearchHome data={proposals} contribution={contribution} users={users}/>
                 {proposals.length > 0 ?
                     <div className='bg-gray-100'>
-                        <ProposalsGeneral proposals={proposals}></ProposalsGeneral>
+                        <ProposalsGeneral proposals={proposals} time={time}/>
                     </div>
                     :
                     <div className="w-screen h-screen flex justify-center items-center align-middle p-0 bg-gray-200">

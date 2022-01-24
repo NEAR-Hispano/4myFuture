@@ -2,24 +2,25 @@ import React from "react";
 import User from "../../models/User";
 import Proposal from "../../models/Proposal";
 import Payments from "../../models/Payment";
+import Contribution from "../../models/Contribution";
 
 interface AppSummaryProps {
   proposals?: Proposal[];
-  payments?: Payments[];
+  contribution?: Contribution[];
   users?: User[];
 }
 
-function AppSummary({ proposals, payments, users }: AppSummaryProps) {
+function AppSummary({ proposals, contribution, users }: AppSummaryProps) {
   return (
     <div className="w-full text-3xl font-sans border-b-2 ">
-      {proposals && payments && users ? (
+      {proposals && contribution && users ? (
         <div className="w-full flex justify-between">
           <div>
             Proposals Registered:{" "}
             <span className="font-bold">{proposals.length}</span>
           </div>
           <div>
-            Total Payments: <span className="font-bold">{payments.length}</span>
+            Total Contributions: <span className="font-bold">{contribution.length}</span>
           </div>
           <div>
             Users Registered: <span className="font-bold">{users.length}</span>
