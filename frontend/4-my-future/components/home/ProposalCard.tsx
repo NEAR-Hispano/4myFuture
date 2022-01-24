@@ -65,7 +65,7 @@ function ProposalCard({
             className="p-3 pl-12 pr-12 hover:bg-slate-400  w-full border-0 rounded-xl text-black bg-slate-300"
             onClick={(e) => {
               e.preventDefault();
-              router.push(`/proposal/${index}`);
+              router.push(`/proposal/${(index).toString()}`);
             }}
           >
             Details

@@ -1,6 +1,6 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import User from './models/User'
-import { userList, proposals, contributions, payments, value } from './Storage'
+import { userList, proposals, contributions, payments, value, totalAmountContributed } from './Storage'
 import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
@@ -181,18 +181,28 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
-  contributions.set(contributions.length+1, contribution);
+  contributions.set(contributions.length, contribution);
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
+
   return contribution
 }
+
+/**
+ * Get all contributions saved in system 
+ * @returns Array<Contribution>
+ */ 
+export function getAllContributions(): Array<Contribution> {
+  return contributions.values(0, payments.length);
+}
+
 
 /**
  * Contribute to 4MyFutureDApp and save it  
  * @returns true
  */ 
-export function giveTip(): bool {
+export function giveTip(): bool { //FIXME
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
   const payment = new Payment('4MyFuture', Context.sender, Context.attachedDeposit, '', 'ProjectContribution');
   payments.set(payments.length, payment);
@@ -213,9 +223,6 @@ export function getAllPayments(): Array<Payment>{
   return payments.values(0, payments.length);
 }
 
-export function getAllContributions(): Array<Contribution>{
-  return contributions.values(0, contributions.length);
-}
 
 /**
  * Fund users contribution once finished the proposal time
@@ -237,7 +244,8 @@ export function getTotalTips(): Array<u128>{
 /**
  * Withdraw all NEARs amount by project contributions to DAO contract  
  */ 
-export function withdrawAll(): void {
+
+export function withdrawAll(): void { //FIXME
   const isAdmin = onlyAdmins();
   assert(isAdmin, "Only admins can call this function");  
   assert(value.getSome(0) > u128.from(0), "The contract value equals to 0")

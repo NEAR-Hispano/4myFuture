@@ -9,6 +9,7 @@ interface SearchHomeProps {
     data?: Proposal[];
     contribution?: Contribution[];
     users?: User[];
+    contributions?: Contribution[];
 }
 
 function SearchHome({data, contribution, users}: SearchHomeProps) {

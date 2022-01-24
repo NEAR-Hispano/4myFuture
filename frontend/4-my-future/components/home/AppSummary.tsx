@@ -8,6 +8,7 @@ interface AppSummaryProps {
   proposals?: Proposal[];
   contribution?: Contribution[];
   users?: User[];
+  contributions?: Contribution[];
 }
 
 function AppSummary({ proposals, contribution, users }: AppSummaryProps) {
@@ -25,6 +26,10 @@ function AppSummary({ proposals, contribution, users }: AppSummaryProps) {
           <div>
             Users Registered: <span className="font-bold">{users.length}</span>
           </div>
+          {/* <div>
+            total Contributions: <span className="font-bold">{contributions.length}</span>
+          </div> */}
+          
         </div>
       ) : (
         <div className="w-full flex justify-between">
