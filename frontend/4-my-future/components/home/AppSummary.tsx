@@ -16,7 +16,7 @@ function AppSummary({ proposals, payments, users, contributions }: AppSummaryPro
   
   
   return (
-    <div className="w-full text-3xl font-sans border-b-2 ">
+    <div className="w-full text-3xl font-sans  ">
       {proposals && payments && users ? (
         <div className="w-full flex justify-between">
           <div>

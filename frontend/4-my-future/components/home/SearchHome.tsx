@@ -15,15 +15,11 @@ interface SearchHomeProps {
 
 function SearchHome({data, payments, users, contributions}: SearchHomeProps) {
     return (
-        <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-11 bg-gray-200 shadow-xl'>
+        <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-2 bg-gray-50 shadow-xl'>
                 <div className='text-7xl font-sans font-thin'>
                     Help <span className='text-green-400 font-semibold'>students</span> reach their dreams 
                 </div>
-                {/* FIXME PENDIENTE A TAMANIO*/}
-                <div className='mt-16 w-2/3'> 
-                    <AppSummary payments={payments} proposals={data} users={users} contributions={contributions}></AppSummary>
-                </div>
-            <div className='flex w-full justify-center h-96 items-center align-middle'>
+            <div className='flex w-full justify-center h-32 mt-28 items-center align-middle'>
                 <div className=' w-2/5 flex'>
                     <SearchBar data={data}></SearchBar>
                     
@@ -32,6 +28,10 @@ function SearchHome({data, payments, users, contributions}: SearchHomeProps) {
                     <img src="images/NEAR.png" alt="" className='w-full h-full'/>
                 </div>
             </div>
+                {/* FIXME PENDIENTE A TAMANIO*/}
+                <div className='mt-16 w-2/3'> 
+                    <AppSummary payments={payments} proposals={data} users={users} contributions={contributions}></AppSummary>
+                </div>
         </div>
     )
 }
