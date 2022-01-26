@@ -10,7 +10,7 @@ interface ProposalGeneralProps {
 function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
   return (
     <div className="">
-      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle">
+      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle ">
         {proposals?.map((proposal) => (
           
             <ProposalCard

@@ -77,29 +77,6 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                   />
       </div>
       <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 ">
-        {/* <div className="w-1/2 h-full mt-4 border-0 shadow-2xl rounded-lg border-black">
-          <div className="w-full p-6 flex text-black  font-thin justify-center items-center">
-            <span className="font-bold">{fundsLeft} NEARs left</span>
-          </div>
-
-          <button
-            className="flex mb-5 m-auto p-3 w-2/4 items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
-            onClick={handleEnableModal}
-          >
-            Fund
-            <HeartIcon className="w-6"></HeartIcon>
-          </button>
-          <Modal isOpen={isOpenEnable}>
-            <FundModal
-              handleCancel={() => {
-                setIsOpenEnable(false);
-              }}
-              index={proposal.index}
-              near={nearContext}
-              user={proposal.user}
-            />
-          </Modal>
-        </div> */}
       </div>
     </div>
   );
