@@ -4,23 +4,22 @@ import Layout from '../../components/Layout';
 import { useRouter } from 'next/router';
 import { initContract } from '../../components/near';
 import Loading from '../../components/common/Loading';
-import { HeartIcon } from "../../components/icons";
-import { toYocto } from '../../components/utils'
-
+import { useNear } from '../../hooks/useNear';
 
 function ProposalIdDetails() {
     const router = useRouter();
+    const [nearContext, setNearContext] = useNear();
     const [proposal, setProposal] = React.useState(null);
 
     const [user, setUser] = React.useState("");
 
 
     const start = async () => {
-        const { contract } = await initContract();
         const idInt = await router.query.id;
         const id = String(idInt);
         if (id) {
-            const proposal = await contract.getProposal(
+            // @ts-ignore: Unreachable code error
+            const proposal = await nearContext.contract.getProposal(
                 {
                     proposalId: id
                 }

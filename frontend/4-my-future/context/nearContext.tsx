@@ -7,7 +7,7 @@ import Network from '../models/Network';
 export interface NearContext {
   contract?: Contract;
   walletConnection?: WalletConnection;
-  getConfig?: Network;
+  nearConfig?: Network;
 }
 
 export type TNearContext = {

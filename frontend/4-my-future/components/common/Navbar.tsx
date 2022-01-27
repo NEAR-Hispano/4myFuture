@@ -20,6 +20,7 @@ function Navbar() {
 
         await nearApi();
         await nearContext.walletConnection.requestSignIn(
+            // @ts-ignore: Unreachable code error
             { contractId: nearContext.nearConfig.contractName, methodNames: [nearContext.contract.createUser] }, //contract requesting access
             'Connecting to Contract', //optional name
             null, //optional URL to redirect to if the sign in was successful
