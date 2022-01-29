@@ -60,8 +60,12 @@ function Navbar() {
                 <div>
                    <a href="/home" className='text-3xl font-bold'> 4MyFutureDApp </a>
                 </div>
+                
                 <div>
-                    <a href="/proposals" className='text-2xl font-bold'> My proposals </a>
+                    <a href="/contribution" className='text-2xl font-bold'>Contributions </a>
+                </div>
+                <div>
+                    <a href="/proposals" className='text-2xl font-bold'> Create proposal </a>
                 </div>
                 <div className='flex text-xl font-extralight items-center align-middle h-full'>
                     {!logged ? (
@@ -88,6 +92,18 @@ function Navbar() {
                         </div>
                     )}
                 </div>
+                <div class="flex">
+                    <div className="relative">
+                        <img
+                        className="object-cover w-12 h-12 rounded-full"
+                        src="https://images.unsplash.com/photo-1520315342629-6ea920342047?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                        alt="Avatar"
+                        />
+                        <span
+                        className="absolute right-0 w-4 h-4 bg-green-600 border-2 border-white rounded-full  top-2"
+                        ></span>
+                    </div>
+                    </div>
             </div>
         </div>
     )

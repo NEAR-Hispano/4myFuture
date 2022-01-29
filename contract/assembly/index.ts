@@ -6,7 +6,7 @@ import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { adminDAO, asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
-import { generatePayFromProposal, timeToProcessProposal, transfer } from './FundsManager';
+import { generatePayFromProposal, transfer } from './FundsManager';
 
 
 
@@ -91,20 +91,22 @@ export function changeRank (userId: string, rank: number): User{
 export function createNewProposal(
   title: string,
   description: string,
-  finishDate: i32,
+  initDate: string,
+  finishDate: string,
   photos: Array<string>,
   amountNeeded: string
   ): Proposal {
 
-    assert(finishDate > 0, "Invalid finishDate")
+    // assert(finishDate > 0, "Invalid finishDate")
     let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
-    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_DIA);
+    // let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_DIA);
     assert(amountf > 0, "invalid amount introduced");
 
  return createProposal(
     title,
     description,
-    fninalDate,
+    initDate,
+    finishDate,
     photos,
     u128.div(toYoctob128(u128.from(amountf)), u128.from(BASE_TO_CONVERT))
   );
@@ -159,12 +161,12 @@ export function getProposal(proposalId: string): Proposal {
  * @param userRefound Student ID  
  * @returns Contribution
  */ 
-export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
+export function createContribution(proposalId: u32, amount: string, userRefound: string, today: string): Contribution {
   assert(proposals.contains(proposalId), "Inexistent proposal");
   //get Proposal
   let proposal = proposals.getSome(proposalId);
   assert(proposal.status == 0, "Can't contribute to this proposal");
-  assert(!timeToProcessProposal(proposalId), "Proposal time objective completed");
+  assert(proposal.finishDate != today, "Proposal time objective completed");
   //amount must be more than 0
   if(!userList.contains(Context.sender)){ //CREATING USER FOR CONTRIBUTE
     let newUser = new User(Context.sender)  
@@ -178,7 +180,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
   // assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
-  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
+  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound, today);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
   contributions.set(contributions.length, contribution);
@@ -194,7 +196,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
  * @returns Array<Contribution>
  */ 
 export function getAllContributions(): Array<Contribution> {
-  return contributions.values(0, payments.length);
+  return contributions.values(0, contributions.length);
 }
 
 
@@ -229,8 +231,8 @@ export function getAllPayments(): Array<Payment>{
  * @param proposalId proposal 
  * @returns payStudent(student, proposal)
  */ 
-export function fund(proposalId: i32): string {
- return generatePayFromProposal(proposalId)
+export function fund(proposalId: i32, today: string): string {
+ return generatePayFromProposal(proposalId, today)
 }
 
 /**

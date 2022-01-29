@@ -5,26 +5,29 @@ import ProposalCard from "./ProposalCard";
 
 interface ProposalGeneralProps {
   proposals: Proposal[];
-  time: string;
+  type: number;
 }
 
-function ProposalsGeneral({ proposals, time }: ProposalGeneralProps) {
+function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
   return (
     <div className="">
       <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle">
         {proposals?.map((proposal) => (
-          
-            <ProposalCard
+          <ProposalCard
+            
               title={proposal?.title}
               amountNeeded={proposal?.amountNeeded}
               index={proposal?.index}
-              initDate={time}
+              initDate={proposal?.initDate}
               finishDate={proposal?.finishDate}
               photos={proposal?.photos}
               user={proposal?.user}
               founds={proposal?.founds}
               status={proposal?.status}
-            ></ProposalCard>
+              type = {type}
+              
+            /> 
+           
           
         ))}
       </div>

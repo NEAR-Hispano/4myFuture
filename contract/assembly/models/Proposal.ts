@@ -9,10 +9,10 @@ class Proposal {
     founds: u128;
     title: string;
     description: string;
-    initDate: i64; //while development
-    finishDate: i64;
+    initDate: string; //while development
+    finishDate: string;
     photos: Array<string>;
-    status: i8;
+    status: i32;
     index: number;
 
     constructor(
@@ -20,8 +20,8 @@ class Proposal {
         title: string,
         description: string,
         amountNeeded: u128,
-        initDate: i64,
-        finishDate: i64,
+        initDate: string,
+        finishDate: string,
         photos: Array<string>,
         index: number
     ){
@@ -37,7 +37,7 @@ class Proposal {
         this.founds = u128.Zero;
     }
 
-    setStatus(newStatus: i8): void {
+    setStatus(newStatus: i32): void {
         this.status = newStatus
     }
 

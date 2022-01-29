@@ -6,7 +6,7 @@ import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
 import { asNEAR, onlyAdmins, toYocto } from './utils'
 
-const initDate = Context.blockTimestamp;
+
 
 /**
  * CALLABLE FUNCTIONS <-----------------------------------
@@ -29,7 +29,8 @@ export function createProposal(
 
     title: string,
     description: string,
-    finishDate: i64,
+    initDate: string,
+    finishDate: string,
     photos: Array<string>,
     amountNeeded: u128
 ): Proposal {

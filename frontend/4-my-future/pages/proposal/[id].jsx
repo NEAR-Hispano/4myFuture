@@ -6,7 +6,7 @@ import { initContract } from '../../components/near';
 import Loading from '../../components/common/Loading';
 import { HeartIcon } from "../../components/icons";
 import {toYocto } from '../../components/utils'
-
+import moment from 'moment';
 
 function ProposalIdDetails() {
     const router = useRouter();
@@ -15,6 +15,8 @@ function ProposalIdDetails() {
     const [user, setUser] = React.useState("");
     const [time, setTime] = React.useState();
     
+ 
+   
 
     const start = async () => {
         const { contract } = await initContract();
@@ -38,21 +40,26 @@ function ProposalIdDetails() {
         const contribution = {
             proposalId: parseInt(id),
             amount: amounttoContribute,
-            userRefound: user
+            userRefound: user,
+            today: moment().format('L')
           };
           console.log(amountTemp)
 
         const { contract } = await initContract();
-        contract.createContribution(contribution,300000000000000,amountTemp);
-       
-   
+        contract.createContribution(contribution,300000000000000,amountTemp);        
+      };
+
+      const setRefound = async () => {
         
-       
-        // contract.account.sendMoney("dev-1642423516270-21946079884438", amounttoContribute)
-    
-        // console.log(contribution)
-       
+        const proposal = {
+            proposalId: parseInt(id),
+            today: moment().format('L')
+          };
         
+
+        const { contract } = await initContract();
+        contract.fund(proposal)
+          
       };
 
       const userLogged = async () => {
@@ -92,8 +99,22 @@ function ProposalIdDetails() {
 
 
                 </div>
-                <div className="w-2/3 m-auto bg-slate-500">
-            <span  className='mt-2 w-2/4 m-auto flex  font-bold'>Amount in NEARsp-: </span>
+            
+            {(proposal?.founds >= proposal?.amountNeeded) ? 
+                ((proposal.status != 0) && (proposal.user != user))? "" :
+                  <div className="w-2/3 m-auto bg-slate-500">
+               
+                
+                      <button className="flex mb-5 m-auto p-3 w-2/4 items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
+                      onClick={setRefound}>
+                  Refound
+                  <HeartIcon className="w-6"></HeartIcon>
+                </button>
+                </div>
+            
+            : 
+            <div className="w-2/3 m-auto bg-slate-500">
+            <span  className='mt-2 w-2/4 m-auto flex  font-bold'>Amount in NEARs:</span>
             <input
               className="w-2/4  m-auto appearance-none border flex pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               type="number"
@@ -107,6 +128,9 @@ function ProposalIdDetails() {
             <HeartIcon className="w-6"></HeartIcon>
           </button>
           </div>
+          } 
+
+           
             </Layout>
             
         </div>

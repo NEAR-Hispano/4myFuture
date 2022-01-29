@@ -3,6 +3,7 @@ import Proposal from '../../models/Proposal';
 import { useRouter } from 'next/router';
 import { toDay_from_nano, toNEAR } from '../utils'
 import { HeartIcon } from '../icons';
+import moment from 'moment';
 
 
 
@@ -16,6 +17,7 @@ interface ProposalCardInfoProps {
   initDate: string;
   finishDate: string;
   status: number;
+  type: number
 }
 
 function ProposalCard({
@@ -27,23 +29,43 @@ function ProposalCard({
   photos,
   initDate,
   finishDate,
-  status
+  status,
+  type
 }: ProposalCardInfoProps) {
   const router = useRouter();
 
-  return (
+  return status == type? <div> </div>:  (
     <div className="w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-2xl font-sans mt-2 mr-2 m-8">
       <div className="flex flex-col w-full h-1/4 border-b-2 ">
         <div className="flex justify-between">
           <div className="font-extralight mb-1"> ID{index}</div>
           <div className="text-base font-thin">
-            Days left: {toDay_from_nano(initDate, finishDate)}
+            Start: {initDate} 
+          </div>
+          <div className="text-base font-thin">
+            End: {finishDate}
+          </div>
+          <div className="text-base font-thin">
+            Time left: {moment(finishDate).fromNow()}
           </div>
         </div>
+        {
+        status == 0? 
+          <div className="rounded-full py-1 px-4 font-medium border text-yellow-700 bg-yellow-100 border-yellow-300 text-center">
+        In progress
+       </div>
+       :
+       <div className="rounded-full py-1 px-4 font-medium border text-green-900 bg-green-100 border-green-300 text-center">
+        Finished
+       </div>
+       }
+      
         <div className="flex justify-between">
           <div className="text-2xl font-bold text-green-500">{title}</div>
         </div>
+        
         <div className="text-lg font-thin">{user}</div>
+        {status == 1}
       </div>
 
       <div className="h-1/2 mt-1 ">

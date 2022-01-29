@@ -15,10 +15,10 @@ let propId: i32;
  * @param proposalId proposal ID
  * @returns string
  */ 
-export function generatePayFromProposal(proposalId: i32): string{
+export function generatePayFromProposal(proposalId: i32, today: string): string{
     assert(proposals.contains(proposalId), "Proposal is not registered");
     assert(proposals.getSome(proposalId).status == 0, "Can't generate payment from this proposal");
-    if(timeToProcessProposal(proposalId) || getFundsToSuccess(proposalId) == u128.from(0)){
+    if(proposals.getSome(proposalId).finishDate == today || getFundsToSuccess(proposalId) == u128.from(0)){
       if(proposalCompleted(proposalId)){ 
         return "Proposal goal is complete!, creator will recibe amount";
       }else{
@@ -70,19 +70,12 @@ export function generatePayFromProposal(proposalId: i32): string{
  * @param scale time unit
  * @returns Proposal
  */ 
-  export function changetimeProposal(proposalId: i32, time: i32, scale: string): Proposal{
-    let newTime = i64(Context.blockTimestamp);
+  export function changetimeProposal(proposalId: i32, time: string): Proposal{
+    
     let temProposal = proposals.getSome(proposalId)
-    if(scale == "s"){
-      newTime = newTime + ( i64(time)* i64(NANOSEC_SEC))
-    }else if(scale == "m"){
-      newTime = newTime + ( i64(time) * i64(NANOSEC_MIN))
-    }else if(scale == "h"){
-      newTime =  newTime + ( i64(time)* i64(NANOSEC_HOR) )
-    }else if(scale == "d"){
-      newTime =  newTime + ( i64(time)* i64(NANOSEC_DIA) )
-    }
-    temProposal.finishDate = newTime;
+  
+
+    temProposal.finishDate = time;
     proposals.set(proposalId, temProposal)
     
     return temProposal
@@ -94,14 +87,14 @@ export function generatePayFromProposal(proposalId: i32): string{
  * @param proposalId proposal ID
  * @returns bool
  */ 
-  export function timeToProcessProposal(proposalId: i32): boolean{
-    let temProposal = proposals.getSome(proposalId)
-    if(temProposal.finishDate < i64(Context.blockTimestamp)){
-      return true
-    }else{
-      return false
-    }
-  }
+  // export function timeToProcessProposal(proposalId: i32): boolean{
+  //   let temProposal = proposals.getSome(proposalId)
+  //   if(temProposal.finishDate < i64(Context.blockTimestamp)){
+  //     return true
+  //   }else{
+  //     return false
+  //   }
+  // }
   
  /**
  * Transfer from contract to an specific user 

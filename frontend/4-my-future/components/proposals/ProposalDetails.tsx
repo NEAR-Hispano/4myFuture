@@ -3,6 +3,7 @@ import Proposal from "../../models/Proposal";
 import ProposalsGeneral from "../home/ProposalsGeneral";
 import { toDay_from_nano, toNEAR } from "../utils";
 import { HeartIcon } from "../icons";
+import moment from 'moment';
 
 interface ProposalDetailsProps {
   proposal: Proposal;
@@ -18,7 +19,13 @@ function ProposalDetails({ proposal,time }: ProposalDetailsProps) {
         <div className="flex justify-between">
           <div className="font-extralight mb-1"> #ID{proposal.index}</div>
           <div className="text-base font-thin">
-            Days left: {toDay_from_nano(time, proposal.finishDate)}
+            Start: {proposal.initDate} 
+          </div>
+          <div className="text-base font-thin">
+            End: {proposal.finishDate}
+          </div>
+          <div className="text-base font-thin">
+            Time left: {moment(proposal.finishDate).fromNow()}
           </div>
         </div>
         <div className="flex justify-between">

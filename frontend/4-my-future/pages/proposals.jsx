@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/common/Navbar";
 import { initContract } from "../components/near";
 import { create } from "ipfs-http-client";
+import moment from 'moment';
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -70,7 +71,8 @@ function ProposalsAdd() {
     const proposal = {
       title: proposalTitle,
       description: proposalDescription,
-      finishDate: parseInt(proposalDate),
+      initDate: moment().format('L'),
+      finishDate: proposalDate,
       photos: [urlArr],
       amountNeeded: proposalAmount
     };
@@ -113,12 +115,14 @@ function ProposalsAdd() {
 
           <div className="relative mt-3">
             <p>Description:</p>
-            <input
-              className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-              type="area"
-              placeholder="Please explain why you need that money"
+            <textarea
+              rows="4"
+              cols="100"
+              type="text"
+              class="bg-gray-100 rounded border border-gray-200 py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              placeholder="Enter your description"
               onChange={(e) => setProposalDescription(e.target.value)}
-            />
+            ></textarea>
           </div>
 
           <div className="relative mt-3">
@@ -129,11 +133,11 @@ function ProposalsAdd() {
               onChange={(e) => setProposalDate(e.target.value)}
             >
               <option>- </option>
-              <option value={30}>1 mont</option>
-              <option value={90}>3 monts</option>
-              <option value={180}>6 monts</option>
-              <option value={270}>9 monts</option>
-              <option value={365}>1 year</option>
+              <option value={moment().add(1, 'months').calendar()}>1 mont</option>
+              <option value={moment().add(3, 'months').calendar()}>3 monts</option>
+              <option value={moment().add(6, 'months').calendar()}>6 monts</option>
+              <option value={moment().add(9, 'months').calendar()}>9 monts</option>
+              <option value={moment().add(1, 'years').calendar()}>1 year</option>
             </select>
           </div>
           <div className="relative mt-3">
@@ -202,7 +206,9 @@ function ProposalsAdd() {
             >
               {" "}
               Create User{" "}
-            </button> */}
+            </button>
+             */}
+             {proposalDescription}
     </div>
   );
 }
