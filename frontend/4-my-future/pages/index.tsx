@@ -12,8 +12,6 @@ import Layout from '../components/Layout'
 const Home: NextPage = () => {
   return (
     <div className='w-screen h-screen flex flex-col font-sans'>
-       
-  
       <Navbar/>
       <Carrousel/>
       <Banner/>
