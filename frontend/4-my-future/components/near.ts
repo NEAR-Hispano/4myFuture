@@ -1,23 +1,25 @@
 import { keyStores, connect, WalletConnection, utils } from "near-api-js";
 import { getConfig } from '../config';
 import * as nearAPI from 'near-api-js';
-import React from "react";
-
 
 // Initializing contract
-export const initContract = async() => {  
-  
-    // create a keyStore for signing transactions using the user's key
-    // which is located in the browser local storage after user logs in
-    const nearConfig = getConfig(process.env.NEAR_ENV || 'testnet');
-    const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+export const initContract = async () => {
 
-    // Initializing connection to the NEAR testnet
-    const near = await nearAPI.connect({ keyStore, ...nearConfig });
-    
 
-    // Initialize wallet connection
-    const walletConnection = new nearAPI.WalletConnection(near);
+  // create a keyStore for signing transactions using the user's key
+  // which is located in the browser local storage after user logs in
+  const nearConfig = getConfig(process.env.NEAR_ENV || 'testnet');
+  const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+
+  // Initializing connection to the NEAR testnet
+  const near = await nearAPI.connect({
+    keyStore, ...nearConfig,
+    headers: {}
+  });
+
+
+  // Initialize wallet connection
+  const walletConnection = new nearAPI.WalletConnection(near, null);
 
   // Load in user's account data
   let currentUser;
@@ -45,11 +47,11 @@ export const initContract = async() => {
       changeMethods: ['createUser', 'createNewProposal', 'createContribution'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
+      // @ts-ignore: Unreachable code error
       sender: walletConnection.getAccountId(),
     }
   );
 
-  //setNearContext({contract, walletConnection, nearConfig })
   return (
     {
       contract, nearConfig, walletConnection

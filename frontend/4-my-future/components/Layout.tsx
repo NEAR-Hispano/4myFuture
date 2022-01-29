@@ -5,36 +5,52 @@ import useAuth from "../hooks/useAuth";
 import useUser from "../hooks/useUser";
 import { initContract } from "./near";
 import { Contract } from "near-api-js";
+import { useNear } from "../hooks/useNear";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 function Layout({ children }: LayoutProps) {
-
-  const isLoggedIn = useAuth();
+  const [nearContext, setNearContext] = useNear();
   const [user, setUser] = useUser();
-  const [contract, setContract] = React.useState<Contract>(null);
-  const init = async() => {
-      const { contract } = await initContract();
-      setContract(contract);
-  }
+
+  const setNEARContext = async () => {
+    const near = await initContract();
+    await setNearContext(near);
+    try {
+      const userId = await near.walletConnection.getAccountId();
+      if (typeof userId == "string") {
+        // @ts-ignore: Unreachable code error
+        const userLog = await near.contract.getUser({ userId });
+        setUser(userLog);
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      setUser(null);
+    }
+  };
 
   React.useEffect(() => {
-    init();
-    if (isLoggedIn) {
-      if (!user && contract && setUser) {
-          // @ts-ignore: Unreachable code error
-            contract.getUser({'lexdev.testnet': any})
-        }
+    if (!nearContext && !user) {
+      setNEARContext();
+      return;
     }
-  }, [isLoggedIn, contract]);
+    return;
+  }, [nearContext]);
 
   return (
     <div className="w-screen flex flex-col">
-      <Navbar />
-      {children}
-      <Footer />
+      {nearContext ? (
+        <div className="w-screen flex flex-col">
+          <Navbar />
+          {children}
+          <Footer /> :
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
