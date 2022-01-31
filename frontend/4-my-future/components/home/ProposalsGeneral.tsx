@@ -5,13 +5,13 @@ import ProposalCard from "./ProposalCard";
 
 interface ProposalGeneralProps {
   proposals: Proposal[];
-  type: number;
+  type: string;
 }
 
 function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
   return (
     <div className="">
-      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle">
+      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle ">
         {proposals?.map((proposal) => (
           <ProposalCard
             
@@ -24,7 +24,7 @@ function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
               user={proposal?.user}
               founds={proposal?.founds}
               status={proposal?.status}
-              type = {type}
+              type = {parseInt(type)}
               
             /> 
            

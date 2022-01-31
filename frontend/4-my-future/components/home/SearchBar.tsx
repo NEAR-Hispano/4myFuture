@@ -23,7 +23,7 @@ export default function Search({ data }: SearchProps) {
     setSearchTerm(newFilter);
   };
   return (
-    <div className=" w-full mt-3 p-6 font-sans">
+    <div className="">
       <div className="flex">
         <input
           className="input-text w-full h-16 shadow-md pl-4 focus:ring-1 text-xl border-2 border-green-500 focus:ring-primary-100 "

@@ -33,6 +33,7 @@ function ProposalCard({
   type
 }: ProposalCardInfoProps) {
   const router = useRouter();
+  const fundsLeft = Number(toNEAR(amountNeeded)) - Number(toNEAR(founds));
 
   return status == type? <div> </div>:  (
     <div className="w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-2xl font-sans mt-2 mr-2 m-8">
@@ -68,26 +69,19 @@ function ProposalCard({
         {status == 1}
       </div>
 
-      <div className="h-1/2 mt-1 ">
+      <div className="h-1/2 mt-4 ">
         <img src={photos[0]} alt="Proposal" className="h-60 w-50 m-auto" />
       </div>
-      <div className="flex flex-col items-center text-xl font-medium text-green-500">
-        <div className="mt-4 border-b-2 w-full ">
-          Required:{" "}
-          <span className="font-bold text-black">
-            {toNEAR(amountNeeded)} NEARs
-          </span>
-        </div>
-        <div className="mt-4 border-b-2 w-full ">
-          Actual founds:{" "}
-          <span className="font-bold text-black">{toNEAR(founds)} NEARs</span>
+      <div className="flex flex-col items-center text-xl mt-4 font-medium ">
+        <div className="border-t-2 w-full flex justify-center align-middle items-center text-3xl p-2 font-thin">
+          {fundsLeft}  NEARs left
         </div>
         <div className="flex w-full justify-between pl-8 pr-8 mt-8 ">
           <button
             className="p-3 pl-12 pr-12 hover:bg-slate-400  w-full border-0 rounded-xl text-black bg-slate-300"
             onClick={(e) => {
               e.preventDefault();
-              router.push(`/proposal/${(index).toString()}`);
+              router.push(`/proposal/${index.toString()}`);
             }}
           >
             Details

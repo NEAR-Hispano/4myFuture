@@ -8,7 +8,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.17",
     "@heroicons/react": "^1.0.5",
+    "framer-motion": "^3.10.6",
     "ipfs-http-client": "^55.0.0",
     "moment": "^2.29.1",
     "near-api-js": "^0.44.2",

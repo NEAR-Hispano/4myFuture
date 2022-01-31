@@ -13,15 +13,15 @@ interface AppSummaryProps {
 
 function AppSummary({ proposals, contribution, users }: AppSummaryProps) {
   return (
-    <div className="w-full text-3xl font-sans border-b-2 ">
-      {proposals && contribution && users ? (
+    <div className="w-full text-3xl font-sans  ">
+      {(proposals && users) ? (
         <div className="w-full flex justify-between">
           <div>
             Proposals Registered:{" "}
             <span className="font-bold">{proposals.length}</span>
           </div>
           <div>
-            Total Contributions: <span className="font-bold">{contribution.length}</span>
+            Total Contributions: <span className="font-bold">{}</span>
           </div>
           <div>
             Users Registered: <span className="font-bold">{users.length}</span>
