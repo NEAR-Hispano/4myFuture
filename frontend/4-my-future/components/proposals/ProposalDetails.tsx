@@ -57,7 +57,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               </span>
             </div>
             <button
-              className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
+              className=" mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
               onClick={handleEnableModal}
             >
               Fund
