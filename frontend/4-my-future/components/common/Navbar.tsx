@@ -65,7 +65,7 @@ function Navbar({proposals}: SearchProps) {
       
 <div className="w-full flex flex-row items-center p-2 justify-between shadow-xs bg-[#7B62D9]">
   
-    <div className="ml-8">
+    <div className="ml-8 cursor-pointer">
      <img src="../images/near_logo_wht.svg" width={200} onClick={() => {router.push(`/home`)}}/>
     </div>
     <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
@@ -96,10 +96,10 @@ function Navbar({proposals}: SearchProps) {
             </button>
         </div>
         <div className="navbar-menu hidden lg:block lg:w-2/5 lg:text-right">
-        <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600" onClick={() => {router.push(`/proposals`)}}>
+        <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer" onClick={() => {router.push(`/proposals`)}}>
         Create proposal
         </a>
-        <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600" onClick={() => {router.push(`/contribution`)}}>
+        <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer" onClick={() => {router.push(`/contribution`)}}>
         Contributions
         </a>
      
@@ -110,8 +110,21 @@ function Navbar({proposals}: SearchProps) {
     
     </div>
    
-    {!logged && !user ? "" : <div className="flex">
-                <div className="mr-5 ml-5 font-white flex items-center align-middle justify-center">
+    {!logged && !user ? 
+    <div className="bg-white font-thin h-11 rounded-lg flex items-center align-middle pl-6 pr-6 hover:bg-[#7B62D9]  hover:text-white font-sans text-black ">
+    
+    <button
+      onClick={() => {
+        logIn();
+      }}
+      className="flex"
+    >
+      Login
+      <LoginIcon className="w-6 ml-4 flex align-middle justify-center items-center"></LoginIcon>
+    </button>
+  </div>
+    : <div className="flex">   
+                <div className="mr-5 ml-5 font-white flex items-center align-middle justify-center cursor-pointer">
                
                   <button
                     className="w-full h-full text-white hover:text-indigo-600 m-1"
@@ -120,10 +133,11 @@ function Navbar({proposals}: SearchProps) {
                     }}
                   >
                     {user.id}
+                  
                   </button>
-                  <img src="https://images.unsplash.com/photo-1520315342629-6ea920342047?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" className="block mx-auto object-cover rounded-full h-10 w-10 "/>
+                  <img src={user.picture} width={50} height={50}/>
                 </div>
-                <div className=" rounded-tr-xl rounded-br-xl font-thin h-11 flex items-center align-middle pl-6 pr-6 hover:bg-gray-800 hover:text-white font-sans text-white ">
+                <div className=" rounded-tr-xl rounded-br-xl font-thin h-11 flex items-center align-middle pl-6 pr-6 hover:text-white font-sans text-white ">
                   <button
                     onClick={() => {
                       logOut();

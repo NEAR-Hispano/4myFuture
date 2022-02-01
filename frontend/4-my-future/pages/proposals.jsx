@@ -3,6 +3,7 @@ import Navbar from "../components/common/Navbar";
 import { initContract } from "../components/near";
 import { create } from "ipfs-http-client";
 import moment from 'moment';
+import Layout from "../components/Layout";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -94,112 +95,115 @@ function ProposalsAdd() {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex flex-col font-sans">
-      <Navbar />
+    <div>
+      <Layout>
       <div className="">
-        <div className="bg-gray-100 rounded-b-lg py-12 px-4 lg:px-24 ml-60 mr-60 mt-20">
-          <p className="text-center text-sm text-gray-500 font-light">
-            {" "}
-            Create Proposal{" "}
-          </p>
+              <div className="bg-gray-100 rounded-b-lg py-12 px-4 lg:px-24 ml-60 mr-60 mt-20">
+                <p className="text-center text-sm text-gray-500 font-light">
+                  {" "}
+                  Create Proposal{" "}
+                </p>
 
-          <div className="relative">
-            <p>Title:</p>
-            <input
-              className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-              type="text"
-              placeholder="Proposal title"
-              onChange={(e) => setProposalName(e.target.value)}
-            />
-          </div>
+                <div className="relative">
+                  <p>Title:</p>
+                  <input
+                    className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                    type="text"
+                    placeholder="Proposal title"
+                    onChange={(e) => setProposalName(e.target.value)}
+                  />
+                </div>
 
-          <div className="relative mt-3">
-            <p>Description:</p>
-            <textarea
-              rows="4"
-              cols="100"
-              type="text"
-              class="bg-gray-100 rounded border border-gray-200 py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700"
-              placeholder="Enter your description"
-              onChange={(e) => setProposalDescription(e.target.value)}
-            ></textarea>
-          </div>
+                <div className="relative mt-3">
+                  <p>Description:</p>
+                  <textarea
+                    rows="4"
+                    cols="100"
+                    type="text"
+                    className="bg-gray-100 rounded border border-gray-200 py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+                    placeholder="Enter your description"
+                    onChange={(e) => setProposalDescription(e.target.value)}
+                  ></textarea>
+                </div>
 
-          <div className="relative mt-3">
-            <p>Time:</p>
-            <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-state"
-              onChange={(e) => setProposalDate(e.target.value)}
-            >
-              <option>- </option>
-              <option value={moment().add(1, 'months').calendar()}>1 mont</option>
-              <option value={moment().add(3, 'months').calendar()}>3 monts</option>
-              <option value={moment().add(6, 'months').calendar()}>6 monts</option>
-              <option value={moment().add(9, 'months').calendar()}>9 monts</option>
-              <option value={moment().add(1, 'years').calendar()}>1 year</option>
-            </select>
-          </div>
-          <div className="relative mt-3">
-            <p>Amount in NEARs:</p>
-            <input
-              className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-              type="number"
-              placeholder="Amount required"
-              onChange={(e) => setProposalAmount(e.target.value)}
-            />
-          </div>
+                <div className="relative mt-3">
+                  <p>Time:</p>
+                  <select
+                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-state"
+                    onChange={(e) => setProposalDate(e.target.value)}
+                  >
+                    <option>- </option>
+                    <option value={moment().add(1, 'months').calendar()}>1 mont</option>
+                    <option value={moment().add(3, 'months').calendar()}>3 monts</option>
+                    <option value={moment().add(6, 'months').calendar()}>6 monts</option>
+                    <option value={moment().add(9, 'months').calendar()}>9 monts</option>
+                    <option value={moment().add(1, 'years').calendar()}>1 year</option>
+                  </select>
+                </div>
+                <div className="relative mt-3">
+                  <p>Amount in NEARs:</p>
+                  <input
+                    className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                    type="number"
+                    placeholder="Amount required"
+                    onChange={(e) => setProposalAmount(e.target.value)}
+                  />
+                </div>
 
-          <div className="relative mt-3">
-            <p>Add your picture:</p>
-           
-          </div>
+                <div className="relative mt-3">
+                  <p>Add your picture:</p>
+                
+                </div>
 
-          <div className="flex justify-center">
-            <div className="mb-3 w-96 text-center">
+                <div className="flex justify-center">
+                  <div className="mb-3 w-96 text-center">
+                    
+                    <input
+                      className="form-control
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      type="file"
+                      id="formFile"
+                      onChange={retrieveFile}
+                    />
+                    <button className="uppercase py-2 px-4 rounded bg-blue-500 text-cyan-50 hover:bg-blue-300" onClick={handleSubmit}>
+                Upload file
+              </button>
+                  </div>
+                
+                </div>
+
+                <div className="flex items-center justify-center mt-8">
+                  {" "}
+                  <button
+                    className="text-white py-2 px-4 uppercase rounded bg-green-500 hover:bg-green-200 hover:text-green-500 shadow disabled:bg-green-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
+                    onClick={setNewProposal} disabled={state}
+
+                  >
+                    {" "}
+                    Create Proposal{" "}
+                  </button>{" "}
               
-              <input
-                className="form-control
-                  block
-                  w-full
-                  px-3
-                  py-1.5
-                  text-base
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                type="file"
-                id="formFile"
-                onChange={retrieveFile}
-              />
-               <button className="uppercase py-2 px-4 rounded bg-blue-500 text-cyan-50 hover:bg-blue-300" onClick={handleSubmit}>
-          Upload file
-        </button>
+                </div>
+              </div>
             </div>
-           
-          </div>
-
-          <div className="flex items-center justify-center mt-8">
-            {" "}
-            <button
-              className="text-white py-2 px-4 uppercase rounded bg-green-500 hover:bg-green-200 hover:text-green-500 shadow disabled:bg-green-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
-              onClick={setNewProposal} disabled={state}
-
-            >
-              {" "}
-              Create Proposal{" "}
-            </button>{" "}
-         
-          </div>
-        </div>
-      </div>
-      {/* <button
+      </Layout>
+      
+      
+      <button
               className="text-white py-2 px-4 uppercase rounded bg-green-500 hover:bg-green-200 hover:text-green-500 shadow disabled:bg-green-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
               onClick={createUser} 
 
@@ -207,8 +211,8 @@ function ProposalsAdd() {
               {" "}
               Create User{" "}
             </button>
-             */}
-             {proposalDescription}
+            
+             
     </div>
   );
 }

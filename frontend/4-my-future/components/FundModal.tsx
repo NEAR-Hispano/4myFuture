@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { NearContext } from "../context/nearContext";
 import { toYocto } from "./utils";
@@ -16,15 +17,19 @@ export const FundModal = ({
   handleCancel,
 }: FundModalProps) => {
   const [amountToContribute, setAmountToContribute] = React.useState<string>();
+  const [comments, setComment] = React.useState("") 
+  
 
   const setNewContribution = async () => {
     try {
       var amountTemp = BigInt(toYocto(amountToContribute)).toString();
-
+      var today = moment().format('L');
       const contribution = {
         proposalId: index,
         amount: amountToContribute,
         userRefound: user,
+        today: today,
+        comments: comments
       };
 
       const contract = await near.contract;
@@ -59,6 +64,7 @@ export const FundModal = ({
           </div>
           <textarea
             className="w-3/4 p-3 resize mt-2 h-20 text-sm m-auto border flex border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 rounded-md py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+            onChange={(e) => setComment(e.target.value)}
           />
         </div>
         <div className="p-4 flex mt-2 border-t-2 border-gray-100">

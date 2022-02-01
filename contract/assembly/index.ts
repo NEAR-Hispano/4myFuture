@@ -161,7 +161,7 @@ export function getProposal(proposalId: string): Proposal {
  * @param userRefound Student ID  
  * @returns Contribution
  */ 
-export function createContribution(proposalId: u32, amount: string, userRefound: string, today: string): Contribution {
+export function createContribution(proposalId: u32, amount: string, userRefound: string, today: string, comments: string): Contribution {
   assert(proposals.contains(proposalId), "Inexistent proposal");
   //get Proposal
   let proposal = proposals.getSome(proposalId);
@@ -180,7 +180,7 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
   // assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
-  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound, today);
+  let  contribution = new Contribution(contributions.length+1,proposalId,proposal.photos[0], amountU128, userRefound, userList.getSome(userRefound).picture, today, comments);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
   contributions.set(contributions.length, contribution);
@@ -257,6 +257,6 @@ export function withdrawAll(): void { //FIXME
   value.set(0, u128.from(0));
 }
 
-export function getTime(): number {
-  return f64(Context.blockTimestamp);
+export function changeProfilePicture(userId: string, picture: string): void {
+  userList.getSome(userId).changePicture(picture);
 }

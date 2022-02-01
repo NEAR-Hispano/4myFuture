@@ -34,6 +34,7 @@ function details({ near }: DetailsProps) {
         <div className="p-8 flex flex-col w-3/4 h-4/5 border-2 bg-gray-100 shadow-2xl rounded-t-xl">
           <div className="w-full pl-12 flex justify-between  border-b-2 border-green-500">
             <div className="text-5xl pb-7 text-bold text-black">{user.id}</div>
+            <img src={user.picture} width={100} height={100} className="cursor-pointer"/>
           </div>
           <div className="flex flex-col mt-7 ml-12 text-2xl">
             <div>

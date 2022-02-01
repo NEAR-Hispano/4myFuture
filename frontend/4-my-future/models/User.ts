@@ -5,4 +5,5 @@ export default interface User {
     contributions: Contribution[];
     withActiveProposal: boolean;
     rank: number;
+    picture: string;
 }
