@@ -10,10 +10,9 @@ import Proposal from "../models/Proposal";
 
 interface LayoutProps {
   children: React.ReactNode;
-  proposals: Proposal[];
 }
 
-function Layout({ children, proposals}: LayoutProps) {
+function Layout({ children }: LayoutProps) {
   const [nearContext, setNearContext] = useNear();
   const [user, setUser] = useUser();
 
@@ -46,8 +45,8 @@ function Layout({ children, proposals}: LayoutProps) {
     <div className="w-screen flex flex-col">
       {nearContext ? (
         <div className="w-screen flex flex-col">
-          <Navbar proposals={proposals}  />
-          {children}
+          <Navbar />
+          <div className="pt-20">{children}</div>
           <Footer /> :
         </div>
       ) : (
