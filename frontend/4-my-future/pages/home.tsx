@@ -35,7 +35,7 @@ function home() {
     )
     return (
         <div>
-            <Layout proposals={proposals}>
+            <Layout>
            
                 <SearchHome data={proposals} contribution={contribution} users={users}/>
                 <select
