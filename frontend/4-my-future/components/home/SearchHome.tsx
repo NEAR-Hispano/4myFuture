@@ -9,14 +9,14 @@ interface SearchHomeProps {
     data?: Proposal[];
     contribution?: Contribution[];
     users?: User[];
-    contributions?: Contribution[];
+    
 }
 
 function SearchHome({data, contribution, users}: SearchHomeProps) {
     return (
         <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-2 bg-gray-50 shadow-xl'>
                 <div className='text-7xl font-sans font-thin'>
-                    Help <span className='text-green-400 font-semibold'>students</span> reach their dreams 
+                    Help <span className='text-[#7B62D9] font-semibold'>students</span> reach their dreams 
                 </div>
             {/* <div className='flex w-full justify-center h-32 mt-28 items-center align-middle'>
                 <div className=' w-2/5 flex'>
@@ -29,7 +29,7 @@ function SearchHome({data, contribution, users}: SearchHomeProps) {
             </div> */}
                 {/* FIXME PENDIENTE A TAMANIO*/}
                 <div className='mt-16 w-2/3'> 
-                    <AppSummary proposals={data} contributions={contribution} users={users} ></AppSummary>
+                    <AppSummary proposals={data} contribution={contribution} users={users} ></AppSummary>
                 </div>
         </div>
     )

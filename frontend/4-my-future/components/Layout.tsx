@@ -46,7 +46,7 @@ function Layout({ children }: LayoutProps) {
       {nearContext ? (
         <div className="w-screen flex flex-col">
           <Navbar />
-          <div className="pt-20">{children}</div>
+          <div className="">{children}</div>
           <Footer /> :
         </div>
       ) : (

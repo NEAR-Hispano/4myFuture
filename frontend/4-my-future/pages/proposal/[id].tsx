@@ -56,7 +56,7 @@ function ProposalIdDetails() {
 
     return (
         <div>
-            <Layout proposals={null}>
+            <Layout>
                 <div className='w-screen h-screen flex justify-center items-center align-middle'>
                     {proposal ?
                         <ProposalDetails proposal={proposal} />

@@ -14,7 +14,7 @@ interface ProposalDetailsProps {
 }
 
 function ProposalDetails({ proposal }: ProposalDetailsProps) {
-  const [nearContext, setNearContext] = useNear();
+  const [nearContext] = useNear();
   const fundsLeft =
     Number(toNEAR(proposal.amountNeeded)) - Number(toNEAR(proposal.founds));
   const [isOpenEnable, setIsOpenEnable] = React.useState<boolean>(false);
