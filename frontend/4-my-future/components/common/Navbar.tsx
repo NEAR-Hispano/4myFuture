@@ -139,16 +139,16 @@ function Navbar() {
        
    
     {!logged && !user ? 
-    <div className="bg-white font-thin h-10 mr-3 rounded-lg flex items-center align-middle pl-6 pr-6 hover:bg-[#7B62D9]  hover:text-white font-sans text-black ">
+    <div className="bg-white font-thin h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:bg-[#7B62D9]  hover:text-white font-sans text-black ">
     
     <button
       onClick={() => {
         logIn();
       }}
-      className="flex"
+      className="flex text-2xl"
     >
       Login
-      <LoginIcon className="w-6 ml-4 flex align-middle justify-center items-center"></LoginIcon>
+      <LoginIcon className="w-7 ml-4 flex align-middle justify-center items-center"></LoginIcon>
     </button>
   </div>
     : <div className="flex">   
