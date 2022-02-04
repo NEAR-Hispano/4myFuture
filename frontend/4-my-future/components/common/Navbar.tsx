@@ -63,7 +63,7 @@ function Navbar() {
 <div className="w-full flex flex-row items-center p-2 justify-between shadow-xs bg-[#7B62D9]">
   
     <div className="ml-8 cursor-pointer">
-     <img src="../images/near_logo_wht.svg" width={200} onClick={() => {router.push(`/home`)}}/>
+     <img src="../images/near_logo_wht.svg" width={200} onClick={() => {router.push(`/`)}}/>
     </div>
     <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
        
@@ -126,13 +126,16 @@ function Navbar() {
           </button>
         </div> */}
         {user?  <div className="navbar-menu hidden lg:block lg:w-2/5 lg:text-right">
+        <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer" onClick={() => {router.push(`/home`)}}>
+        Home
+        </a>
         <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer" onClick={() => {router.push(`/contribution`)}}>
         Contributions
         </a>
         <a className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer" onClick={() => {router.push(`/proposals`)}}>
         Create proposal
         </a>   
-        </div>:"" }
+        </div>: "" }
        
    
     {!logged && !user ? 
@@ -182,32 +185,7 @@ function Navbar() {
     </div>
 
 
-        {!logged && !user ? (
-          ""
-        ) : (
-          <div className="flex">
-            <div className="mr-5 ml-5 font-white flex items-center align-middle justify-center">
-              <button
-                className="w-full h-full text-white hover:text-indigo-600 m-1"
-                onClick={() => {
-                  router.push("/profile");
-                }}
-              >
-                {user.id}
-              </button>
-            
-            </div>
-            <div className=" rounded-tr-xl rounded-br-xl font-thin h-11 flex items-center align-middle pl-6 pr-6 hover:bg-gray-800 hover:text-white font-sans text-white ">
-              <button
-                onClick={() => {
-                  logOut();
-                }}
-              >
-                <LogOutIcon className="w-6"></LogOutIcon>
-              </button>
-            </div>
-          </div>
-        )}
+
       </div>
 
    
