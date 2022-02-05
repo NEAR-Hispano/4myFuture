@@ -7,7 +7,10 @@ import { toYocto } from "../utils";
 import { useNear } from "../../hooks/useNear";
 import { FundModal } from "../FundModal";
 import Modal from "../modal";
-import moment from 'moment';
+import moment from "moment";
+import  useUser  from "../../hooks/useUser";
+import { useRouter } from 'next/router';
+
 
 interface ProposalDetailsProps {
   proposal: Proposal;
@@ -21,18 +24,39 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
   const handleEnableModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsOpenEnable(true);
   };
+  const [isOwner, setIsOwner] = React.useState<boolean>(false);
+  const [user] = useUser();
+  const router = useRouter();
+
+  const canFund = async () => {
+    console.log("entro");
+    if (proposal) {
+      if (proposal.user == user.id) {
+        setIsOwner(true);
+        console.log("isOwner");
+      }
+    }
+  };
+  const fund = async() => {
+    const proposalId = proposal.index;
+    // @ts-ignore: Unreachable code error
+  nearContext.contract.fund({proposalId, user}).then(() => {
+    router.push('/home')
+  })
+}
+
+
+  React.useEffect(() => {
+    canFund();
+  })
 
   return (
     <div className="w-2/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2  shadow-xl font-sans">
       <div className="flex flex-col w-full h-1/4 ">
         <div className="flex justify-between">
           <div className="font-extralight mb-1"> #ID{proposal.index}</div>
-          <div className="text-base font-thin">
-            Start: {proposal.initDate} 
-          </div>
-          <div className="text-base font-thin">
-            End: {proposal.finishDate}
-          </div>
+          <div className="text-base font-thin">Start: {proposal.initDate}</div>
+          <div className="text-base font-thin">End: {proposal.finishDate}</div>
           <div className="text-base font-thin">
             Time left: {moment(proposal.finishDate).fromNow()}
           </div>
@@ -61,7 +85,6 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               onClick={handleEnableModal}
             >
               Fund
-
               <HeartIcon className="w-6"></HeartIcon>
             </button>
             <Modal isOpen={isOpenEnable}>
@@ -75,16 +98,26 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               />
             </Modal>
           </div>
-          <div className="text-2xl p-6 text-center font-thin">{proposal.description}</div>
+          <div className="text-2xl p-6 text-center font-thin">
+            {proposal.description}
+          </div>
         </div>
-                  <img
-                    src={proposal.photos[0]}
-                    alt="Proposal"
-                    className="h-full w-50 m-auto shadow-lg"
-                  />
+        <img
+          src={proposal.photos[0]}
+          alt="Proposal"
+          className="h-full w-50 m-auto shadow-lg"
+        />
       </div>
-      <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 ">
-      </div>
+      <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 "></div>
+      {isOwner ? 
+      <div>
+        <button className="p-6 bg-green-400 hover:bg-green-500" onClick={()=>{fund()}}>
+        Get Funds
+        </button>
+      </div>  
+      :
+      <div></div>
+    }
     </div>
   );
 }

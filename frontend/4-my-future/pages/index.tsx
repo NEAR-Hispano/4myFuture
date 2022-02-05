@@ -151,7 +151,7 @@ const Home: NextPage = () => {
               </div>
               <div className="mt-24 justify-center items-center">
                 {proposals && contributions && users ? (
-                  <div className="flex flex-col pl-14"> 
+                  <div className="flex flex-col pl-14">
                     <div className="flex align-middle items-center pb-2 border-b-2">
                       <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
                         {proposals.length}
@@ -193,39 +193,36 @@ const Home: NextPage = () => {
                 Top Contributions
               </h3>
             </div>
-            {contributions ? 
-                contributions.slice().sort((a,b) => a.amount-b.amount).map((contribution) => (
-                    <div className="flex flex-col border-2 p-6 mt-6 shadow-lg shadow-[#7B62D9]">   
-                        <div className="flex">
-                            <p className="mr-2 text-xl">
-                                Funded:
-                            </p>
-                            <span className="text-xl text-[#7B62D9] font-extrabold">
-                            {toNEAR(contribution.amount)}
-                            </span>
-                            <span className="text-xl font-bold ml-2">
-                                NEARs
-                            </span>
-                        </div>
-                        <div className=" flex">
-                            <p className="mr-2 text-xl text-bold">
-                                Reicipent:
-                            </p>
-                            <span className="text-xl text-[#7B62D9] font-extrabold">
-                            {contribution.userRefound}
-                            </span>
-                        </div>
-                        <div className=" flex">
-                            <p className="mr-2 text-xl text-bold">
-                                Date:
-                            </p>
-                            <span className="text-xl text-[#7B62D9] font-extrabold">
-                            {contribution.date}
-                            </span>
-                        </div>
+            {contributions ? (
+              contributions
+                .slice()
+                .sort((a, b) => a.amount - b.amount)
+                .map((contribution) => (
+                  <div className="flex flex-col border-2 p-6 mt-6 shadow-lg shadow-[#7B62D9]">
+                    <div className="flex">
+                      <p className="mr-2 text-xl">Funded:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {toNEAR(contribution.amount)}
+                      </span>
+                      <span className="text-xl font-bold ml-2">NEARs</span>
                     </div>
+                    <div className=" flex">
+                      <p className="mr-2 text-xl text-bold">Reicipent:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {contribution.userRefound}
+                      </span>
+                    </div>
+                    <div className=" flex">
+                      <p className="mr-2 text-xl text-bold">Date:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {contribution.date}
+                      </span>
+                    </div>
+                  </div>
                 ))
-            : <div></div>}
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <div className="p-4 mt-20 m-auto">
