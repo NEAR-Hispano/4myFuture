@@ -29,6 +29,12 @@ function Navbar() {
     await nearContext.walletConnection.requestSignIn(
       nearContext.nearConfig.contractName
     );
+    const userId = await nearContext.walletConnection.getAccountId();
+        // @ts-ignore: Unreachable code error
+    if(!nearContext.contract.getUser(userId))
+    // @ts-ignore: Unreachable code error
+    nearContext.contract.createUser(userId);
+    console.log('User Created')
   };
 
   const logOut = async () => {
