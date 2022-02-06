@@ -3,14 +3,48 @@ import type { NextPage } from "next";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { initContract } from "../components/near";
+import Contribution from "../models/Contribution";
+import User from "../models/User";
+import Proposal from "../models/Proposal";
+import { useNear } from "../hooks/useNear";
+import { toNEAR } from "../components/utils";
 
 const Home: NextPage = () => {
-  const showStatistics = async () => {};
-  React.useEffect(() => {});
+  const [contributions, setContributions] = React.useState<Array<Contribution>>(
+    []
+  );
+  const [users, setUsers] = React.useState<Array<User>>([]);
+  const [proposals, setProposals] = React.useState<Array<Proposal>>([]);
+  const [topContributions, setTopContributions] = React.useState<
+    Array<Contribution>
+  >([]);
+  const [topContributors, setTopContributors] = React.useState<Array<User>>([]);
+
+  const [nearContext] = useNear();
+
+  const showStatistics = async () => {
+    // @ts-ignore: Unreachable code error
+    var contributionList = await nearContext.contract.getAllContributions();
+    // @ts-ignore: Unreachable code error
+    var proposalList = await nearContext.contract.getAllProposals();
+    // @ts-ignore: Unreachable code error
+    var userList = await nearContext.contract.getAllUsers();
+
+    setUsers(userList);
+    setProposals(proposalList);
+    setContributions(contributionList);
+  };
+
+  React.useEffect(() => {
+    if (nearContext) {
+      showStatistics();
+    }
+    return;
+  }, [nearContext]);
 
   const router = useRouter();
   return (
-    <div className="w-screen h-screen flex flex-col font-sans ">
+    <div className=" flex flex-col font-sans ">
       <Layout>
         <div className="flex flex-col">
           <div className="w-full flex justify-center h-full">
@@ -116,32 +150,36 @@ const Home: NextPage = () => {
                 </p>
               </div>
               <div className="mt-24 justify-center items-center">
-                <div className="flex flex-col pl-14">
-                  <div className="flex align-middle items-center pb-2 border-b-2">
-                    <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
-                      1129
-                    </p>
-                    <p className="text-2xl leading-6 ml-5  ">
+                {proposals && contributions && users ? (
+                  <div className="flex flex-col pl-14">
+                    <div className="flex align-middle items-center pb-2 border-b-2">
+                      <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
+                        {proposals.length}
+                      </p>
+                      <p className="text-2xl leading-6 ml-5  ">
                         Proposals requesting funds
-                    </p>
+                      </p>
+                    </div>
+                    <div className="mt-12 flex align-middle items-center pb-2 border-b-2">
+                      <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
+                        {contributions.length}
+                      </p>
+                      <p className="text-2xl ml-5 leading-6 ">
+                        Contributions made to students
+                      </p>
+                    </div>
+                    <div className="mt-14 flex align-middle items-center pb-2 border-b-2">
+                      <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
+                        {users.length}
+                      </p>
+                      <p className="text-2xl ml-5 leading-6 ">
+                        Users registered over time
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-12 flex align-middle items-center pb-2 border-b-2">
-                    <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
-                      2345
-                    </p>
-                    <p className="text-2xl ml-5 leading-6 ">
-                      Contributions made to students
-                    </p>
-                  </div>
-                  <div className="mt-14 flex align-middle items-center pb-2 border-b-2">
-                    <p className="text-5xl font-extrabold leading-none text-[#7B62D9]">
-                      3567
-                    </p>
-                    <p className="text-2xl ml-5 leading-6 ">
-                      Users registered over time
-                    </p>
-                  </div>
-                </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
             <div className="w-1/2">
@@ -149,130 +187,42 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <div className="container flex flex-col mx-auto w-full p-6 items-center justify-center mt-5 border-2 rounded-t-xl">
+          <div className="container flex flex-col mx-auto w-full p-6 items-center justify-center mt-5 border-2 rounded-t-xl border-[#7B62D9]">
             <div className="px-4 py-5 sm:px-6 w-full mb-2 rounded-md text-center">
               <h3 className="text-5xl p-6 leading-6 font-extrabold text-gray-900">
                 Top Contributions
               </h3>
             </div>
-            <ul className="flex flex-col">
-              <li className="border-gray-400 flex flex-row mb-2">
-                <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white  rounded-md flex flex-1 items-center p-4">
-                  <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
-                    <a href="#" className="block relative">
-                      <img
-                        alt="profil"
-                        src="https://ipfs.infura.io/ipfs/QmPcGmi195SxtGeM7U6TzhAMqq8Xd1hwaYn9iBArbQEiyA"
-                        className="mx-auto object-cover rounded-full h-10 w-10 "
-                      />
-                    </a>
+            {contributions ? (
+              contributions
+                .slice()
+                .sort((a, b) => a.amount - b.amount)
+                .map((contribution) => (
+                  <div className="flex flex-col border-2 p-6 mt-6 shadow-lg shadow-[#7B62D9]">
+                    <div className="flex">
+                      <p className="mr-2 text-xl">Funded:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {toNEAR(contribution.amount)}
+                      </span>
+                      <span className="text-xl font-bold ml-2">NEARs</span>
+                    </div>
+                    <div className=" flex">
+                      <p className="mr-2 text-xl text-bold">Reicipent:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {contribution.userRefound}
+                      </span>
+                    </div>
+                    <div className=" flex">
+                      <p className="mr-2 text-xl text-bold">Date:</p>
+                      <span className="text-xl text-[#7B62D9] font-extrabold">
+                        {contribution.date}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex-1 pl-1 md:mr-16">
-                    <div className="font-medium ">myfuture.testnet</div>
-                  </div>
-                  <div className="text-gray-600  text-xs">10 NEAR</div>
-                  <button className="w-24 text-right flex justify-end">
-                    <svg
-                      width="12"
-                      fill="currentColor"
-                      height="12"
-                      className="hover:text-gray-800 dark:hover:text-white  text-gray-500"
-                      viewBox="0 0 1792 1792"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </li>
-              <li className="border-gray-400 flex flex-row mb-2">
-                <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white  rounded-md flex flex-1 items-center p-4">
-                  <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
-                    <a href="#" className="block relative">
-                      <img
-                        alt="profil"
-                        src="https://ipfs.infura.io/ipfs/QmPcGmi195SxtGeM7U6TzhAMqq8Xd1hwaYn9iBArbQEiyA"
-                        className="mx-auto object-cover rounded-full h-10 w-10 "
-                      />
-                    </a>
-                  </div>
-                  <div className="flex-1 pl-1 md:mr-16">
-                    <div className="font-medium ">blad.testnet</div>
-                  </div>
-                  <div className="text-gray-600  text-xs">8 NEAR</div>
-                  <button className="w-24 text-right flex justify-end">
-                    <svg
-                      width="12"
-                      fill="currentColor"
-                      height="12"
-                      className="hover:text-gray-800 dark:hover:text-white  text-gray-500"
-                      viewBox="0 0 1792 1792"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </li>
-              <li className="border-gray-400 flex flex-row mb-2">
-                <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white  rounded-md flex flex-1 items-center p-4">
-                  <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
-                    <a href="#" className="block relative">
-                      <img
-                        alt="profil"
-                        src="https://ipfs.infura.io/ipfs/QmPcGmi195SxtGeM7U6TzhAMqq8Xd1hwaYn9iBArbQEiyA"
-                        className="mx-auto object-cover rounded-full h-10 w-10 "
-                      />
-                    </a>
-                  </div>
-                  <div className="flex-1 pl-1 md:mr-16">
-                    <div className="font-medium ">grex1.testnet</div>
-                  </div>
-                  <div className="text-gray-600  text-xs">7 NEAR</div>
-                  <button className="w-24 text-right flex justify-end">
-                    <svg
-                      width="12"
-                      fill="currentColor"
-                      height="12"
-                      className="hover:text-gray-800 dark:hover:text-white  text-gray-500"
-                      viewBox="0 0 1792 1792"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </li>
-              <li className="border-gray-400 flex flex-row mb-2">
-                <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white  rounded-md flex flex-1 items-center p-4">
-                  <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
-                    <a href="#" className="block relative">
-                      <img
-                        alt="profil"
-                        src="https://ipfs.infura.io/ipfs/QmPcGmi195SxtGeM7U6TzhAMqq8Xd1hwaYn9iBArbQEiyA"
-                        className="mx-auto object-cover rounded-full h-10 w-10 "
-                      />
-                    </a>
-                  </div>
-                  <div className="flex-1 pl-1 md:mr-16">
-                    <div className="font-medium ">myfuture2.testnet</div>
-                  </div>
-                  <div className="text-gray-600  text-xs">5 NEAR</div>
-                  <button className="w-24 text-right flex justify-end">
-                    <svg
-                      width="12"
-                      fill="currentColor"
-                      height="12"
-                      className="hover:text-gray-800 dark:hover:text-white  text-gray-500"
-                      viewBox="0 0 1792 1792"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </li>
-            </ul>
+                ))
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <div className="p-4 mt-20 m-auto">
