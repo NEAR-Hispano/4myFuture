@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx" ,  "components/Navbarlogin.jts", "pages/home.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx" ,  "components/Navbarlogin.jts", "pages/home.tsx", "components/near.js"],
   "exclude": ["node_modules"]
 }
