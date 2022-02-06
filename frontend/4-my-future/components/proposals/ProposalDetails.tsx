@@ -29,7 +29,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
   const router = useRouter();
 
   const canFund = async () => {
-    console.log("entro");
+
     if (proposal) {
       if (proposal.user == user.id) {
         setIsOwner(true);
@@ -39,8 +39,9 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
   };
   const fund = async() => {
     const proposalId = proposal.index;
+    const today = new Date();
     // @ts-ignore: Unreachable code error
-  nearContext.contract.fund({proposalId, user}).then(() => {
+  nearContext.contract.fund({proposalId, today}).then(() => {
     router.push('/home')
   })
 }
@@ -48,6 +49,9 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   React.useEffect(() => {
     canFund();
+    if(fundsLeft == 0) {
+      fund();
+    }
   })
 
   return (

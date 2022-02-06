@@ -39,7 +39,8 @@ function ProposalCard({
   const percent = 'w-'+(6/12).toString();
   
   return status == type? <div> </div>:  (
-    <div className="w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-2xl font-sans mt-2 mr-2 m-8">
+    <div className={ status == 0 ? "w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-lg shadow-[#7B62D9] font-sans mt-2 mr-2 m-8 " 
+    : "w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-lg shadow-green-400 font-sans mt-2 mr-2 m-8 "} >
       <div className="flex flex-col w-full h-1/4 border-b-2 ">
         <div className="flex justify-between">
           <div className="font-extralight mb-1"> ID{index}</div>
@@ -77,7 +78,7 @@ function ProposalCard({
       </div>
       <div className="flex flex-col items-center text-xl mt-4 font-medium ">
         <div className="border-t-2 w-full flex justify-center align-middle items-center text-3xl p-2 font-thin">
-          {fundsLeft}  NEARs left
+          {fundsLeft > 0 ? `${fundsLeft}  NEARs left` : "Finished!"}
         </div>
         {/* <div className="w-full h-2 bg-blue-200 rounded-full">
             <div className={`${percent} h-full text-center text-xs text-white bg-blue-600 rounded-full`}>
