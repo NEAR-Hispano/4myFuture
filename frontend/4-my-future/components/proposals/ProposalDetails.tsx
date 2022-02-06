@@ -8,9 +8,8 @@ import { useNear } from "../../hooks/useNear";
 import { FundModal } from "../FundModal";
 import Modal from "../modal";
 import moment from "moment";
-import  useUser  from "../../hooks/useUser";
-import { useRouter } from 'next/router';
-
+import useUser from "../../hooks/useUser";
+import { useRouter } from "next/router";
 
 interface ProposalDetailsProps {
   proposal: Proposal;
@@ -29,7 +28,6 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
   const router = useRouter();
 
   const canFund = async () => {
-
     if (proposal) {
       if (proposal.user == user.id) {
         setIsOwner(true);
@@ -37,22 +35,21 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
       }
     }
   };
-  const fund = async() => {
+  const fund = async () => {
     const proposalId = proposal.index;
     const today = new Date();
     // @ts-ignore: Unreachable code error
-  nearContext.contract.fund({proposalId, today}).then(() => {
-    router.push('/home')
-  })
-}
-
+    await nearContext.contract.fund({ proposalId, today }, 300000000000000);
+  };
 
   React.useEffect(() => {
     canFund();
-    if(fundsLeft == 0) {
-      fund();
+    if (fundsLeft == 0) {
+      if (proposal.status == 0) {
+        fund();
+      }
     }
-  })
+  });
 
   return (
     <div className="w-2/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2  shadow-xl font-sans">
@@ -77,20 +74,28 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
       </div>
 
       <div className="h-1/2 mt-5 border-2 p-6 rounded-t-xl shadow-2xl flex justify-center items-center align-middle mb-5">
-        <div className="flex flex-col h-full justify-center items-center">
+        <div className="flex flex-col h-full  w-1/2 justify-center items-center">
           <div className="w-1/2   border-0 shadow-2xl flex flex-col bg-slate-600 rounded-lg border-black">
-            <div className="w-full p-6 flex  text-black  font-thin justify-center items-center">
+            <div className="w-full p-6 flex   text-black  font-thin justify-center items-center">
               <span className="font-bold text-2xl text-white">
                 {fundsLeft} <span className="font-thin"> NEARs left</span>
               </span>
             </div>
+            {proposal.status == 0 ?
             <button
               className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
               onClick={handleEnableModal}
             >
               Fund
               <HeartIcon className="w-6"></HeartIcon>
-            </button>
+            </button> :
+            <div
+            className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold border-2 rounded-lg border-black text-black bg-gray-300"
+            
+          >
+            Fund
+            <HeartIcon className="w-6"></HeartIcon>
+          </div>}
             <Modal isOpen={isOpenEnable}>
               <FundModal
                 handleCancel={() => {
@@ -113,15 +118,20 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         />
       </div>
       <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 "></div>
-      {isOwner ? 
-      <div>
-        <button className="p-6 bg-green-400 hover:bg-green-500" onClick={()=>{fund()}}>
-        Get Funds
-        </button>
-      </div>  
-      :
-      <div></div>
-    }
+      {isOwner ? (
+        <div>
+          <button
+            className="p-6 bg-green-400 hover:bg-green-500"
+            onClick={() => {
+              fund();
+            }}
+          >
+            Get Funds
+          </button>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
