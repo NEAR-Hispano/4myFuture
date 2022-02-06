@@ -27,7 +27,7 @@ function ProposalIdDetails() {
         setProposal(proposal);
       }
     } catch (e) {
-      console.log(e);
+      router.push('/home');
     }
   };
 
