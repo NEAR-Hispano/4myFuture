@@ -202,7 +202,7 @@ const Home: NextPage = () => {
                     <div className="flex">
                       <p className="mr-2 text-xl">Funded:</p>
                       <span className="text-xl text-[#7B62D9] font-extrabold">
-                        {toNEAR(contribution.amount)}
+                        {toNEAR((contribution.amount).toString())}
                       </span>
                       <span className="text-xl font-bold ml-2">NEARs</span>
                     </div>
