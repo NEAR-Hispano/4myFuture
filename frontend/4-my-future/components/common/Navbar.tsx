@@ -10,6 +10,7 @@ import { IoMdNotifications } from 'react-icons/io';
 import Dropdown from "./dropdown";
 import Config from "./config";
 import { Menu } from "@headlessui/react";
+import {useAuth} from "../../hooks/useAuth";
 
 function Navbar() {
   const [logged, setLogged] = React.useState(false);
@@ -18,6 +19,7 @@ function Navbar() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = React.useState([]);
   const [proposals, setProposals] = React.useState<Array<Proposal>>([]);
+  const [authContext, setAuthContext] = useAuth();
 
   const handleFilter = (e: any) => {
     const searchWord = e.target.value;
@@ -30,23 +32,17 @@ function Navbar() {
   };
 
   const logIn = async () => {
+    setAuthContext(true);
     await nearContext.walletConnection.requestSignIn(
       nearContext.nearConfig.contractName
     );
-    const userId = await nearContext.walletConnection.getAccountId();
-    console.log(userId)
-        // @ts-ignore: Unreachable code error
-    if(!nearContext.contract.getUser(userId.toString())){
-      // @ts-ignore: Unreachable code error
-    nearContext.contract.createUser(userId);
-    console.log('User Created')
-    }
-    
+    console.log(authContext)
   };
 
   const logOut = async () => {
     await nearContext.walletConnection.signOut();
     setNearContext(null);
+    setAuthContext(false);
     setUser(null);
     router.push("/");
   };
@@ -58,16 +54,10 @@ function Navbar() {
     });
   };
 
-  const userLogged = async () => {
-    //const user = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
-    // const user = await nearContext.walletConnection.getAccountId()
-    // if (user) {
-    //     setUser(user?.accountId)
-    //     setLogged(true);
-  };
 
   React.useEffect(() => {
     loadProposals();
+ 
   }, []);
 
   return (
@@ -82,6 +72,9 @@ function Navbar() {
             }}
           />
         </div>
+        <button onClick={() => {console.log(nearContext.walletConnection.isSignedIn())}}>
+          PROBAR FUNCTION
+        </button>
         <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
           {proposals != null && user ? (
             <input

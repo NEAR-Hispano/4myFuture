@@ -1,12 +1,12 @@
 import React, { Children } from "react";
 import Navbar from "./common/Navbar";
 import Footer from "./common/Footer";
-import useAuth from "../hooks/useAuth";
 import useUser from "../hooks/useUser";
 import { initContract } from "./near";
 import { Contract } from "near-api-js";
 import { useNear } from "../hooks/useNear";
-import Proposal from "../models/Proposal";
+import {useAuth} from "../hooks/useAuth";
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   const [nearContext, setNearContext] = useNear();
   const [user, setUser] = useUser();
+  const [authContext] = useAuth();
 
   const setNEARContext = async () => {
     const near = await initContract();
@@ -30,6 +31,14 @@ function Layout({ children }: LayoutProps) {
     } catch (e) {
       console.log(e);
       setUser(null);
+      console.log(authContext)
+      if(authContext) {
+        const userId = await near.walletConnection.getAccountId();        
+        // @ts-ignore: Unreachable code error
+        const userLog = await near.contract.getUser({ userId });
+        setUser(userLog);
+        return;
+      }
     }
   };
 
@@ -39,7 +48,7 @@ function Layout({ children }: LayoutProps) {
       return;
     }
     return;
-  }, [nearContext]);
+  }, [nearContext, authContext]);
 
   return (
     <div className="w-screen flex flex-col">
