@@ -1,10 +1,7 @@
-import React from "react";
+import { useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 
-const useAuth = () => {
-  const [auth, setAuth] = React.useState(false);
-
-  //React.useEffect(() => setAuth((window as any).walletConnection.isSignedIn()), []);
-  return auth;
-};
-
-export default useAuth;
+export function useAuth() {
+  const { authContext, setAuthContext } = useContext(AuthContext);
+  return [authContext, setAuthContext] as const;
+}
