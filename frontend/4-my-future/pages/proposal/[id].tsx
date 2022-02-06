@@ -18,17 +18,18 @@ function ProposalIdDetails() {
   const start = async () => {
     const idInt = await router.query.id;
     const id = String(idInt);
-    if (id) {
-      // @ts-ignore: Unreachable code error
-      const proposal = await nearContext.contract.getProposal({
-        proposalId: id,
-      });
-      setProposal(proposal);
+    try {
+      if (id) {
+        // @ts-ignore: Unreachable code error
+        const proposal = await nearContext.contract.getProposal({
+          proposalId: id,
+        });
+        setProposal(proposal);
+      }
+    } catch (e) {
+      console.log(e);
     }
-
   };
-  
-  
 
   const id = router.query.id;
 
@@ -64,7 +65,6 @@ function ProposalIdDetails() {
               <Loading />
             </div>
           )}
-          
         </div>
       </Layout>
     </div>
