@@ -4,6 +4,7 @@ import { initContract } from "../components/near";
 import { create } from "ipfs-http-client";
 import moment from 'moment';
 import Layout from "../components/Layout";
+import { toYocto } from "../components/utils";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -88,7 +89,7 @@ function ProposalsAdd() {
     console.log(proposalAmount)
 
 
-    contract.createNewProposal(proposal);
+    contract.createNewProposal(proposal, 300000000000000, 300000000000000);
     setVisibility("visible")
 
   

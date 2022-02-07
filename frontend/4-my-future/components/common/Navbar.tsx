@@ -11,6 +11,7 @@ import Dropdown from "./dropdown";
 import Config from "./config";
 import { Menu } from "@headlessui/react";
 
+
 function Navbar() {
   const [logged, setLogged] = React.useState(false);
   const [user, setUser] = useUser();
@@ -18,6 +19,12 @@ function Navbar() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = React.useState([]);
   const [proposals, setProposals] = React.useState<Array<Proposal>>([]);
+
+  const createUser = async () => {
+    const { contract } = await initContract();
+    //@ts-ignore: Unreachable code error
+    contract.createUser();
+  };
 
   const handleFilter = (e: any) => {
     const searchWord = e.target.value;
@@ -30,17 +37,41 @@ function Navbar() {
   };
 
   const logIn = async () => {
-    await nearContext.walletConnection.requestSignIn(
-      nearContext.nearConfig.contractName
-    );
-    const userId = await nearContext.walletConnection.getAccountId();
-    console.log(userId)
-        // @ts-ignore: Unreachable code error
-    if(!nearContext.contract.getUser(userId.toString())){
-      // @ts-ignore: Unreachable code error
-    nearContext.contract.createUser(userId);
-    console.log('User Created')
+ 
+
+     //@ts-ignore: Unreachable code error
+  //   if(!nearContext.contract.getUser(usere)){
+  //    //@ts-ignore: Unreachable code error
+  //  nearContext.contract.createUser();
+  //  console.log('User Created')
+  //  }
+
+    // console.log(user)
+     await nearContext.walletConnection.requestSignIn(
+       nearContext.nearConfig.contractName
+       
+     );
+     const userId = await nearContext.walletConnection.getAccountId();
+     console.log("usere:" +userId)
+ 
+     const usere = {
+      userId: userId.toString()
     }
+
+    
+   
+     // @ts-ignore: Unreachable code error
+    const userNew = await nearContext.contract.getUser(usere).then(() => {
+      setUser(userNew);
+    })
+   // const userId = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
+    // if (userId) {
+    //       setUser(userId)
+    //        setLogged(true);
+    // }
+    //console.log(userId)
+        // @ts-ignore: Unreachable code error
+ 
     
   };
 
@@ -204,7 +235,7 @@ function Navbar() {
               >
               
               </a>
-          <Menu as="div" className="relative inline-block text-left">
+          {/* <Menu as="div" className="relative inline-block text-left">
            <div>
           <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 ">
           <IoMdNotifications size={25} color={"white"}/>
@@ -227,7 +258,7 @@ function Navbar() {
             </div>
           </Menu.Items>
         
-      </Menu>
+      </Menu> */}
 
       <Menu as="div" className="relative text-left">
            <div>

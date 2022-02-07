@@ -57,7 +57,7 @@ function ProposalCard({
         {
         status == 0? 
           <div className="rounded-full py-1 px-4 font-medium border text-yellow-700 bg-yellow-100 border-yellow-300 text-center">
-        In progress {percent}
+        In progress
        </div>
        :
        <div className="rounded-full py-1 px-4 font-medium border text-green-900 bg-green-100 border-green-300 text-center">
@@ -78,7 +78,7 @@ function ProposalCard({
       </div>
       <div className="flex flex-col items-center text-xl mt-4 font-medium ">
         <div className="border-t-2 w-full flex justify-center align-middle items-center text-3xl p-2 font-thin">
-          {fundsLeft > 0 ? `${fundsLeft}  NEARs left` : "Finished!"}
+          {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished!"}
         </div>
         {/* <div className="w-full h-2 bg-blue-200 rounded-full">
             <div className={`${percent} h-full text-center text-xs text-white bg-blue-600 rounded-full`}>

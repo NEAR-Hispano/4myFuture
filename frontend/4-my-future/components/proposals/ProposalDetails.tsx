@@ -41,7 +41,8 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     const proposalId = proposal.index;
     const today = new Date();
     // @ts-ignore: Unreachable code error
-  nearContext.contract.fund({proposalId, today}).then(() => {
+
+    nearContext.contract.fund({proposalId, today}).then(() => {
     router.push('/home')
   })
 }
@@ -49,7 +50,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   React.useEffect(() => {
     canFund();
-    if(fundsLeft == 0) {
+    if((fundsLeft == 0) && (proposal.status != 3)) {
       fund();
     }
   })
@@ -78,10 +79,10 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
       <div className="h-1/2 mt-5 border-2 p-6 rounded-t-xl shadow-2xl flex justify-center items-center align-middle mb-5">
         <div className="flex flex-col h-full justify-center items-center">
-          <div className="w-1/2   border-0 shadow-2xl flex flex-col bg-slate-600 rounded-lg border-black">
+          {fundsLeft==0? "": <div className="w-1/2   border-0 shadow-2xl flex flex-col bg-slate-600 rounded-lg border-black">
             <div className="w-full p-6 flex  text-black  font-thin justify-center items-center">
               <span className="font-bold text-2xl text-white">
-                {fundsLeft} <span className="font-thin"> NEARs left</span>
+                {fundsLeft.toFixed(2)} <span className="font-thin"> NEARs left</span>
               </span>
             </div>
             <button
@@ -101,7 +102,9 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 user={proposal.user}
               />
             </Modal>
-          </div>
+          </div>}
+          
+      
           <div className="text-2xl p-6 text-center font-thin">
             {proposal.description}
           </div>
@@ -113,7 +116,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         />
       </div>
       <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 "></div>
-      {isOwner ? 
+      {((isOwner) && (proposal.status != 3) && (fundsLeft <= parseInt(proposal.amountNeeded)*0.25)) ? 
       <div>
         <button className="p-6 bg-green-400 hover:bg-green-500" onClick={()=>{fund()}}>
         Get Funds
