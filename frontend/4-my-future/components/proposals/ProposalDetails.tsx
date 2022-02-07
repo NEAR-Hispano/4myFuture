@@ -8,9 +8,8 @@ import { useNear } from "../../hooks/useNear";
 import { FundModal } from "../FundModal";
 import Modal from "../modal";
 import moment from "moment";
-import  useUser  from "../../hooks/useUser";
-import { useRouter } from 'next/router';
-
+import useUser from "../../hooks/useUser";
+import { useRouter } from "next/router";
 
 interface ProposalDetailsProps {
   proposal: Proposal;
@@ -29,7 +28,6 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
   const router = useRouter();
 
   const canFund = async () => {
-
     if (proposal) {
       if (proposal.user == user.id) {
         setIsOwner(true);
@@ -37,7 +35,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
       }
     }
   };
-  const fund = async() => {
+  const fund = async () => {
     const proposalId = proposal.index;
     const today = new Date();
     // @ts-ignore: Unreachable code error
@@ -53,7 +51,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     if((fundsLeft == 0) && (proposal.status != 3)) {
       fund();
     }
-  })
+  });
 
   return (
     <div className="w-2/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-2  shadow-xl font-sans">
@@ -85,13 +83,21 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 {fundsLeft.toFixed(2)} <span className="font-thin"> NEARs left</span>
               </span>
             </div>
+            {proposal.status == 0 ?
             <button
               className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
               onClick={handleEnableModal}
             >
               Fund
               <HeartIcon className="w-6"></HeartIcon>
-            </button>
+            </button> :
+            <div
+            className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold border-2 rounded-lg border-black text-black bg-gray-300"
+            
+          >
+            Fund
+            <HeartIcon className="w-6"></HeartIcon>
+          </div>}
             <Modal isOpen={isOpenEnable}>
               <FundModal
                 handleCancel={() => {
