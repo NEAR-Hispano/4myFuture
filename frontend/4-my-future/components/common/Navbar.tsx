@@ -41,18 +41,12 @@ function Navbar() {
     await nearContext.walletConnection.requestSignIn(
       nearContext.nearConfig.contractName
     );
-
-    //    // @ts-ignore: Unreachable code error
-    //   const userNew = await nearContext.contract.getUser(usere).then(() => {
-    //     setUser(userNew);
-    //    })
-    // const userId = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
-    // if (userId) {
-    //       setUser(userId)
-    //        setLogged(true);
-    // }
-    //console.log(userId)        // @ts-ignore: Unreachable code error
   };
+
+  const signUp = async() => {
+    // @ts-ignore: Unreachable code error
+    nearContext.contract.createUser();
+  }
 
   const logOut = async () => {
     await nearContext.walletConnection.signOut();
@@ -200,7 +194,7 @@ function Navbar() {
             <div className="bg-white font-extrabold h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-lg hover:shadow-[#c9c1c6] font-sans border-2 text-[#7B62D9] ">
               <button
                 onClick={() => {
-                  logIn();
+                  signUp()
                 }}
                 className="flex font-medium text-2xl"
               >

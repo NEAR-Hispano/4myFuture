@@ -3,9 +3,8 @@ import Navbar from "./common/Navbar";
 import Footer from "./common/Footer";
 import useUser from "../hooks/useUser";
 import { initContract } from "./near";
-import { Contract } from "near-api-js";
 import { useNear } from "../hooks/useNear";
-import { useAuth } from "../hooks/useAuth";
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -28,18 +27,8 @@ function Layout({ children }: LayoutProps) {
         return;
       }
     } catch (e) {
-      console.log("not user login, getting user from LS");
-      try {
-        console.log("accessing to localstorage to get user");
-      
-        // @ts-ignore: Unreachable code error
-       // const userLog = await near.contract.createUser();
-        setUser(userLog);
-      } catch (e) {
-        console.log(e);
-        console.log("not user found it, setting to null ");
-        setUser(null);
-      }
+      console.log(e);
+      setUser(null);
     }
   };
 
