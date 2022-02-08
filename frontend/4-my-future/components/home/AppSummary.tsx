@@ -20,9 +20,9 @@ function AppSummary({ proposals, contribution, users }: AppSummaryProps) {
             Proposals Registered:{" "}
             <span className="font-bold">{proposals.length}</span>
           </div>
-          {/* <div>
+          <div>
             Users Registered: <span className="font-bold">{users.length}</span>
-          </div> */}
+          </div>
           <div>
             Contributions: <span className="font-bold">{contribution.length}</span>
           </div>

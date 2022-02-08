@@ -29,9 +29,6 @@ export function createUser(): User {
  */ 
 export function getUser(userId: string): User {
   const isUser = userList.getSome(userId);
-  if(!isUser) {
-    return createUser()
-  }
   return isUser
 }
 
