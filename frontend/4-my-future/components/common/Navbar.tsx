@@ -6,12 +6,11 @@ import { useRouter } from "next/router";
 import useUser from "../../hooks/useUser";
 import Proposal from "../../models/Proposal";
 import SearchBar from "../home/SearchBar";
-import { IoMdNotifications } from 'react-icons/io';
+import { IoMdNotifications } from "react-icons/io";
 import Dropdown from "./dropdown";
 import Config from "./config";
 import { Menu } from "@headlessui/react";
-import {useAuth} from "../../hooks/useAuth";
-
+import { useAuth } from "../../hooks/useAuth";
 
 function Navbar() {
   const [logged, setLogged] = React.useState(false);
@@ -39,43 +38,15 @@ function Navbar() {
   };
 
   const logIn = async () => {
- 
-
-     //@ts-ignore: Unreachable code error
-  //   if(!nearContext.contract.getUser(usere)){
-  //    //@ts-ignore: Unreachable code error
-  //  nearContext.contract.createUser();
-  //  console.log('User Created')
-  //  }
-
-    // console.log(user)
-     await nearContext.walletConnection.requestSignIn(
-       nearContext.nearConfig.contractName
-       
-     );
-     const userId = await nearContext.walletConnection.getAccountId();
-     console.log("usere:" +userId)
- 
-     const usere = {
-      userId: userId.toString()
-    }
-
-    
-   
-     // @ts-ignore: Unreachable code error
-    const userNew = await nearContext.contract.getUser(usere).then(() => {
-      setUser(userNew);
-    })
-   // const userId = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
-    // if (userId) {
-    //       setUser(userId)
-    //        setLogged(true);
-    // }
-    //console.log(userId)
-        // @ts-ignore: Unreachable code error
- 
-    
+    await nearContext.walletConnection.requestSignIn(
+      nearContext.nearConfig.contractName
+    );
   };
+
+  const signUp = async() => {
+    // @ts-ignore: Unreachable code error
+    nearContext.contract.createUser();
+  }
 
   const logOut = async () => {
     await nearContext.walletConnection.signOut();
@@ -92,10 +63,8 @@ function Navbar() {
     });
   };
 
-
   React.useEffect(() => {
     loadProposals();
- 
   }, []);
 
   return (
@@ -110,9 +79,6 @@ function Navbar() {
             }}
           />
         </div>
-        <button onClick={() => {console.log(nearContext.walletConnection.isSignedIn())}}>
-          PROBAR FUNCTION
-        </button>
         <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
           {proposals != null && user ? (
             <input
@@ -213,29 +179,38 @@ function Navbar() {
         )}
 
         {!logged && !user ? (
-          <div className="bg-white font-thin h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:bg-[#7B62D9]  hover:text-white font-sans text-black ">
-            <button
-              onClick={() => {
-                logIn();
-              }}
-              className="flex text-2xl"
-            >
-              Login
-              <LoginIcon className="w-7 ml-4 flex align-middle justify-center items-center"></LoginIcon>
-            </button>
+          <div className="flex">
+            <div className="font-thin border-2 border-white h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-2xl font-sans text-white ">
+              <button
+                onClick={() => {
+                  logIn();
+                }}
+                className="flex text-2xl"
+              >
+                Login
+                <LoginIcon className="w-7 ml-4 flex align-middle justify-center items-center"></LoginIcon>
+              </button>
+            </div>
+            <div className="bg-white font-extrabold h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-lg hover:shadow-[#c9c1c6] font-sans border-2 text-[#7B62D9] ">
+              <button
+                onClick={() => {
+                  signUp()
+                }}
+                className="flex font-medium text-2xl"
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
         ) : (
           <div className="flex">
             <div className="mr-5 ml-5 font-white flex items-center align-middle justify-center cursor-pointer">
-              <a 
-               
+              <a
                 onClick={() => {
                   router.push(`/proposals`);
                 }}
-              >
-              
-              </a>
-          {/* <Menu as="div" className="relative inline-block text-left">
+              ></a>
+              {/* <Menu as="div" className="relative inline-block text-left">
            <div>
           <Menu.Button className="inline-flex justify-center w-full rounded-md px-4 py-2 ">
           <IoMdNotifications size={25} color={"white"}/>
@@ -260,47 +235,40 @@ function Navbar() {
         
       </Menu> */}
 
-      <Menu as="div" className="relative text-left">
-           <div>
-          <Menu.Button className="">
-          <img src={user.picture} width={100} height={100} />
-          
-          </Menu.Button>
-        </div>
-  
-    
-          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <Menu.Item>
-              <a onClick={() => {
-                  router.push("/profile");
-                }} className="flex items-center px-2 py-2 mx-1 hover:bg-[#7B62D9] hover:text-cyan-50">
-              {user.id}
-                </a>
-              </Menu.Item>
+              <Menu as="div" className="relative text-left">
+                <div>
+                  <Menu.Button className="">
+                    <img src={user.picture} width={100} height={100} />
+                  </Menu.Button>
+                </div>
 
-              <Menu.Item>
-              <a   onClick={() => {
-                  logOut();
-                }} className="flex items-center px-2 py-2 mx-1 hover:bg-[#7B62D9] hover:text-cyan-50">
-              Logout
-                </a>
-              
-              </Menu.Item>
-            
-              
-             
-            </div>
-          </Menu.Items>
-        
-      </Menu>
-             
-              
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="py-1">
+                    <Menu.Item>
+                      <a
+                        onClick={() => {
+                          router.push("/profile");
+                        }}
+                        className="flex items-center px-2 py-2 mx-1 hover:bg-[#7B62D9] hover:text-cyan-50"
+                      >
+                        {user.id}
+                      </a>
+                    </Menu.Item>
 
-             
-       
-              
-    
+                    <Menu.Item>
+                      <a
+                        onClick={() => {
+                          logOut();
+                        }}
+                        className="flex items-center px-2 py-2 mx-1 hover:bg-[#7B62D9] hover:text-cyan-50"
+                      >
+                        Logout
+                      </a>
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Menu>
+
               {/* <button
                 className="w-full h-full text-white hover:text-indigo-600 m-1"
                 onClick={() => {
@@ -323,9 +291,7 @@ function Navbar() {
             </div>
           </div>
         )}
-        
       </div>
-     
     </div>
   );
 }
