@@ -1,19 +1,19 @@
 import React from "react";
 import Proposal from "../../models/Proposal";
-import Pagination from "../common/Pagination";
 import ProposalCard from "./ProposalCard";
 
 interface ProposalGeneralProps {
   proposals: Proposal[];
+  type: string;
 }
 
-function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
+function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
   return (
     <div className="">
-      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle">
-        {proposals?.map((proposal) => (
-          
-            <ProposalCard
+      <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle ">
+        {proposals?.map((proposal, i) => (
+          <ProposalCard
+              key={i}
               title={proposal?.title}
               amountNeeded={proposal?.amountNeeded}
               index={proposal?.index}
@@ -21,8 +21,12 @@ function ProposalsGeneral({ proposals }: ProposalGeneralProps) {
               finishDate={proposal?.finishDate}
               photos={proposal?.photos}
               user={proposal?.user}
-              founds="23"
-            ></ProposalCard>
+              founds={proposal?.founds}
+              status={proposal?.status}
+              type = {parseInt(type)}
+              
+            /> 
+           
           
         ))}
       </div>

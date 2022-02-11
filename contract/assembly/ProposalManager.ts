@@ -4,9 +4,9 @@ import Payment from "./models/Payment";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
-import { asNEAR, onlyAdmins, toYocto } from './utils'
+import { asNEAR, onlyAdmins, toYocto, toYoctodecimal } from './utils'
 
-const initDate = Context.blockTimestamp;
+
 
 /**
  * CALLABLE FUNCTIONS <-----------------------------------
@@ -29,14 +29,15 @@ export function createProposal(
 
     title: string,
     description: string,
-    finishDate: i64,
+    initDate: string,
+    finishDate: string,
     photos: Array<string>,
     amountNeeded: u128
 ): Proposal {
-    assert(userList.contains(Context.sender), "User not registered");
+    // assert(userList.contains(Context.sender), "User not registered");
     const user = Context.sender;
     const userLogged = getUser(user); 
-    assert(!userLogged.withActiveProposal, "User already have one active proposal")
+    // assert(!userLogged.withActiveProposal, "User already have one active proposal")
     assert(amountNeeded > u128.Zero, "Invalid proposal amount");
     assert(title.length > 3, "Invalid title");
     const newProposal = new Proposal(
@@ -128,6 +129,15 @@ export function getFundsToSuccess(proposalId: u32): u128 {
     const funds = proposal.founds;
     var fundsToSuccess = substract(request, funds);
     return fundsToSuccess; 
+}
+
+export function getPercentToRefound(proposalId: u32, percent: i64): u128 {
+    const proposal = getProposal(proposalId);
+    const request = proposal.amountNeeded;
+    const percentYocto = u128.from(percent);
+    var fundsRefound = multipli(request, percentYocto);
+    var fundsPercent = divide(fundsRefound, u128.from(100))
+    return fundsPercent; 
 }
 
 /**
@@ -279,6 +289,14 @@ export function deleteUser(user: string): bool {
  */ 
 export function substract(num1: u128, num2: u128): u128  {
     return u128.sub(num1,num2);
+}
+
+export function multipli(num1: u128, num2: u128): u128  {
+    return u128.mul(num1,num2);
+}
+
+export function divide(num1: u128, num2: u128): u128  {
+    return u128.div(num1,num2);
 }
 
 /**

@@ -28,9 +28,13 @@ module.exports = {
           400: '#47FA92',
           500: '#15F974',
         },
-        
+        test: {
+          50: '#232f35'
+        }
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide')
+  ],
 }

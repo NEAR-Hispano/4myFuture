@@ -40,6 +40,10 @@ export function toYocto(amount: i64): u128 {
   return u128.mul(ONE_NEAR, u128.from(amount))
 }
 
+export function toYoctodecimal(amount: f64): u128 {
+  return u128.mul(ONE_NEAR, u128.from(amount))
+}
+
 /**
  * Switch a NEAR u128 type value to Yocto value
  * @param amount NEAR amount

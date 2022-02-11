@@ -1,6 +1,6 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import { proposals, contributions, payments } from './Storage'
-import { getFundsToSuccess, getProgressProposal, inactiveProposal, inactiveProposalAfterTime, proposalCompleted } from './ProposalManager';
+import { getFundsToSuccess, getPercentToRefound, getProgressProposal, inactiveProposal, inactiveProposalAfterTime, proposalCompleted } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
@@ -18,15 +18,16 @@ let propId: i32;
 export function generatePayFromProposal(proposalId: i32): string{
     assert(proposals.contains(proposalId), "Proposal is not registered");
     assert(proposals.getSome(proposalId).status == 0, "Can't generate payment from this proposal");
-    if(timeToProcessProposal(proposalId) || getFundsToSuccess(proposalId) == u128.from(0)){
+    if(getFundsToSuccess(proposalId) < getPercentToRefound(proposalId, 25)){
       if(proposalCompleted(proposalId)){ 
         return "Proposal goal is complete!, creator will recibe amount";
       }else{
-        refund(proposalId)
+        PayToCreator(proposalId)
         inactiveProposalAfterTime(proposalId);
         return "Proposal goal is not complete, contributors will recibe their amount";
       }
     }else{
+      refund(proposalId)
       return "Proposal is not finish yet";
     }
   }
@@ -70,19 +71,12 @@ export function generatePayFromProposal(proposalId: i32): string{
  * @param scale time unit
  * @returns Proposal
  */ 
-  export function changetimeProposal(proposalId: i32, time: i32, scale: string): Proposal{
-    let newTime = i64(Context.blockTimestamp);
+  export function changetimeProposal(proposalId: i32, time: string): Proposal{
+    
     let temProposal = proposals.getSome(proposalId)
-    if(scale == "s"){
-      newTime = newTime + ( i64(time)* i64(NANOSEC_SEC))
-    }else if(scale == "m"){
-      newTime = newTime + ( i64(time) * i64(NANOSEC_MIN))
-    }else if(scale == "h"){
-      newTime =  newTime + ( i64(time)* i64(NANOSEC_HOR) )
-    }else if(scale == "d"){
-      newTime =  newTime + ( i64(time)* i64(NANOSEC_DIA) )
-    }
-    temProposal.finishDate = newTime;
+  
+
+    temProposal.finishDate = time;
     proposals.set(proposalId, temProposal)
     
     return temProposal
@@ -94,14 +88,14 @@ export function generatePayFromProposal(proposalId: i32): string{
  * @param proposalId proposal ID
  * @returns bool
  */ 
-  export function timeToProcessProposal(proposalId: i32): boolean{
-    let temProposal = proposals.getSome(proposalId)
-    if(temProposal.finishDate < i64(Context.blockTimestamp)){
-      return true
-    }else{
-      return false
-    }
-  }
+  // export function timeToProcessProposal(proposalId: i32): boolean{
+  //   let temProposal = proposals.getSome(proposalId)
+  //   if(temProposal.finishDate < i64(Context.blockTimestamp)){
+  //     return true
+  //   }else{
+  //     return false
+  //   }
+  // }
   
  /**
  * Transfer from contract to an specific user 

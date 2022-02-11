@@ -1,5 +1,5 @@
 
-export default interface User {
+export default interface Proposal {
     user: string,
     amountNeeded:string,
     founds: string,

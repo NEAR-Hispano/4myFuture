@@ -11,6 +11,7 @@ class User {
     contributions: Array<Contribution>;
     withActiveProposal: bool;
     rank: number;
+    picture: string;
 
     constructor(accountId: string){
 
@@ -18,10 +19,15 @@ class User {
     this.id = accountId;
     this.contributions = new Array<Contribution>();
     this.withActiveProposal = false;
+    this.picture = "https://ipfs.infura.io/ipfs/QmPcGmi195SxtGeM7U6TzhAMqq8Xd1hwaYn9iBArbQEiyA";
     }
 
     setProposal(isActive: bool): void{
         this.withActiveProposal = isActive;
+    }
+
+    changePicture(picture: string): void{
+        this.picture = picture;
     }
  
 

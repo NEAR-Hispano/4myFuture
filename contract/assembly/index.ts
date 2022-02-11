@@ -1,12 +1,12 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import User from './models/User'
-import { userList, proposals, contributions, payments, value } from './Storage'
-import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
+import { userList, proposals, contributions, payments, value, totalAmountContributed } from './Storage'
+import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal, getPercentToRefound } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { adminDAO, asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
 import Payment from './models/Payment';
-import { generatePayFromProposal, timeToProcessProposal, transfer } from './FundsManager';
+import { generatePayFromProposal, transfer } from './FundsManager';
 
 
 
@@ -28,7 +28,8 @@ export function createUser(): User {
  * @returns  User
  */ 
 export function getUser(userId: string): User {
-  return userList.getSome(userId)
+  const isUser = userList.getSome(userId);
+  return isUser
 }
 
 /**
@@ -91,20 +92,22 @@ export function changeRank (userId: string, rank: number): User{
 export function createNewProposal(
   title: string,
   description: string,
-  finishDate: i32,
+  initDate: string,
+  finishDate: string,
   photos: Array<string>,
   amountNeeded: string
   ): Proposal {
 
-    assert(finishDate > 0, "Invalid finishDate")
+    // assert(finishDate > 0, "Invalid finishDate")
     let amountf = parseFloat(amountNeeded)* BASE_TO_CONVERT;
-    let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_MIN);
+    // let fninalDate = Context.blockTimestamp + (finishDate*NANOSEC_DIA);
     assert(amountf > 0, "invalid amount introduced");
 
  return createProposal(
     title,
     description,
-    fninalDate,
+    initDate,
+    finishDate,
     photos,
     u128.div(toYoctob128(u128.from(amountf)), u128.from(BASE_TO_CONVERT))
   );
@@ -137,6 +140,18 @@ export function getAllProposals(): Array<Proposal> {
   
 };
 
+/**
+ * Get one proposal by Id  
+ * @returns  Proposal
+ */ 
+export function getProposal(proposalId: string): Proposal {
+  const idNumber = parseFloat(proposalId)
+  const id = u32(idNumber);
+  const proposal = proposals.getSome(id);
+  return proposal;
+
+}
+
 
 //PROPOSAL CONTRIBUTIONS <------------------------------- REVIEW
 
@@ -147,12 +162,12 @@ export function getAllProposals(): Array<Proposal> {
  * @param userRefound Student ID  
  * @returns Contribution
  */ 
-export function createContribution(proposalId: u32, amount: string, userRefound: string): Contribution {
+export function createContribution(proposalId: u32, amount: string, userRefound: string, today: string, comments: string): Contribution {
   assert(proposals.contains(proposalId), "Inexistent proposal");
   //get Proposal
   let proposal = proposals.getSome(proposalId);
   assert(proposal.status == 0, "Can't contribute to this proposal");
-  assert(!timeToProcessProposal(proposalId), "Proposal time objective completed");
+  assert(proposal.finishDate != today, "Proposal time objective completed");
   //amount must be more than 0
   if(!userList.contains(Context.sender)){ //CREATING USER FOR CONTRIBUTE
     let newUser = new User(Context.sender)  
@@ -165,22 +180,32 @@ export function createContribution(proposalId: u32, amount: string, userRefound:
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
   assert(amountU128 <=  fundsToSuccess, "The contributions is higher than the requirement");
  // assert(amountU128 > u128.from(0), "Contribution will be not zero");
-  assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
-  let  contribution = new Contribution(contributions.length+1,proposalId, amountU128, userRefound);
+  // assert(Context.attachedDeposit == amountU128, "Attached deposit mus be same than contribution amount"); 
+  let  contribution = new Contribution(contributions.length+1,proposalId,proposal.photos[0], amountU128, userRefound, userList.getSome(userRefound).picture, today, comments);
   proposal.founds = u128.add(proposal.founds, amountU128);
   proposals.set(proposal.index, proposal);
-  contributions.set(contributions.length+1, contribution);
+  contributions.set(contributions.length, contribution);
   let  userTemp = userList.getSome(userRefound);
   userTemp.contributions.push(contribution);
   userList.set(userRefound, userTemp);
+
   return contribution
 }
+
+/**
+ * Get all contributions saved in system 
+ * @returns Array<Contribution>
+ */ 
+export function getAllContributions(): Array<Contribution> {
+  return contributions.values(0, contributions.length);
+}
+
 
 /**
  * Contribute to 4MyFutureDApp and save it  
  * @returns true
  */ 
-export function giveTip(): bool {
+export function giveTip(): bool { //FIXME
   assert(Context.attachedDeposit > u128.Zero, "Invalid contribution amount");
   const payment = new Payment('4MyFuture', Context.sender, Context.attachedDeposit, '', 'ProjectContribution');
   payments.set(payments.length, payment);
@@ -201,6 +226,7 @@ export function getAllPayments(): Array<Payment>{
   return payments.values(0, payments.length);
 }
 
+
 /**
  * Fund users contribution once finished the proposal time
  * @param proposalId proposal 
@@ -209,6 +235,11 @@ export function getAllPayments(): Array<Payment>{
 export function fund(proposalId: i32): string {
  return generatePayFromProposal(proposalId)
 }
+
+export function percent(proposalId: i32): u128 {
+
+  return getPercentToRefound(proposalId,25)
+ }
 
 /**
  * Get the contributions total amount
@@ -221,7 +252,8 @@ export function getTotalTips(): Array<u128>{
 /**
  * Withdraw all NEARs amount by project contributions to DAO contract  
  */ 
-export function withdrawAll(): void {
+
+export function withdrawAll(): void { //FIXME
   const isAdmin = onlyAdmins();
   assert(isAdmin, "Only admins can call this function");  
   assert(value.getSome(0) > u128.from(0), "The contract value equals to 0")
@@ -229,4 +261,8 @@ export function withdrawAll(): void {
   const payment = new Payment(adminDAO, '4MyFuture', value.getSome(0), '', 'WithdrawTip');
   payments.set(payments.length, payment);
   value.set(0, u128.from(0));
+}
+
+export function changeProfilePicture(userId: string, picture: string): void {
+  userList.getSome(userId).changePicture(picture);
 }
