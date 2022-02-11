@@ -4,8 +4,6 @@ import { LogOutIcon, LoginIcon } from "../icons";
 import { useNear } from "../../hooks/useNear";
 import { useRouter } from "next/router";
 import useUser from "../../hooks/useUser";
-import Proposal from "../../models/Proposal";
-import SearchBar from "../home/SearchBar";
 import { IoMdNotifications } from "react-icons/io";
 import Dropdown from "./dropdown";
 import Config from "./config";

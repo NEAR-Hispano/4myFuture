@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import Details from '../../components/profile/details';
+import Details from '../../components/profile/Details';
 import { useNear } from '../../hooks/useNear';
 
 function index() {

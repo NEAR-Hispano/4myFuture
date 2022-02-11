@@ -1,6 +1,5 @@
 import React from "react";
 import Proposal from "../../models/Proposal";
-import Pagination from "../common/Pagination";
 import ProposalCard from "./ProposalCard";
 
 interface ProposalGeneralProps {
@@ -12,9 +11,9 @@ function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
   return (
     <div className="">
       <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle ">
-        {proposals?.map((proposal) => (
+        {proposals?.map((proposal, i) => (
           <ProposalCard
-            
+              key={i}
               title={proposal?.title}
               amountNeeded={proposal?.amountNeeded}
               index={proposal?.index}
