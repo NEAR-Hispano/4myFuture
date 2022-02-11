@@ -36,11 +36,12 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     }
   };
   const fund = async () => {
-    const proposalId = proposal.index;
-    const today = new Date();
+    const proposalId = {
+      proposalId: proposal.index
+    };
+    
     // @ts-ignore: Unreachable code error
-
-    nearContext.contract.fund({proposalId, today}).then(() => {
+    nearContext.contract.fund(proposalId,300000000000000,300000000000000).then(() => {
     router.push('/home')
   })
 }
@@ -48,7 +49,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   React.useEffect(() => {
     canFund();
-    if((fundsLeft == 0) && (proposal.status != 3)) {
+    if(((fundsLeft == 0) && (proposal.status != 3))) {
       fund();
     }
   });
@@ -122,10 +123,10 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         />
       </div>
       <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 "></div>
-      {((isOwner) && (proposal.status != 3) && (fundsLeft <= parseInt(proposal.amountNeeded)*0.25)) ? 
-      <div>
+      {(((isOwner) && (proposal.status != 3) && (fundsLeft < (parseFloat(toNEAR(proposal.amountNeeded))*0.25))) || ((proposal.founds != '0') && moment(proposal.finishDate) < moment())) ? 
+      <div className="text-center">
         <button className="p-6 bg-green-400 hover:bg-green-500" onClick={()=>{fund()}}>
-        Get Funds
+        Get Funds 
         </button>
       </div>  
       :

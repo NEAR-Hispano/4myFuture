@@ -10,7 +10,7 @@ import { IoMdNotifications } from 'react-icons/io';
 import Dropdown from "./dropdown";
 import Config from "./config";
 import { Menu } from "@headlessui/react";
-import {useAuth} from "../../hooks/useAuth";
+import Search from "./search";
 
 
 function Navbar() {
@@ -19,8 +19,13 @@ function Navbar() {
   const [nearContext, setNearContext] = useNear();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = React.useState([]);
-  const [proposals, setProposals] = React.useState<Array<Proposal>>([]);
-  const [authContext, setAuthContext] = useAuth();
+  const [proposals, setProposals] = React.useState([]);
+  const init = async () => {
+
+    const { contract } = await initContract();
+    // @ts-ignore: Unreachable code error
+    contract.getAllProposals().then(setProposals);
+}
 
   const createUser = async () => {
     const { contract } = await initContract();
@@ -53,7 +58,7 @@ function Navbar() {
        nearContext.nearConfig.contractName
        
      );
-     const userId = await nearContext.walletConnection.getAccountId();
+     const userId = nearContext.walletConnection.getAccountId();
      console.log("usere:" +userId)
  
      const usere = {
@@ -63,7 +68,7 @@ function Navbar() {
     
    
      // @ts-ignore: Unreachable code error
-    const userNew = await nearContext.contract.getUser(usere).then(() => {
+    const userNew = nearContext.contract.getUser(usere).then(() => {
       setUser(userNew);
     })
    // const userId = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
@@ -80,22 +85,23 @@ function Navbar() {
   const logOut = async () => {
     await nearContext.walletConnection.signOut();
     setNearContext(null);
-    setAuthContext(false);
     setUser(null);
     router.push("/");
   };
 
-  const loadProposals = async () => {
-    // @ts-ignore: Unreachable code error
-    const proposalList = nearContext.contract.getAllProposals().then(() => {
-      setProposals(proposalList);
-    });
+
+
+  const userLogged = async () => {
+    //const user = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
+    // const user = await nearContext.walletConnection.getAccountId()
+    // if (user) {
+    //     setUser(user?.accountId)
+    //     setLogged(true);
   };
 
-
   React.useEffect(() => {
-    loadProposals();
- 
+    init()
+  
   }, []);
 
   return (
@@ -110,11 +116,10 @@ function Navbar() {
             }}
           />
         </div>
-        <button onClick={() => {console.log(nearContext.walletConnection.isSignedIn())}}>
-          PROBAR FUNCTION
-        </button>
-        <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
-          {proposals != null && user ? (
+         <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
+           <Search data={proposals} />
+           
+           {/* {proposals != null && user ? (
             <input
               type="search"
               placeholder="Search proposal"
@@ -124,6 +129,7 @@ function Navbar() {
           ) : (
             <div></div>
           )}
+         
 
           {searchTerm?.length !== 0 && (
             <div className="w-100 h-32 bg-gray-50 overflow-hidden overflow-y-auto text-lg p-2 mt-1 shadow-lg scrollbar-hide rounded">
@@ -138,9 +144,9 @@ function Navbar() {
                 </button>
               ))}
             </div>
-          )}
-        </span>
-        <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
+          )} */}
+        </span> 
+        {/* <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
           {/* {proposals != null ? (
             <input
               type="search"
@@ -150,7 +156,7 @@ function Navbar() {
             />
           ) : 
             <div></div>
-          } */}
+          } }
 
           {searchTerm?.length !== 0 && (
             <div className="w-100 h-32 bg-gray-50 overflow-hidden overflow-y-auto text-lg p-2 mt-1 shadow-lg scrollbar-hide rounded">
@@ -166,8 +172,8 @@ function Navbar() {
               ))}
             </div>
           )}
-        </span>
-        {/* <div className="flex flex-row-reverse text-white mr-4 ml-4 md:hidden">
+        </span> }
+        { <div className="flex flex-row-reverse text-white mr-4 ml-4 md:hidden">
           <button>
             <svg
               width="20"
@@ -216,7 +222,7 @@ function Navbar() {
           <div className="bg-white font-thin h-12 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:bg-[#7B62D9]  hover:text-white font-sans text-black ">
             <button
               onClick={() => {
-                logIn();
+                createUser();
               }}
               className="flex text-2xl"
             >

@@ -4,7 +4,7 @@ import Payment from "./models/Payment";
 import Proposal from './models/Proposal';
 import User from './models/User';
 import { proposals, userList, payments } from "./Storage";
-import { asNEAR, onlyAdmins, toYocto } from './utils'
+import { asNEAR, onlyAdmins, toYocto, toYoctodecimal } from './utils'
 
 
 
@@ -129,6 +129,15 @@ export function getFundsToSuccess(proposalId: u32): u128 {
     const funds = proposal.founds;
     var fundsToSuccess = substract(request, funds);
     return fundsToSuccess; 
+}
+
+export function getPercentToRefound(proposalId: u32, percent: i64): u128 {
+    const proposal = getProposal(proposalId);
+    const request = proposal.amountNeeded;
+    const percentYocto = u128.from(percent);
+    var fundsRefound = multipli(request, percentYocto);
+    var fundsPercent = divide(fundsRefound, u128.from(100))
+    return fundsPercent; 
 }
 
 /**
@@ -280,6 +289,14 @@ export function deleteUser(user: string): bool {
  */ 
 export function substract(num1: u128, num2: u128): u128  {
     return u128.sub(num1,num2);
+}
+
+export function multipli(num1: u128, num2: u128): u128  {
+    return u128.mul(num1,num2);
+}
+
+export function divide(num1: u128, num2: u128): u128  {
+    return u128.div(num1,num2);
 }
 
 /**

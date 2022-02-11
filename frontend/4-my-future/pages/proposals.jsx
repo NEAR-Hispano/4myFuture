@@ -89,7 +89,9 @@ function ProposalsAdd() {
     console.log(proposalAmount)
 
 
-    contract.createNewProposal(proposal, 300000000000000, 300000000000000);
+    contract.createNewProposal(proposal, 300000000000000, 300000000000000).then(() => {
+      router.push('/home')
+    });
     setVisibility("visible")
 
   
@@ -343,11 +345,7 @@ function ProposalsAdd() {
 
       </Layout>
 
-      {proposalTitle}
-      {proposalDescription}
-      {proposalDate}
-      {proposalAmount}
-      {urlArr}
+   
       
 {/*       
       <button

@@ -1,7 +1,7 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import User from './models/User'
 import { userList, proposals, contributions, payments, value, totalAmountContributed } from './Storage'
-import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal } from './ProposalManager';
+import { createProposal, inactiveProposal, getFundsToSuccess, proposalCompleted, pauseProposal, getPercentToRefound } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { adminDAO, asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
@@ -235,9 +235,14 @@ export function getAllPayments(): Array<Payment>{
  * @param proposalId proposal 
  * @returns payStudent(student, proposal)
  */ 
-export function fund(proposalId: i32, today: string): string {
- return generatePayFromProposal(proposalId, today)
+export function fund(proposalId: i32): string {
+ return generatePayFromProposal(proposalId)
 }
+
+export function percent(proposalId: i32): u128 {
+
+  return getPercentToRefound(proposalId,25)
+ }
 
 /**
  * Get the contributions total amount
