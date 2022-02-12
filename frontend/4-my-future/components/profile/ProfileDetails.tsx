@@ -8,7 +8,7 @@ interface DetailsProps {
   near: NearContext;
 }
 
-function Details({ near }: DetailsProps) {
+function ProfileDetails({ near }: DetailsProps) {
   const [user, setUser] = React.useState<User>(null);
   const [amountNEARs, setAmountNEARs] = React.useState(0);
 
@@ -61,4 +61,4 @@ function Details({ near }: DetailsProps) {
   );
 }
 
-export default Details;
+export default ProfileDetails;
