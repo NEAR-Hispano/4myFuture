@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import ProfileDetails from '../../components/profile/ProfileDetails';
 import { useNear } from '../../hooks/useNear';
 
-function index() {
+function Index() {
 
     const [nearContext, setNearContext] = useNear();
 
@@ -16,4 +16,4 @@ function index() {
     )
 }
 
-export default index
+export default Index
