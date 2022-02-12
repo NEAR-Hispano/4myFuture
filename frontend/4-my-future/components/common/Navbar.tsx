@@ -4,8 +4,6 @@ import { LogOutIcon, LoginIcon } from "../icons";
 import { useNear } from "../../hooks/useNear";
 import { useRouter } from "next/router";
 import useUser from "../../hooks/useUser";
-import Proposal from "../../models/Proposal";
-import SearchBar from "../home/SearchBar";
 import { IoMdNotifications } from "react-icons/io";
 import Dropdown from "./dropdown";
 import Config from "./config";
@@ -93,7 +91,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/home`);
+                router.push(`/Home`);
               }}
             >
               Home
@@ -101,7 +99,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/contribution`);
+                router.push(`/Contribution`);
               }}
             >
               Contributions
@@ -109,7 +107,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/proposals`);
+                router.push(`/Proposals`);
               }}
             >
               Create proposal
@@ -148,7 +146,7 @@ function Navbar() {
             <div className="mr-5 ml-5 font-white flex items-center align-middle justify-center cursor-pointer">
               <a
                 onClick={() => {
-                  router.push(`/proposals`);
+                  router.push(`/Proposals`);
                 }}
               ></a>
               {/* <Menu as="div" className="relative inline-block text-left">
@@ -200,6 +198,7 @@ function Navbar() {
                       <a
                         onClick={() => {
                           logOut();
+                          router.push("/");
                         }}
                         className="flex items-center px-2 py-2 mx-1 hover:bg-[#7B62D9] hover:text-cyan-50"
                       >

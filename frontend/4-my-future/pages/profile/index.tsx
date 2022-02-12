@@ -1,19 +1,19 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import Details from '../../components/profile/details';
+import ProfileDetails from '../../components/profile/ProfileDetails';
 import { useNear } from '../../hooks/useNear';
 
-function index() {
+function Index() {
 
     const [nearContext, setNearContext] = useNear();
 
     return (
         <div>
             <Layout>
-                <Details near={nearContext} />
+                <ProfileDetails near={nearContext} />
             </Layout>
         </div>
     )
 }
 
-export default index
+export default Index
