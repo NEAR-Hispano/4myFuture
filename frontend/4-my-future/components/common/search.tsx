@@ -50,28 +50,24 @@ function Search({ data }: SearchProps) {
 
   return (
     <div>
-        <span className="w-full md:w-1/3 h-10  border border-[#7B62D9] text-sm rounded-full flex">
+        <span className="w-full md:w-1/3 h-10  rounded-full flex">
          
             <input
               type="search"
               placeholder="Search proposal"
-              className="flex-grow px-4 rounded-l-full rounded-r-full text-sm focus:outline-none"
+              className="flex-grow px-16 rounded-l-full rounded-r-full w-72 text-lg focus:outline-none"
               onChange={handleFilter}
             />
-          
-        
-
-      
         </span>
-        <span className="w-full md:w-9/12 h-10  border border-[#7B62D9] text-sm rounded-full flex">
+        <span >
           {searchTerm?.length !== 0 && (
-            <div className="w-full h-32 bg-gray-50 overflow-hidden overflow-y-auto text-lg p-2 mt-1 shadow-lg scrollbar-hide rounded">
+            <div className="w-72 z-50 absolute h-32 bg-gray-50 overflow-hidden overflow-y-auto text-lg p-2 mt-1 shadow-lg scrollbar-hide rounded">
               {searchTerm?.map((value) => (
                 <button
                   onClick={() => {
                     router.push(`/proposal/${value.index}`);
                   }} //FIXME
-                  className="w-ful flex items-center border-b-2 p-3 border-primary-blue-400 hover:bg-gray-100 hover:text-black text-gray-500 scrollbar-hide mt-2"
+                  className="w-full flex items-center border-b-2 p-3 border-primary-blue-400 hover:bg-gray-100 hover:text-black text-gray-500 scrollbar-hide mt-2"
                 >
                   {value.title}
                 </button>
