@@ -28,6 +28,11 @@ import { asNEAR, onlyAdmins, toYocto, toYoctodecimal } from './utils'
 export function createProposal(
 
     title: string,
+    goal: string,
+    linkInstitution: string,
+    linkPensum: string,
+    activityStart: string,
+    activityEnd: string,
     description: string,
     initDate: string,
     finishDate: string,
@@ -43,6 +48,11 @@ export function createProposal(
     const newProposal = new Proposal(
         Context.sender,
         title,
+        goal,
+        linkInstitution,
+        linkPensum,
+        activityStart,
+        activityEnd,
         description,
         amountNeeded,
         initDate,

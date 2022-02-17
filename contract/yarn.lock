@@ -45,8 +45,6 @@
     "@as-covers/core" "0.2.1"
     "@as-pect/assembly" "^6.2.0"
     "@as-pect/core" "^6.2.1"
-    "@as-pect/csv-reporter" "^6.2.1"
-    "@as-pect/json-reporter" "^6.2.1"
     "chalk" "^4.1.1"
     "glob" "^7.1.7"
   optionalDependencies:

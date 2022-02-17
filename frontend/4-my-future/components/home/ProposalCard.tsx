@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { toDay_from_nano, toNEAR } from '../utils'
 import { HeartIcon } from '../icons';
 import moment from 'moment';
+import { coingeckoFetch, coingeckoUrl } from "../coingeko";
 
 
 
@@ -33,10 +34,9 @@ function ProposalCard({
   status,
   type
 }: ProposalCardInfoProps) {
+  console.log(coingeckoFetch(moment().format('DD-MM-YYYY')))
   const router = useRouter();
   const fundsLeft = Number(toNEAR(amountNeeded)) - Number(toNEAR(founds));
-  const total = (fundsLeft * 12) / Number(toNEAR(founds));
-  const percent = 'w-'+(6/12).toString();
   
   return status == type? <div> </div>:  (
     <div className={ status == 0 ? "w-1/3 h-full pb-6 pr-6 pl-6 pt-6 bg-gray-100 border-0 rounded-t-xl shadow-lg shadow-[#7B62D9] font-sans mt-2 mr-2 m-8 " 
@@ -68,6 +68,7 @@ function ProposalCard({
         <div className="flex justify-between">
           <div className="text-2xl font-bold text-green-500">{title}</div>
         </div>
+        
         
         <div className="text-lg font-thin">{user}</div>
         {status == 1}

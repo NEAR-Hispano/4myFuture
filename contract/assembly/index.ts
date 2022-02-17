@@ -91,6 +91,11 @@ export function changeRank (userId: string, rank: number): User{
  */ 
 export function createNewProposal(
   title: string,
+  goal: string,
+  linkInstitution: string,
+  linkPensum: string,
+  activityStart: string,
+  activityEnd: string,
   description: string,
   initDate: string,
   finishDate: string,
@@ -105,6 +110,11 @@ export function createNewProposal(
 
  return createProposal(
     title,
+    goal,
+    linkInstitution,
+    linkPensum,
+    activityStart,
+    activityEnd,
     description,
     initDate,
     finishDate,

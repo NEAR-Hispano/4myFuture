@@ -7,7 +7,8 @@ import Contribution from "../models/Contribution";
 import User from "../models/User";
 import Proposal from "../models/Proposal";
 import { useNear } from "../hooks/useNear";
-import { toNEAR } from "../components/utils";
+import {toNEAR } from "../components/utils";
+import moment from "moment";
 
 const Home: NextPage = () => {
   const [contributions, setContributions] = React.useState<Array<Contribution>>(
@@ -36,6 +37,7 @@ const Home: NextPage = () => {
   };
 
   React.useEffect(() => {
+
     if (nearContext) {
       showStatistics();
     }

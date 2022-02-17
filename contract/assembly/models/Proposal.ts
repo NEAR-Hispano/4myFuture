@@ -8,6 +8,11 @@ class Proposal {
     amountNeeded: u128;
     founds: u128;
     title: string;
+    goal: string;
+    linkInstitution: string;
+    linkPensum: string;
+    activityStart: string;
+    activityEnd: string;
     description: string;
     initDate: string; //while development
     finishDate: string;
@@ -18,6 +23,11 @@ class Proposal {
     constructor(
         user: string,
         title: string,
+        goal: string,
+        linkInstitution: string,
+        linkPensum: string,
+        activityStart: string,
+        activityEnd: string,
         description: string,
         amountNeeded: u128,
         initDate: string,
@@ -27,6 +37,11 @@ class Proposal {
     ){
         this.user = user;
         this.title = title;
+        this.goal = goal;
+        this.linkInstitution = linkInstitution;
+        this.linkPensum = linkPensum;
+        this.activityStart = activityStart;
+        this.activityEnd = activityEnd;
         this.description = description;
         this.amountNeeded = amountNeeded;
         this.initDate = initDate;

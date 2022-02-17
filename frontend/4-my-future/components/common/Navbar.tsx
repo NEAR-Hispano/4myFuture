@@ -91,7 +91,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/Home`);
+                router.push(`/home`);
               }}
             >
               Home
@@ -99,7 +99,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/Contribution`);
+                router.push(`/contribution`);
               }}
             >
               Contributions
@@ -107,7 +107,7 @@ function Navbar() {
             <a
               className="block lg:inline-block mt-4 lg:mt-0 mr-10 text-white hover:text-indigo-600 cursor-pointer"
               onClick={() => {
-                router.push(`/Proposals`);
+                router.push(`/proposals`);
               }}
             >
               Create proposal

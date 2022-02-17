@@ -75,6 +75,23 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         </div>
         <div className="text-2xl font-thin"> {proposal.user}</div>
       </div>
+      <div className="flex flex-col w-full h-1/4 ">
+      <div className="text-base font-thin">
+            Academic description:
+          </div>
+          <div className="text-base font-thin">
+          Start: {proposal.activityStart}
+          </div>
+          <div className="text-base font-thin">
+          End: {proposal.activityEnd}
+          </div>
+          <div className="text-base font-thin ">
+          Institution: <a href={proposal.linkInstitution} target="_blank" className="hover:text-fuchsia-600"> Institution Website</a>
+          </div>
+          <div className="text-base font-thin">
+          Pensum: <a href={proposal.linkPensum} target="_blank" className="hover:text-fuchsia-600"> Pensum link</a>
+          </div>
+      </div>
 
       <div className="h-1/2 mt-5 border-2 p-6 rounded-t-xl shadow-2xl flex justify-center items-center align-middle mb-5">
         <div className="flex flex-col h-full justify-center items-center">
@@ -84,7 +101,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 {fundsLeft.toFixed(2)} <span className="font-thin"> NEARs left</span>
               </span>
             </div>
-            {proposal.status == 0 ?
+            {proposal.status == 0 && proposal.user != user.id ?
             <button
               className="flex mb-5 m-auto p-3 w-2/4  items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
               onClick={handleEnableModal}
@@ -119,7 +136,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
         <img
           src={proposal.photos[0]}
           alt="Proposal"
-          className="h-full w-50 m-auto shadow-lg"
+          className="h-full w-1/2 m-auto shadow-lg"
         />
       </div>
       <div className="flex flex-col items-center justify-center  align-middle text-xl font-medium text-green-500 border-t-2 "></div>
