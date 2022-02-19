@@ -4,6 +4,7 @@ export default interface Proposal {
     amountNeeded:string,
     founds: string,
     title: string,
+    goal: string,
     linkInstitution: string,
     linkPensum: string,
     activityStart: string,

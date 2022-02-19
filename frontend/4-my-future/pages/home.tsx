@@ -34,7 +34,7 @@ function home() {
         }, []
     )
     return (
-        <div>
+        <div className="bg-indigo-200">
             <Layout>
            
                 <SearchHome data={proposals} contribution={contribution} users={users}/>
