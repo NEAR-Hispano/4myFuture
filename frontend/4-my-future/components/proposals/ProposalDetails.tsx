@@ -177,7 +177,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     
      </div>
      <div className="lg:w-1/2 flex flex-col justify-center mt-7 md:mt-8 lg:mt-0 pb-8 lg:pb-0">
-       <h1 className="text-3xl lg:text-4xl font-semibold text-green-500">{proposal.title}</h1>
+       <h1 className="text-5xl lg:text-4xl font-bold text-[#9a86e0] p-6 text-center">{proposal.title}</h1>
        <p className="text-base leading-normal text-gray-600 mt-2"> {proposal.description}</p>
        <div className="flex border-t border-gray-200 py-2">
           <span className="text-gray-500">Academic description:</span>
@@ -217,12 +217,12 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
      <div className="flex items-center flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-8 md:mt-16">
        {proposal.status == 0 && proposal.user != user.id ? 
        
-        <button className="w-full md:w-3/5 border border-gray-800 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-green-500 text-white"  onClick={handleEnableModal} >found</button>
+        <button className="w-full md:w-3/5 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 shadow-lg  hover:shadow-[#9a86e0]  bg-[#9a86e0] text-white"  onClick={handleEnableModal} >fund</button>
        
       
        : 
      
-       <button className="w-full md:w-3/5 border border-gray-800 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-gray-500 text-white" >found</button>
+       <button className="w-full md:w-3/5 border border-gray-800 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-gray-500 text-white" >fund</button>
       
      
        }
