@@ -80,7 +80,7 @@ function Navbar() {
           <div className="text-xl flex justify-between w-1/2">
             <div className="flex">
               <button
-                className="  px-12 flex items-center justify-center align-middle text-white hover:border-x-2 hover:border-[#9a86e0]"
+                className="  px-12 flex items-center justify-center align-middle text-white hover:text-[#251758]"
                 onClick={() => {
                   router.push(`/home`);
                 }}
@@ -88,7 +88,7 @@ function Navbar() {
                 Home
               </button>
               <button
-                className="px-6 flex items-center justify-center align-middle text-white hover:border-x-2 hover:border-[#9a86e0]"
+                className="px-6 flex items-center justify-center align-middle text-white hover:text-[#251758]"
                 onClick={() => {
                   router.push(`/contribution`);
                 }}
@@ -96,18 +96,13 @@ function Navbar() {
                 Contributions
               </button>
               <button
-                className="px-6 flex items-center justify-center align-middle text-white hover:border-x-2 hover:border-[#9a86e0]"
+                className="px-6 flex items-center justify-center align-middle text-white hover:text-[#251758]"
                 onClick={() => {
                   router.push(`/proposals`);
                 }}
               >
                 Create proposal
               </button>
-              <button
-                onClick={() => {
-                  router.push(`/proposals`);
-                }}
-              ></button>
             </div>
 
             <div className="flex h-full justify-center items-center align-middle">
