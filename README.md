@@ -1,7 +1,6 @@
 4MyFuture
 ==================
-crowdfunding dapp for students for fund their professional training.
-
+Crowdfunding dapp for students for fund their professional training.
 4MyFuture is an app which students with low socio-economic status can find an oportunity to fund their academic goals
 
 This app was initialized with [create-near-app]
@@ -25,22 +24,16 @@ Go ahead and play with the app and the code. As you make code changes, the app w
 Exploring The Code
 ==================
 
-1. The "backend" code lives in the `/contract` folder. See the README there for
-   more info.
-2. The frontend code lives in the `/src` folder. `/src/index.html` is a great
-   place to start exploring. Note that it loads in `/src/index.js`, where you
-   can learn how the frontend connects to the NEAR blockchain.
-3. Tests: there are different kinds of tests for the frontend and the smart
-   contract. See `contract/README` for info about how it's tested. The frontend
-   code gets tested with [jest]. You can run both of these at once with `yarn
-   run test`.
+1. The "backend" code lives in the `/contract` folder here you can find two folders `/rust` and `/assemblyScript` where contract code lives in both languages. See the README there for
+   more info. 
+2. The frontend code lives in the `/fronted` folder. `/frontend/4-my-future/src/index.ts` is a great
+   place to start exploring. Here you will find the Landing Page code
 
 
 Deploy
 ======
 
-Every smart contract in NEAR has its [own associated account][NEAR accounts]. When you run `yarn dev`, your smart contract gets deployed to the live NEAR TestNet with a throwaway account. When you're ready to make it permanent, here's how.
-
+In the main folder you'll find the scripts folder, here you can execute the next command `scripts/dev-deploy.sh` to deploy AssemblyScript Contract
 
 Step 0: Install near-cli (optional)
 -------------------------------------
@@ -122,8 +115,6 @@ Refound payments:
 near call <your deployed contract> refundPayments '{"proposalId":u32}' --account-id <username>.testnet 
 ```
 
-Troubleshooting
-===============
 
 On Windows, if you're seeing an error containing `EPERM` it may be related to spaces in your path. Please see [this issue](https://github.com/zkat/npx/issues/209) for more details.
 
