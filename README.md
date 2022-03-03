@@ -3,6 +3,8 @@
 Crowdfunding dapp for students for fund their professional training.
 4MyFuture is an app which students with low socio-economic status can find an oportunity to fund their academic goals
 
+PRODUCTION REPOSITORY
+
 This app was initialized with [create-near-app]
 
 
