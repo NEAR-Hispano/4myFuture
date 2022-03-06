@@ -14,12 +14,27 @@ import { generatePayFromProposal, transfer } from './FundsManager';
 /**
  * Create and save an user into 4MyFuture 
  * @returns  User
+ * @deprecated
  */ 
 export function createUser(): User {
   assert(!userList.contains(Context.sender), "the user already exist")
   let newUser = new User(Context.sender)  
   userList.set(Context.sender, newUser)
   return newUser
+}
+
+/**
+ * Log into 4MyFuture 
+ * @returns  User
+ */ 
+export function login(): User {
+  if(!userList.contains(Context.sender)) {
+    let newUser = new User(Context.sender);
+    userList.set(Context.sender, newUser);
+    return newUser;
+  }
+  let user = userList.getSome(Context.sender);
+  return user;
 }
 
 /**

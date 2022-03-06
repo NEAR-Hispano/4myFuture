@@ -5,7 +5,6 @@ import useUser from "../hooks/useUser";
 import { initContract } from "./near";
 import { useNear } from "../hooks/useNear";
 
-
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -21,10 +20,18 @@ function Layout({ children }: LayoutProps) {
     try {
       const userId = await near.walletConnection.getAccountId();
       if (typeof userId == "string") {
-        // @ts-ignore: Unreachable code error
-        const userLog = await near.contract.getUser({ userId });
-        setUser(userLog);
-        return;
+        try {
+          // @ts-ignore: Unreachable code error
+          const userLog = await near.contract.getUser({ userId });
+          setUser(userLog);
+          return;
+        } catch (e) {
+          console.log("creating user");
+          // @ts-ignore: Unreachable code error
+          const newUser = await near.contract.login();
+          setUser(newUser);
+          return;
+        }
       }
     } catch (e) {
       console.log(e);
@@ -46,7 +53,7 @@ function Layout({ children }: LayoutProps) {
         <div className="">
           <Navbar />
           <div className="mb-20">{children}</div>
-          <Footer /> 
+          <Footer />
         </div>
       ) : (
         <div></div>
