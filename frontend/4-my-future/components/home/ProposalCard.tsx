@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import Proposal from "../../models/Proposal";
 import { useRouter } from "next/router";
 import { toDay_from_nano, toNEAR } from "../utils";
@@ -6,6 +7,17 @@ import { HeartIcon } from "../icons";
 import moment from "moment";
 import { coingeckoFetch, coingeckoUrl } from "../coingeko";
 import Loading from "../common/Loading";
+=======
+import Proposal from '../../models/Proposal';
+import { useRouter } from 'next/router';
+import { toDay_from_nano, toNEAR } from '../utils'
+import { HeartIcon } from '../icons';
+import moment from 'moment';
+import { coingeckoFetch, coingeckoUrl } from "../coingeko";
+
+
+
+>>>>>>> 5f5930f073be4c1a8a9e7bd554a08a3effc4333a
 
 interface ProposalCardInfoProps {
   index: number;
