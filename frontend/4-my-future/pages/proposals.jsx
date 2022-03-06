@@ -142,7 +142,7 @@ function ProposalsAdd() {
   return (
     <div>
       <Layout>
-        <div className="bg-white rounded-lg  sm:max-w-md sm:w-full sm:mx-auto sm:overflow-hidden">
+        <div className="bg-white rounded-lg sm:max-w-md sm:w-full sm:mx-auto sm:overflow-hidden mt-10">
           <div className="px-1 py-1 sm:px-1">
             <div className="relative mt-6">
               <div className="absolute inset-0 flex items-center">
@@ -361,15 +361,7 @@ function ProposalsAdd() {
         </div>
       </Layout>
 
-      {/*       
-      <button
-              className="text-white py-2 px-4 uppercase rounded bg-green-500 hover:bg-green-200 hover:text-green-500 shadow disabled:bg-green-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
-              onClick={createUser} 
-
-            >
-              {" "}
-              Create User{" "}
-            </button> */}
+  
     </div>
   );
 }

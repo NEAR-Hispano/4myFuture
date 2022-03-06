@@ -14,7 +14,7 @@ interface SearchHomeProps {
 
 function SearchHome({data, contribution, users}: SearchHomeProps) {
     return (
-        <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-2 bg-gray-50 shadow-xl'>
+        <div className='flex flex-col w-full items-center justify-center align-middle h-1/2 border-b-2 pt-10 pb-20 mb-2 bg-gray-50 shadow-xl '>
                 <div className='text-7xl font-sans font-thin'>
                     Help <span className='text-[#7B62D9] font-semibold'>students</span> reach their dreams 
                 </div>

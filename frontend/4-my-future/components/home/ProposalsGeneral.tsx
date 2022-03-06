@@ -5,9 +5,11 @@ import ProposalCard from "./ProposalCard";
 interface ProposalGeneralProps {
   proposals: Proposal[];
   type: string;
+  Ordergoal: string;
+
 }
 
-function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
+function ProposalsGeneral({ proposals, type, Ordergoal}: ProposalGeneralProps) {
   return (
     <div className="">
       <div className="flex w-full flex-wrap overflow-hidden p-auto m-auto justify-center items-center align-middle ">
@@ -15,6 +17,7 @@ function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
           <ProposalCard
               key={i}
               title={proposal?.title}
+              goal={proposal?.goal}
               amountNeeded={proposal?.amountNeeded}
               index={proposal?.index}
               initDate={proposal?.initDate}
@@ -24,6 +27,8 @@ function ProposalsGeneral({ proposals, type}: ProposalGeneralProps) {
               founds={proposal?.founds}
               status={proposal?.status}
               type = {parseInt(type)}
+              Ordergoal = {Ordergoal}
+          
               
             /> 
            

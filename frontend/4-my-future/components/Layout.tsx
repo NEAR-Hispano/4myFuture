@@ -41,12 +41,12 @@ function Layout({ children }: LayoutProps) {
   }, [nearContext]);
 
   return (
-    <div className="w-screen">
+    <div className="w-full">
       {nearContext ? (
         <div className="">
           <Navbar />
-          <div className="">{children}</div>
-          <Footer /> :
+          <div className="mb-20">{children}</div>
+          <Footer /> 
         </div>
       ) : (
         <div></div>

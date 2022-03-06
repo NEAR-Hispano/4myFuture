@@ -12,7 +12,7 @@ function ContributionCard({ contribution }: ContributionCardProps) {
   const router = useRouter();
 
   return (
-    <div className="h-96 w-64 ml-5 flex flex-col font-sans shadow-xl ">
+    <div className="h-50 w-64 ml-5 flex flex-col font-sans shadow-xl p-5">
       <div className="bg-gray-500 p-4 rounded-t-xl">
         <div className="text-xl font-thin text-green-500 w-full flex justify-between">
           <div>Contribution ID#{contribution.idContribution}</div>
