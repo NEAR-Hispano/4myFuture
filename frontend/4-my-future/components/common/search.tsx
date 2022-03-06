@@ -32,30 +32,18 @@ function Search({ data }: SearchProps) {
     setSearchTerm(newFilter);
   };
 
-
-
- 
-
-  const userLogged = async () => {
-    //const user = await JSON.parse(localStorage.getItem('undefined_wallet_auth_key')) || null
-    // const user = await nearContext.walletConnection.getAccountId()
-    // if (user) {
-    //     setUser(user?.accountId)
-    //     setLogged(true);
-  };
-
   React.useEffect(() => {
    console.log(data)
   }, []);
 
   return (
     <div>
-        <span className="w-full md:w-1/3 h-10  rounded-full flex">
+        <span className="w-full  h-7  rounded-full flex">
          
             <input
               type="search"
               placeholder="Search proposal"
-              className="flex-grow px-16 rounded-l-full rounded-r-full w-72 text-lg focus:outline-none"
+              className="flex-grow px-16 rounded-l-full rounded-r-full w-72 text-sm focus:outline-none"
               onChange={handleFilter}
             />
         </span>

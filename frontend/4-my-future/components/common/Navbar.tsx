@@ -24,12 +24,6 @@ function Navbar() {
     contract.getAllProposals().then(setProposals);
   };
 
-  const createUser = async () => {
-    const { contract } = await initContract();
-    //@ts-ignore: Unreachable code error
-    contract.createUser();
-  };
-
   const handleFilter = (e: any) => {
     const searchWord = e.target.value;
     console.log(proposals);
@@ -44,18 +38,15 @@ function Navbar() {
     await nearContext.walletConnection.requestSignIn(
       nearContext.nearConfig.contractName
     );
+  
   };
 
-  const signUp = async () => {
-    // @ts-ignore: Unreachable code error
-    nearContext.contract.createUser();
-  };
 
   const logOut = async () => {
+    await router.push("/")
     await nearContext.walletConnection.signOut();
     setNearContext(null);
     setUser(null);
-    router.push("/");
   };
 
   React.useEffect(() => {
@@ -77,7 +68,7 @@ function Navbar() {
         <span>{user ? <Search data={proposals} /> : ""}</span>
 
         {user ? (
-          <div className="text-xl flex justify-between w-1/2">
+          <div className="text-sm flex justify-between w-1/2">
             <div className="flex">
               <button
                 className="  px-12 flex items-center justify-center align-middle text-white hover:text-[#251758]"
@@ -117,25 +108,15 @@ function Navbar() {
           </div>
         ) : (
           <div className="flex">
-            <div className="font-thin border-2 border-white h-10 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-2xl font-sans text-white ">
+            
+            <div className="bg-white font-extrabold h-10 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-lg hover:shadow-[#c9c1c6] font-sans border-2 text-[#7B62D9] ">
               <button
                 onClick={() => {
                   logIn();
                 }}
-                className="flex text-lg"
-              >
-                Login
-                <LoginIcon className="w-7 ml-4 flex align-middle justify-center items-center"></LoginIcon>
-              </button>
-            </div>
-            <div className="bg-white font-extrabold h-10 mr-3 rounded-lg flex items-center justify-center align-middle pl-6 pr-6 hover:shadow-lg hover:shadow-[#c9c1c6] font-sans border-2 text-[#7B62D9] ">
-              <button
-                onClick={() => {
-                  signUp();
-                }}
                 className="flex font-medium text-lg"
               >
-                Sign Up
+                Login
               </button>
             </div>
           </div>
