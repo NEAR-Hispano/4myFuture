@@ -38,7 +38,7 @@ function Modal({ children, isOpen }: ModalProps) {
           animate="isOpen"
           exit="exit"
           variants={modalVariant}
-          className="bg-black bg-opacity-40 fixed top-0 left-0 w-screen h-screen flex items-center justify-center flex-col"
+          className="bg-black bg-opacity-40 fixed top-0 -left-8 w-screen h-screen flex items-center z-50 justify-center flex-col"
           style={{
             zIndex: 150,
           }}
