@@ -120,7 +120,7 @@ function ProposalCard({
  
   return status == type? <div></div>: (goal==Ordergoal || Ordergoal == "-")? (
     
-    <div className= "flex items-center justify-center bg-gray-200 m-2 cursor-pointer " 
+    <div className= "flex items-center justify-center bg-gray-200 m-2 cursor-pointer w-1/4 blur-[1px] hover:blur-none" 
      
     onClick={(e) => {
       e.preventDefault();
@@ -128,53 +128,28 @@ function ProposalCard({
     }}
     >
 
-      <div className={status == 0? "w-full bg-gray-300 border border-gray-100 rounded-lg text-center hover:shadow-lg align-center"
+      <div className={status == 0? "w-full bg-black hover:bg-white border border-gray-100 rounded-lg text-center hover:shadow-lg align-center hover:text-black text-cyan-50 "
       : "w-full bg-blue-300 border border-gray-100 rounded-lg text-center hover:shadow-lg align-center"}>
-        <div className="">
-          <img src={photos[0]} className="h-52 w-48 m-auto object-contain" />
-        </div>
+       
+          <img src={photos[0]} className="h-64 w-48 m-auto object-contain" />
+          <div className="w-full justify-center align-middle items-center text-2xl p-2 font-thin">
+            {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished!"}
+          </div>
        
 
-        <div className="flex">
-          <div className="text-xl font-bold text-green-500 m-auto w-52 h-20">{title}</div>
-        </div>
-        <div aria-label="gray border badge" className="focus:outline-none border bg-[#7B62D9] h-6 w-60 mb-4 md:mb-0 rounded-full flex items-center justify-center m-auto">
-          <span className="text-xs text-white font-normal">{goal}</span>
-        </div>
-        {
-        status == 0? 
-          <div className="rounded-full py-1 px-4 font-medium border text-yellow-700 bg-yellow-100 border-yellow-300 text-center">
-        In progress
-       </div>
-       :
-       <div className="rounded-full py-1 px-4 font-medium border text-green-900 bg-green-100 border-green-300 text-center">
-        Finished
-       </div>
-       }
+   
+     
 
-        <p className="font-semibold p-2 text-sm text-gray-500"> by <a href="#" className="text-[#7B62D9] hover:text-blue-700"> {user} </a> </p>
-        <div className="">
-           <p>
-        Start: {initDate} 
        
-        </p>
-
-        <p>
-       
-        End: {finishDate}
-        </p>
-
-        <p>
-        Time left: {moment(finishDate).fromNow()}
-        </p> 
-        </div>
+    
       
 
-        <div className="flex flex-col items-center text-xl mt-4 font-medium ">
+        {/* <div className="flex flex-col items-center text-xl  font-medium  ">
+        <div className="text-base font-bold text-green-500 m-auto w-52 h-20"></div>
           <div className="border-t-2 w-full flex justify-center align-middle items-center text-2xl p-2 font-thin bg-[#7B62D9]">
             {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished!"}
           </div>
-        </div>
+        </div> */}
       </div>
 
     </div>
