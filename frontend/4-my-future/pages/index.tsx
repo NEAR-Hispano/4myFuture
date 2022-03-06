@@ -61,7 +61,7 @@ const Home: NextPage = () => {
                 <div className="mt-11">
                   <button
                     onClick={() => {
-                      router.push("/Home");
+                      router.push("/home");
                     }}
                     className="text-3xl pr-10 pl-10 hover:bg-[#5836d6] bg-[#7B62D9] p-4 rounded-xl shadow-2xl text-white font-thin border-2"
                   >

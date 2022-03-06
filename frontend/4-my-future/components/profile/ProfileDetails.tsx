@@ -40,7 +40,7 @@ function ProfileDetails({ near }: DetailsProps) {
              {edit==false?  <div className="flex">
            
            <img src={user.picture} width={100} height={100} />
-           <EditIcon width={30} className="cursor-pointer"></EditIcon>
+          
            </div>: 
            <div>
              

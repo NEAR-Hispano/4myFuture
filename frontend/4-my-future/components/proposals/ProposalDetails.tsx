@@ -95,7 +95,7 @@ const pauseProposal = async () => {
     
      </div>
      <div className="lg:w-1/2 flex flex-col justify-center mt-7 md:mt-8 lg:mt-0 pb-8 lg:pb-0">
-       <h1 className="text-3xl lg:text-4xl font-semibold text-green-500">{proposal.title}</h1>
+       <h1 className="text-5xl lg:text-4xl font-bold text-[#9a86e0] p-6 text-center">{proposal.title}</h1>
        <p className="text-base leading-normal text-gray-600 mt-2"> {proposal.description}</p>
        <div className="flex border-t border-gray-200 py-2">
           <span className="text-gray-500">Academic description:</span>
