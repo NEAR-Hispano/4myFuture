@@ -9,7 +9,7 @@ interface ContributionsGeneralProps {
 function ContributionsGeneral({contributions}: ContributionsGeneralProps) {
   return (
     <div className="">
-      <div className="flex w-full scroll-x scrollbar-hide p-auto m-auto justify-center items-center align-middle">
+      <div className="flex w-full flex-wrap p-auto m-auto justify-center items-center align-middle ">
         {contributions?.map((contribution, i) => (
 
           <ContributionCard key={i} contribution={contribution}/>

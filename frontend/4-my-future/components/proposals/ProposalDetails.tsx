@@ -163,7 +163,7 @@ const pauseProposal = async () => {
                 }}
                 index={proposal.index}
                 near={nearContext}
-                user={proposal.user}
+                user={user.id}
               />
             </Modal>
      </div>

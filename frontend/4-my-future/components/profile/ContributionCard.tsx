@@ -12,32 +12,35 @@ function ContributionCard({ contribution }: ContributionCardProps) {
   const router = useRouter();
 
   return (
-    <div className="h-50 w-64 ml-5 flex flex-col font-sans shadow-xl p-5">
-      <div className="bg-gray-500 p-4 rounded-t-xl">
-        <div className="text-xl font-thin text-green-500 w-full flex justify-between">
-          <div>Contribution ID#{contribution.idContribution}</div>
-          <div>
-            <HeartIcon className="w-6 border-0 text-red-500" />
-          </div>
-        </div>
-        <div className="text-white">Recipient: <span className="font-bold"> {contribution.userRefound}</span></div>
-      </div>
-      
-      <div>Funds: {toNEAR((contribution.amount).toString())}</div>
-      <div className="w-full flex justify-between">
-        <div>Proposal ID{contribution.proposalId}</div>
-        <div>
-          <button
-            className="border-2 border-green-500 hover:bg-green-500"
-            onClick={() => {
-              router.push(`/proposal/${contribution.proposalId}`);
-            }}
-          >
-            Details
-          </button>
-        </div>
-      </div>
-    </div>
+
+
+<div className="cursor-pointer" onClick={() => {
+               router.push(`/proposal/${contribution.proposalId}`);
+           }}>
+
+<div className=" border-2 p-3 mt-6 shadow-lg shadow-[#7B62D9]">
+  <div className="flex">
+    <p className="mr-2 text-lg">Funded:</p>
+    <span className="text-lg text-[#7B62D9] font-extrabold">
+      {toNEAR(contribution.amount.toString())}
+    </span>
+    <span className="text-lg font-bold ml-2">NEARs</span>
+  </div>
+  {/* <div className=" flex">
+    <p className="mr-2 text-lg text-bold">Reicipent:</p>
+    <span className="text-lg text-[#7B62D9] font-extrabold">
+      {contribution.userRefound}
+    </span>
+  </div> */}
+  <div className=" flex">
+    <p className="mr-2 text-lg text-bold">Date:</p>
+    <span className="text-lg text-[#7B62D9] font-extrabold">
+      {contribution.date}
+    </span>
+  </div>
+</div>
+
+</div>
   );
 }
 

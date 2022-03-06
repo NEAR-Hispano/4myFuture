@@ -66,13 +66,14 @@ function ProposalCard({
       >
         <img src={photos[0]} className="h-64 w-48 m-auto object-contain" />
         <div className="w-full justify-center align-middle items-center text-2xl p-2 font-extrabold font-sans">
+          <div className="text-base text-[#7B62D9]">{title}</div>
           {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished!"}
         </div>
       </div>
     </div>
   ) : (
     <div>
-        <Loading></Loading>
+        {/* <Loading></Loading> */}
     </div>
   );
 }
