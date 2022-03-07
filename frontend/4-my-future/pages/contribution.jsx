@@ -99,6 +99,15 @@ function contribution() {
                   {contribution.date}
                 </span>
               </div>
+
+              <div className=" flex">
+               
+                <span className="text-lg text-[#7B62D9] font-extrabold">
+                "{contribution.comments}" 
+                     -{contribution.userRefound}
+                </span>
+               
+              </div>
             </div>
           </div>
 

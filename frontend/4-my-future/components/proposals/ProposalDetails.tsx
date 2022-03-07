@@ -103,13 +103,16 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               <h1 className="text-5xl lg:text-4xl font-bold text-[#9a86e0] p-6 text-center">
                 {proposal.title}
               </h1>
-              <p className="text-base leading-normal text-gray-600 mt-2">
-                {" "}
-                {proposal.description}
-              </p>
+            
               <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Academic description:</span>
+                <span className="text-gray-500">Description:</span>
+                <span className="ml-auto text-gray-900">
+                {proposal.description}
+                </span>
               </div>
+              {/* <div className="flex border-t border-gray-200 py-2">
+                <span className="text-gray-500">Academic description:</span>
+              </div> */}
               <div className="flex border-t border-gray-200 py-2">
                 <span className="text-gray-500">Creator:</span>
 
@@ -134,13 +137,13 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 </span>
               </div>
               <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Start:</span>
+                <span className="text-gray-500">Start of academic activity:</span>
                 <span className="ml-auto text-gray-900">
                   {proposal.activityStart}
                 </span>
               </div>
               <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">End:</span>
+                <span className="text-gray-500">End of academic activity:</span>
                 <span className="ml-auto text-gray-900">
                   {proposal.activityEnd}
                 </span>
