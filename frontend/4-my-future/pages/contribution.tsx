@@ -21,9 +21,9 @@ function contribution() {
   return (
     <div>
       <Layout>
-        <div className="flex flex-col">
+        <div className=" scroll-px-6">
           <div className=" p-6 text-2xl font-thin">Contributions Registered</div>
-          <div className="flex">
+          <div className="flex flex-col">
             {contribution?.map((contribution, i) => (
               <div key={i} className="flex w-min m-auto">
                 <div className="flex flex-col border-2 p-3 mt-6 shadow-lg shadow-[#7B62D9]">
