@@ -476,16 +476,16 @@ function ProposalsAdd() {
 
               <div className="w-full">
                 <div className=" relative ">
-                  <label className="uppercase text-sm font-bold opacity-70">Amount required in USD</label>
+                  <label className="uppercase text-sm font-bold opacity-70">Amount required in NEARs</label>
                   <input type="number" className="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
-                    onChange={(e) => changePrice(e.target.value)}
+                    onChange={(e) => setProposalAmount(e.target.value)}
                     required="true"
                   />
 
                 </div>
-                <br></br>
+                {/* <br></br>
                 <p>Amount in NEARs  {proposalAmount} NEAR </p>
-                <p>1 NEAR = ${amounNears} </p>
+                <p>1 NEAR = ${amounNears} </p> */}
               </div>
               <div className="relative mt-3">
 
