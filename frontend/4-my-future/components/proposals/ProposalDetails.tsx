@@ -25,6 +25,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     setIsOpenEnable(true);
   };
   const [isOwner, setIsOwner] = React.useState<boolean>(false);
+  const [canBeFund, setCanBeFund] = React.useState<boolean>(false);
   const [user] = useUser();
   const router = useRouter();
 
@@ -37,13 +38,18 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     }
   };
 
+  const canBeFundFunction = () => {
+    setCanBeFund(true);
+  };
+
   const fund = async () => {
     const proposalId = {
       proposalId: proposal.index,
     };
 
-    // @ts-ignore: Unreachable code error
-    nearContext.contract.fund(proposalId, 300000000000000, 300000000000000)
+    nearContext.contract
+      // @ts-ignore: Unreachable code error
+      .fund(proposalId, 300000000000000, 300000000000000)
       .then(() => {
         router.push("/home");
       });
@@ -61,8 +67,13 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   React.useEffect(() => {
     canFund();
-    if (fundsLeft == 0 && proposal.status != 3) {
-      fund();
+    if (
+      fundsLeft == 0 &&
+      isOwner &&
+      proposal.status != 3 &&
+      fundsLeft < parseFloat(toNEAR(proposal.amountNeeded)) * 0.25
+    ) {
+      canBeFundFunction();
     }
   });
 
@@ -104,11 +115,11 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               <h1 className="text-5xl lg:text-4xl font-bold text-[#9a86e0] p-6 text-center">
                 {proposal.title}
               </h1>
-            
+
               <div className="flex border-t border-gray-200 py-2">
                 <span className="text-gray-500">Description:</span>
                 <span className="ml-auto text-gray-900">
-                {proposal.description}
+                  {proposal.description}
                 </span>
               </div>
               {/* <div className="flex border-t border-gray-200 py-2">
@@ -138,7 +149,9 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 </span>
               </div>
               <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Start of academic activity:</span>
+                <span className="text-gray-500">
+                  Start of academic activity:
+                </span>
                 <span className="ml-auto text-gray-900">
                   {proposal.activityStart}
                 </span>
@@ -180,46 +193,45 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               </p>
 
               <div className="flex justify-center items-center flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-8 md:mt-16">
-                {proposal.status == 0 && proposal.user != user.id ? (
+                {proposal.status == 0 && proposal.user != user.id  && fundsLeft != 0? (
                   <button
-                  onClick={handleEnableModal}
-                  className="text-3xl font-bold pr-9 pl-9 hover:bg-[#6450ac] bg-[#7B62D9] p-2 rounded-xl shadow-2xl text-white border-2 font-sans"
-                >
-                  Contribute <span>❤</span>
-                </button>
-                ) : (
-                  <div></div>
-                )}
-
-                {(isOwner &&
-                  proposal.status != 3 &&
-                  fundsLeft <
-                    parseFloat(toNEAR(proposal.amountNeeded)) * 0.25) ||
-                (proposal.founds != "0" &&
-                  moment(proposal.finishDate) < moment()) ? (
-                  <button
-                    className="w-full md:w-3/5 border border-gray-800 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-400 hover:bg-green-500 text-white"
-                    onClick={() => {
-                      fund();
-                    }}
+                    onClick={handleEnableModal}
+                    className="text-3xl font-bold pr-9 pl-9 hover:bg-[#6450ac] bg-[#7B62D9] p-2 rounded-xl shadow-2xl text-white border-2 font-sans"
                   >
-                    Get Funds
+                    Contribute <span>❤</span>
                   </button>
                 ) : (
-                  <div></div>
+                  <div>
+                    {canBeFund ? (
+                      <button
+                        className="w-full p-2 pr-32  pl-32 border border-gray-800 text-base font-medium leading-none uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-[#6450ac] bg-[#7B62D9] text-white"
+                        onClick={() => {
+                          fund();
+                        }}
+                      >
+                        Get Funds
+                      </button>
+                    ) : (
+                      <div>
+                        <div className="w-full p-2 pr-32  pl-32 border border-gray-800 text-base font-medium leading-none uppercase py-6 bg-gray-200 text-gray-600">
+                          Get Funds
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
-              <Modal isOpen={isOpenEnable}>
-                <FundModal
-                  handleCancel={() => {
-                    setIsOpenEnable(false);
-                  }}
-                  index={proposal.index}
-                  near={nearContext}
-                  user={proposal.user}
-                />
-              </Modal>
+            <Modal isOpen={isOpenEnable}>
+              <FundModal
+                handleCancel={() => {
+                  setIsOpenEnable(false);
+                }}
+                index={proposal.index}
+                near={nearContext}
+                user={proposal.user}
+              />
+            </Modal>
           </div>
         </div>
       </div>
