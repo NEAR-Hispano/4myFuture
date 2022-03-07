@@ -35,7 +35,7 @@ function ProfileDetails({ near }: DetailsProps) {
     <div className="h-screen w-screen flex justify-center items-center align-middle">
       {user ? (
         <div className="p-8 flex flex-col w-3/4 h-4/5 border-2 bg-gray-100 shadow-2xl rounded-t-xl">
-          <div className="w-full pl-12 flex justify-between  border-b-2 border-green-500">
+          <div className="w-full pl-12 flex justify-between  border-b-2 border-[#7B62D9]">
             <div className="text-5xl pb-7 text-bold text-black">{user.id}</div>
              {edit==false?  <div className="flex">
            
@@ -60,7 +60,7 @@ function ProfileDetails({ near }: DetailsProps) {
             </div>
           </div>
           <div className="w-full flex flex-col mt-10">
-            <div className="text-xl text-green-500 ml-14 font-bold">Contributions</div>
+            <div className="text-xl text-[#7B62D9] ml-14 font-bold">Contributions</div>
             <div className="w-full  p-6">
               <ContributionsGeneral contributions={user.contributions} />
             </div>
