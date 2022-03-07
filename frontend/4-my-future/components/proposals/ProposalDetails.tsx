@@ -10,6 +10,7 @@ import Modal from "../modal";
 import moment from "moment";
 import useUser from "../../hooks/useUser";
 import { useRouter } from "next/router";
+import Comments from "../../pages/comments";
 
 interface ProposalDetailsProps {
   proposal: Proposal;
@@ -222,6 +223,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
           </div>
         </div>
       </div>
+      {/* <Comments proposalId = {proposal.index}/> */}
     </div>
   );
 }
