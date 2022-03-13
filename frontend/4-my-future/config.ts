@@ -1,4 +1,4 @@
-export const contractName = process.env.CONTRACT_NAME || 'dev-1646604822459-43478336422902'
+export const contractName = process.env.CONTRACT_NAME || 'dev-1647202405449-13587389266476'
 
 export function getConfig(env: string) {
   switch (env) {

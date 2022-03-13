@@ -456,19 +456,22 @@ function ProposalsAdd() {
                   onChange={(e) => setProposalDate(e.target.value)}
                 >
                   <option>- </option>
-                  <option value={moment().add(1, "months").calendar()}>
+                  <option value={moment().add(5, "minutes").toString()}>
+                    5 minutes
+                  </option>
+                  <option value={moment().add(1, "months").toString()}>
                     1 mont
                   </option>
-                  <option value={moment().add(3, "months").calendar()}>
+                  <option value={moment().add(3, "months").toString()}>
                     3 monts
                   </option>
-                  <option value={moment().add(6, "months").calendar()}>
+                  <option value={moment().add(6, "months").toString()}>
                     6 monts
                   </option>
-                  <option value={moment().add(9, "months").calendar()}>
+                  <option value={moment().add(9, "months").toString()}>
                     9 monts
                   </option>
-                  <option value={moment().add(1, "years").calendar()}>
+                  <option value={moment().add(1, "years").toString()}>
                     1 year
                   </option>
                 </select>
