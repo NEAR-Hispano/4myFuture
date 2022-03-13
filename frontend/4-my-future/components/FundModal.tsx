@@ -43,8 +43,8 @@ export const FundModal = ({
 
   return (
     <div className="bg-gray-200 w-96 h-96 mx-auto min-h-60 rounded-md shadow-2xl flex flex-col font-sans">
-      <div className="bg-green-500 w-full h-11 flex items-center rounded-t-md ">
-        <div className="text-white w-full p-8 text-center">FUND CONFIRMATION</div>
+      <div className="bg-[#7B62D9] w-full h-11 flex items-center rounded-t-md ">
+        <div className="text-white w-full p-8 text-center">Fund Confirmation</div>
       </div>
       <div className="flex-row text-black">
         <div className="pl-8 pr-8 mt-3 flex align-middle items-center">
@@ -70,14 +70,14 @@ export const FundModal = ({
         <div className="p-4 flex mt-2 border-t-2 border-gray-100">
           <button
             type="button"
-            className="flex mb-5 m-auto p-2 w-1/3 items-center justify-center align-middle font-thin hover:font-bold border-2 rounded-lg border-black text-black "
+            className="flex mb-5 border-2 m-auto p-2 w-1/3 items-center justify-center align-middle font-thin hover:font-bold rounded-lg border-black text-black "
             onClick={handleCancel}
           >
             Cancel
           </button>
           <button
             type="button"
-            className="flex shadow-xl mb-5 m-auto p-2 w-1/3 items-center justify-center align-middle font-bold hover:bg-green-600 border-2 rounded-lg border-black text-black bg-green-500"
+            className="flex shadow-2xl mb-5 m-auto p-2 w-1/3 items-center justify-center align-middle font-bold hover:bg-[#6b52c4] rounded-lg  text-white bg-[#7B62D9]"
             onClick={setNewContribution}
           >
             Fund

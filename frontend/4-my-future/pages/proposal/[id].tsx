@@ -57,7 +57,7 @@ function ProposalIdDetails() {
   return (
     <div>
       <Layout>
-        <div className="w-screen h-screen flex justify-center items-center align-middle">
+        <div className="w-full h-full flex justify-center items-center align-middle">
           {proposal ? (
             <ProposalDetails proposal={proposal} />
           ) : (

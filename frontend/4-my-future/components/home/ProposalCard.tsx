@@ -6,6 +6,7 @@ import { HeartIcon } from "../icons";
 import moment from "moment";
 import { coingeckoFetch, coingeckoUrl } from "../coingeko";
 import Loading from "../common/Loading";
+import { useNear } from "../../hooks/useNear";
 
 interface ProposalCardInfoProps {
   index: number;
@@ -45,16 +46,23 @@ function ProposalCard({
   const router = useRouter();
   const fundsLeft = Number(toNEAR(amountNeeded)) - Number(toNEAR(founds));
   let counter = 0;
+  const [nearContext] = useNear();
 
-  
+  const seeDetails = async (e) => {
+    e.preventDefault();
+    if (nearContext.walletConnection.isSignedIn()) {
+      router.push(`/proposal/${index.toString()}`);
+    } else {
+      await nearContext.walletConnection.requestSignIn();
+    }
+  };
   return status == type ? (
     <div></div>
   ) : goal == Ordergoal || Ordergoal == "-" ? (
     <div
       className="flex items-center justify-center m-2 cursor-pointer w-1/4"
       onClick={(e) => {
-        e.preventDefault();
-        router.push(`/proposal/${index.toString()}`);
+        seeDetails(e);
       }}
     >
       <div
@@ -66,14 +74,13 @@ function ProposalCard({
       >
         <img src={photos[0]} className="h-64 w-48 m-auto object-contain" />
         <div className="w-full justify-center align-middle items-center text-2xl p-2 font-extrabold font-sans">
-          {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished!"}
+          <div className="text-base text-[#7B62D9]">{title}</div>
+          {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished❤"}
         </div>
       </div>
     </div>
   ) : (
-    <div>
-        <Loading></Loading>
-    </div>
+    <div>{/* <Loading></Loading> */}</div>
   );
 }
 
