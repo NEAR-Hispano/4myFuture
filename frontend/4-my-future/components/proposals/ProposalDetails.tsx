@@ -72,7 +72,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
       proposal.status != 3 &&
       fundsLeft < parseFloat(toNEAR(proposal.amountNeeded)) * 0.25)
 
-      || (isOwner && proposal.status !=3 &&  moment(proposal.finishDate) < moment())
+      || (proposal.status !=3 &&  moment(proposal.finishDate) < moment())
      
     ) {
       canBeFundFunction();
@@ -200,7 +200,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               </p>
 
               <div className="flex justify-center items-center flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-8 md:mt-16">
-                {proposal.status == 0 && proposal.user != user.id  && fundsLeft != 0? (
+                {proposal.status == 0 && proposal.user != user.id  && fundsLeft != 0 && canBeFund==false? (
                   <button
                     onClick={handleEnableModal}
                     className="text-3xl font-bold pr-9 pl-9 hover:bg-[#6450ac] bg-[#7B62D9] p-2 rounded-xl shadow-2xl text-white border-2 font-sans"
