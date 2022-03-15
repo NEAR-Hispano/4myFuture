@@ -67,11 +67,13 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   React.useEffect(() => {
     canFund();
-    if (
-      fundsLeft == 0 &&
+    if (( fundsLeft == 0 &&
       isOwner &&
       proposal.status != 3 &&
-      fundsLeft < parseFloat(toNEAR(proposal.amountNeeded)) * 0.25
+      fundsLeft < parseFloat(toNEAR(proposal.amountNeeded)) * 0.25)
+
+      || (proposal.status !=3 &&  moment(proposal.finishDate) < moment())
+     
     ) {
       canBeFundFunction();
     }
@@ -90,10 +92,15 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               Proposal start: {proposal.initDate}
             </div>
             <div className="text-base font-thin">
-              Proposal end: {proposal.finishDate}
+              Proposal end: {moment(proposal.finishDate).format('L')}
             </div>
             <div className="text-base font-thin">
-              Time left: {moment(proposal.finishDate).fromNow()}
+              Time left: {
+            moment(proposal.finishDate) > moment()?
+          
+            moment(proposal.finishDate).fromNow(): 
+            ""
+              }
             </div>
           </div>
           <div className="mt-3 md:mt-4 lg:mt-0 flex flex-col lg:flex-row items-strech justify-center lg:space-x-8">
@@ -193,7 +200,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               </p>
 
               <div className="flex justify-center items-center flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-8 md:mt-16">
-                {proposal.status == 0 && proposal.user != user.id  && fundsLeft != 0? (
+                {proposal.status == 0 && proposal.user != user.id  && fundsLeft != 0 && canBeFund==false? (
                   <button
                     onClick={handleEnableModal}
                     className="text-3xl font-bold pr-9 pl-9 hover:bg-[#6450ac] bg-[#7B62D9] p-2 rounded-xl shadow-2xl text-white border-2 font-sans"
@@ -222,6 +229,8 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 )}
               </div>
             </div>
+
+            {/* {moment().add(5, "minutes").toString()} */}
             <Modal isOpen={isOpenEnable}>
               <FundModal
                 handleCancel={() => {
@@ -229,7 +238,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 }}
                 index={proposal.index}
                 near={nearContext}
-                user={proposal.user}
+                user={user.id}
               />
             </Modal>
           </div>

@@ -25,8 +25,8 @@ function ProposalsAdd() {
 
   const [user, setUser] = React.useState("");
   const [state, setState] = React.useState(true);
-  const [visibility, setVisibility] = React.useState("invisible"); 
-  const [visibilityAlert, setVisibilityAlert] = React.useState("invisible"); 
+  const [visibility, setVisibility] = React.useState("invisible");
+  const [visibilityAlert, setVisibilityAlert] = React.useState("invisible");
   const [check, setCheck] = React.useState("");
 
 
@@ -368,12 +368,15 @@ function ProposalsAdd() {
 
               <h2 className="text-2xl font-bold ">Create proposal</h2>
               <p className="my-4 opacity-70">Enter the corresponding data to create your proposal. Use real data to provide credibility with contributors.</p>
+              <div className="">
+                <label className="uppercase text-sm font-bold opacity-70">Porposal title</label>
+                <input type="text" className="p-3 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
+                  onChange={(e) => setProposalName(e.target.value)} required="true" />
+              </div>
 
-              <label className="uppercase text-sm font-bold opacity-70">Porposal title</label>
-              <input type="text" className="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
-                onChange={(e) => setProposalName(e.target.value)} required="true" />
-              <label className="uppercase text-sm font-bold opacity-70">Academic goal</label>
-              <select className="w-full p-3 mt-2 mb-4 bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
+              <div>
+                <label className="uppercase text-sm font-bold opacity-70">Academic goal</label>
+              <select className="w-full p-3 mb-4 bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
                 onChange={(e) => setProposalgoal(e.target.value)}>
                 <option>- </option>
                 <option value={"Start a short course"}>Start a short course</option>
@@ -387,16 +390,25 @@ function ProposalsAdd() {
                 <option value={"Start a master's degree"}>Start a master's degree </option>
                 <option value={"Finish a master's degree"}>Finish a master's degree </option>
               </select>
-              <label className="uppercase text-sm font-bold opacity-70">Link to the institute's website</label>
+              </div>
+
+              <div>
+                 <label className="uppercase text-sm font-bold opacity-70">Link to the institute's website</label>
               <input type="text" className="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
                 onChange={(e) => setProposalLinkInstitution(e.target.value)} required="true" />
+              </div>
 
-              <label className="uppercase text-sm font-bold opacity-70">Link to pensum</label>
+              <div>
+                 <label className="uppercase text-sm font-bold opacity-70">Link to pensum</label>
               <input type="text" className="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"
                 onChange={(e) => setProposalLinkPensum(e.target.value)} required="true" />
+              </div>
+             
 
+             
 
-              <label className="uppercase text-sm font-bold opacity-70">Time of beginning and end of the academic activity</label>
+              <div>
+                <label className="uppercase text-sm font-bold opacity-70">Time of beginning and end of the academic activity</label>
               <div className="flex items-center">
 
 
@@ -432,6 +444,8 @@ function ProposalsAdd() {
                   />
                 </div>
               </div>
+              </div>
+              
 
               <div className="col-span-2">
                 <label className="text-gray-700">
@@ -456,19 +470,22 @@ function ProposalsAdd() {
                   onChange={(e) => setProposalDate(e.target.value)}
                 >
                   <option>- </option>
-                  <option value={moment().add(1, "months").calendar()}>
+                  {/* <option value={moment().add(5, "minutes").toString()}>
+                    5 minutes
+                  </option> */}
+                  <option value={moment().add(1, "months").toString()}>
                     1 mont
                   </option>
-                  <option value={moment().add(3, "months").calendar()}>
+                  <option value={moment().add(3, "months").toString()}>
                     3 monts
                   </option>
-                  <option value={moment().add(6, "months").calendar()}>
+                  <option value={moment().add(6, "months").toString()}>
                     6 monts
                   </option>
-                  <option value={moment().add(9, "months").calendar()}>
+                  <option value={moment().add(9, "months").toString()}>
                     9 monts
                   </option>
-                  <option value={moment().add(1, "years").calendar()}>
+                  <option value={moment().add(1, "years").toString()}>
                     1 year
                   </option>
                 </select>
@@ -489,11 +506,11 @@ function ProposalsAdd() {
               </div>
               <div className="relative mt-3">
 
-                <label className="uppercase text-sm font-bold opacity-70">Enter a photo of yourself showing your face </label>
+                <label className="uppercase text-sm font-bold opacity-70">Place a photo that represents your proposal</label>
               </div>
               <div className={`bg-yellow-100 border border-yellow-400 text-gray-700 px-4 py-3 rounded relative ${visibilityAlert}`} role="alert">
                 <span className="block sm:inline">Once you have chosen the file press "upload file".</span>
-              
+
               </div>
               <div className="flex justify-center">
 
@@ -529,7 +546,7 @@ function ProposalsAdd() {
 
 
               <input type="submit"
-                className="text-white py-2 px-4 uppercase rounded w-full bg-indigo-500 hover:bg-indigo-200 hover:text-indigo-500 shadow disabled:bg-indigo-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
+                className="text-white py-2 px-4 uppercase cursor-pointer rounded w-full bg-indigo-500 hover:bg-indigo-200 hover:text-indigo-500 shadow disabled:bg-indigo-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
                 value="Create Proposal"
                 onClick={setNewProposal}
                 disabled={state}

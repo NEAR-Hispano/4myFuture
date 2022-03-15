@@ -1,6 +1,6 @@
 import { context, Context, logging, u128, ContractPromiseBatch } from 'near-sdk-as'
 import { proposals, contributions, payments } from './Storage'
-import { getFundsToSuccess, getPercentToRefound, getProgressProposal, inactiveProposal, inactiveProposalAfterTime, proposalCompleted } from './ProposalManager';
+import { getFundsToSuccess, getPercentToRefound, getProgressProposal, inactiveProposal, inactiveProposalAfterTime, proposalCompleted, updateProposal } from './ProposalManager';
 import Proposal from './models/Proposal';
 import Contribution from './models/Contribution';
 import { asNEAR, BASE_TO_CONVERT, NANOSEC_DIA, NANOSEC_HOR, NANOSEC_MIN, NANOSEC_SEC, ONE_NEAR, onlyAdmins, toYocto, toYoctob128 } from './utils';
@@ -61,6 +61,12 @@ export function generatePayFromProposal(proposalId: i32): string{
       payments.set(payments.length+1, pay)
      
     }
+    
+    let proposalTemp = proposals.getSome(propId);
+    proposalTemp.setStatus(3);
+    updateProposal(propId,proposalTemp)
+
+
     return true
   }
   
