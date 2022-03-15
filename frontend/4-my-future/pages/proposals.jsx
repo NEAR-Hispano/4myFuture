@@ -470,20 +470,20 @@ function ProposalsAdd() {
                   onChange={(e) => setProposalDate(e.target.value)}
                 >
                   <option>- </option>
-                  {/* <option value={moment().add(5, "minutes").toString()}>
+                  <option value={moment().add(5, "minutes").toString()}>
                     5 minutes
-                  </option> */}
+                  </option>
                   <option value={moment().add(1, "months").toString()}>
-                    1 mont
+                    1 months
                   </option>
                   <option value={moment().add(3, "months").toString()}>
-                    3 monts
+                    3 months
                   </option>
                   <option value={moment().add(6, "months").toString()}>
-                    6 monts
+                    6 months
                   </option>
                   <option value={moment().add(9, "months").toString()}>
-                    9 monts
+                    9 months
                   </option>
                   <option value={moment().add(1, "years").toString()}>
                     1 year
