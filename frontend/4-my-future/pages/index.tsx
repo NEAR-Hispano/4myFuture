@@ -77,8 +77,7 @@ const Home: NextPage = () => {
                 <div className="w-full flex lg:w-1/2 justify-center align-middle items-center px-8">
                   <div className="mb-12 lg:mb-0 pb-12 lg:pb-0 border-b lg:border-b-0 flex flex-col w-full h-full justify-center items-center align-middle">
                     <div className="mb-4 text-center text-3xl font-bold font-heading ">
-                      4MyFuture is an app which students with low socio-economic
-                      status can find an opportunity to fund their academic
+                      4MyFuture is an app which students can find an opportunity to fund their academic
                       goals
                     </div>
                     <div className="text-black text-center text-lg leading-loose">
