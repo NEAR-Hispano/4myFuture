@@ -8,7 +8,7 @@ export const initContract = async () => {
 
   // create a keyStore for signing transactions using the user's key
   // which is located in the browser local storage after user logs in
-  const nearConfig = getConfig(process.env.NEAR_ENV || 'testnet');
+  const nearConfig = getConfig('mainnet');
   const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
   // Initializing connection to the NEAR testnet
