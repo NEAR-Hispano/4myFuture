@@ -1,5 +1,6 @@
 export const contractName = process.env.CONTRACT_NAME || '4myfuturedapp.near'
 
+
 export function getConfig(env: string) {
   switch (env) {
 
