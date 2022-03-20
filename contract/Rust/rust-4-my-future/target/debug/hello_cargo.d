@@ -1,1 +1,0 @@
-/mnt/c/Users/Edward\ Vergel/Desktop/NEARProjects/4MyFuture/4-my-future/contract/Rust/rust-4-my-future/target/debug/hello_cargo: /mnt/c/Users/Edward\ Vergel/Desktop/NEARProjects/4MyFuture/4-my-future/contract/Rust/rust-4-my-future/src/main.rs
