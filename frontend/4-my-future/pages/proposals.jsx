@@ -5,6 +5,7 @@ import { create } from "ipfs-http-client";
 import moment from "moment";
 import Layout from "../components/Layout";
 import { toYocto } from "../components/utils";
+import { useRouter } from "next/router";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -28,6 +29,7 @@ function ProposalsAdd() {
   const [visibility, setVisibility] = React.useState("invisible");
   const [visibilityAlert, setVisibilityAlert] = React.useState("invisible");
   const [check, setCheck] = React.useState("");
+  const router = useRouter();
 
 
   const userLogged = async () => {
@@ -75,15 +77,15 @@ function ProposalsAdd() {
     // contract.createNewProposal({title: "example 2", description:"asdasd", finishDate: 10, photos: ["asdasd"], amountNeeded:"10"})
 
     const proposal = {
-      title: proposalTitle,
-      goal: proposalGoal,
-      link_institution: proposalLinkInstitution,
-      link_pensum: proposalLinkPensum,
-      pics: [urlArr],
-      amount_needed: proposalAmount,
-      description: proposalDescription,
+      "title": proposalTitle,
+      "goal": proposalGoal,
+      "link_institution": proposalLinkInstitution,
+      "link_pensum": proposalLinkPensum,
+      "pics": [urlArr],
+      "amount_needed": parseFloat(proposalAmount),
+      "description": proposalDescription,
       // initDate: moment().format("L"),
-      finish_date: parseInt(proposalDate),
+     // "finish_date": parseInt(proposalDate),
       // activityStart: moment(proposalActivityStart).format("L"),
       // activityEnd: moment(proposalActivityEnd).format("L"),
     };
@@ -151,214 +153,6 @@ function ProposalsAdd() {
   return (
     <div>
       <Layout>
-        {/* <div className="bg-white rounded-lg sm:max-w-md sm:w-full sm:mx-auto sm:overflow-hidden mt-10">
-          <div className="px-1 py-1 sm:px-1">
-            <div className="relative mt-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm leading-5">
-                <span className="px-2 text-gray-500 bg-white">
-                  Create proposal
-                </span>
-              </div>
-            </div>
-            <div className="mt-6">
-              <div className="w-full space-y-6">
-                <div className="w-full">
-                <div className=" relative ">
-                    <input
-                      type="text"
-                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      placeholder="Proposal title"
-                      onChange={(e) => setProposalName(e.target.value)}
-                    />
-                  </div>
-                
-                  <div className="relative mt-3">
-                    <p>Goal:</p>
-                    <select
-                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-state"
-                      onChange={(e) => setProposalgoal(e.target.value)}
-                    >
-                      <option>- </option>
-                      <option value={"Start a short course"}>Start a short course</option>
-                      <option value={"Complete a short course"}>Complete a short course</option>
-                      <option value={"Start a long course"}>Start a long course</option>
-                      <option value={"Complete a long course"}>Complete a long course</option>
-                      <option value={"Start high school"}>Start high school </option>
-                      <option value={"Finish high school"}>Finish high school </option>
-                      <option value={"Start college "}>Start college </option>
-                      <option value={"Finish college "}>Finish college </option>
-                      <option value={"Start a master's degree"}>Start a master's degree </option>
-                      <option value={"Finish a master's degree"}>Finish a master's degree </option>
-                    </select>
-                  </div>
-                  <div className=" relative ">
-                    <input
-                      type="text"
-                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      placeholder="Link to the institute's website"
-                      onChange={(e) => setProposalLinkInstitution(e.target.value)}
-                    />
-                  </div>
-                  <div className=" relative ">
-                    <br></br>
-                    <input
-                      type="text"
-                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      placeholder="Link to pensum"
-                      onChange={(e) => setProposalLinkPensum(e.target.value)}
-                    />
-                  </div>
-                </div>
-               
-                <p>Time of beginning and end of the academic activity:</p> 
-                <div className="flex items-center">
-                
-              
-                  <div className="relative">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  
-                    </div>
-                    <input
-                      name="start"
-                      type="date"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
-                      placeholder="Select date start"
-                      min={moment().format('YYYY-MM-DD')} 
-                      onChange={(e) => setProposalActivityStart(e.target.value)}
-                      
-                     
-                    />
-                  </div>
-                  <span className="mx-4 text-gray-500">to</span>
-                  <div className="relative">
-                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    
-                    </div>
-                    <input
-                      name="end"
-                      type="date"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-purple-600 focus:border-blue-500 block w-full pl-10 p-2.5"
-                      placeholder="Select date end"
-                      min={moment().format('YYYY-MM-DD')} 
-                      onChange={(e) => setProposalActivityEnd(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="col-span-2">
-                  <label className="text-gray-700">
-                    <textarea
-                      className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      id="comment"
-                      placeholder="Explain why you need the funds "
-                      name="comment"
-                      rows="5"
-                      cols="40"
-                      onChange={(e) => setProposalDescription(e.target.value)}
-                    ></textarea>
-                  </label>
-                </div>
-
-                <div className="relative mt-3">
-                  <p>Proposal duration:</p>
-                  <select
-                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-state"
-                    onChange={(e) => setProposalDate(e.target.value)}
-                  >
-                    <option>- </option>
-                    <option value={moment().add(1, "months").calendar()}>
-                      1 mont
-                    </option>
-                    <option value={moment().add(3, "months").calendar()}>
-                      3 monts
-                    </option>
-                    <option value={moment().add(6, "months").calendar()}>
-                      6 monts
-                    </option>
-                    <option value={moment().add(9, "months").calendar()}>
-                      9 monts
-                    </option>
-                    <option value={moment().add(1, "years").calendar()}>
-                      1 year
-                    </option>
-                  </select>
-                </div>
-                <div className="w-full">
-                  <div className=" relative ">
-                    <input
-                      type="number"
-                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      placeholder="Amount required in Dollars"
-                      onChange={(e) => changePrice(e.target.value)}
-                    />
-                  </div>
-                  <br></br>
-                  <p>Amount in NEARs  {proposalAmount} NEAR </p> 
-                  <p>1 NEAR = ${amounNears} </p>
-                </div>
-                <div className="relative mt-3">
-                  <p>Add your picture:</p>
-                </div>
-
-                <div className="flex justify-center">
-                  <div className="mb-3 w-96 text-center">
-                    <input
-                      className="
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                      type="file"
-                      onChange={retrieveFile}
-                    />
-                    <button
-                      className="uppercase py-2 px-4 rounded bg-blue-500 text-cyan-50 hover:bg-blue-300"
-                      onClick={handleSubmit}
-                    >
-                      Upload file
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <span className="block w-full rounded-md shadow-sm">
-                  
-                    <button
-                      className="text-white py-2 px-4 uppercase rounded w-full bg-indigo-500 hover:bg-indigo-200 hover:text-indigo-500 shadow disabled:bg-indigo-300 disabled:hover:shadow-none disabled:hover:text-white disabled:hover:-translate-y-0 hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 "
-                      onClick={setNewProposal}
-                      disabled={state}
-                    >
-                      {" "}
-                      Create Proposal{" "}
-                    </button>{" "}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={`bg-green-200 border-green-600 text-green-600 border-l-4 p-4 ${visibility}`}
-            role="alert"
-          >
-            <p className="font-bold">Success</p>
-            <p>Congratulations, you are the best player.</p>
-          </div>
-        </div> */}
-
         <div className="flex items-center justify-center min-h-screen">
           <div className="w-full max-w-lg px-10 py-8 mx-auto bg-white rounded-lg shadow-xl">
             <div className="max-w-md mx-auto space-y-6">
@@ -470,22 +264,19 @@ function ProposalsAdd() {
                   onChange={(e) => setProposalDate(e.target.value)}
                 >
                   <option>- </option>
-                  <option value={5}>
-                    5 minutes
-                  </option>
-                  <option value={moment().add(1, "months").toString()}>
+                  <option value={30}>
                     1 months
                   </option>
-                  <option value={moment().add(3, "months").toString()}>
+                  <option value={90}>
                     3 months
                   </option>
-                  <option value={moment().add(6, "months").toString()}>
+                  <option value={180}>
                     6 months
                   </option>
-                  <option value={moment().add(9, "months").toString()}>
+                  <option value={270}>
                     9 months
                   </option>
-                  <option value={moment().add(1, "years").toString()}>
+                  <option value={365}>
                     1 year
                   </option>
                 </select>

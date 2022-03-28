@@ -25,17 +25,17 @@ export const FundModal = ({
       var amountTemp = BigInt(toYocto(amountToContribute)).toString();
       var today = moment().format('L');
       const contribution = {
-        proposalId: index,
-        amount: amountToContribute,
-        userRefound: user,
-        today: today,
-        comments: comments
+        "proposal_id": index,
+        // amount: amountToContribute,
+        // userRefound: user,
+        // today: today,
+        "comments": comments
       };
 
       const contract = await near.contract;
 
       // @ts-ignore: Unreachable code error
-      contract.createContribution(contribution, 300000000000000, amountTemp);
+      contract.contribute(contribution, 300000000000000, amountTemp);
     } catch (e) {
         console.log(e);
     }

@@ -43,13 +43,13 @@ function ProposalsGeneral({ proposals, type, Ordergoal}: ProposalGeneralProps) {
               key={i}
               title={proposal?.title}
               goal={proposal?.goal}
-              amountNeeded={proposal?.amountNeeded}
+              amountNeeded={proposal?.amount_needed}
               index={proposal?.index}
-              initDate={proposal?.initDate}
-              finishDate={proposal?.finishDate}
+              initDate={proposal?.init_date}
+              finishDate={proposal?.finish_date}
               pics={proposal?.pics}
               user={proposal?.user}
-              founds={proposal?.founds}
+              founds={proposal?.funds}
               status={proposal?.status}
               type = {parseInt(type)}
               Ordergoal = {Ordergoal}

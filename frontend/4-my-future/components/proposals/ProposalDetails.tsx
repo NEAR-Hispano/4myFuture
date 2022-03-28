@@ -44,12 +44,12 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
   const fund = async () => {
     const proposalId = {
-      proposalId: proposal.index,
+      "proposal_id": proposal.index
     };
 
     nearContext.contract
       // @ts-ignore: Unreachable code error
-      .reclaim_funds(proposalId, 300000000000000, 300000000000000)
+      .reclaim_funds(proposalId)
       .then(() => {
         router.push("/home");
       });
@@ -69,13 +69,15 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     canFund();
     if (( fundsLeft == 0 &&
       isOwner &&
-      proposal.status != 3 &&
-      fundsLeft < parseFloat(toNEAR(proposal.amount_needed)) * 0.25)
+      proposal.status != 3
+       && fundsLeft < parseFloat(toNEAR(proposal.amount_needed)) * 0.25)
 
-      || (proposal.status !=3 &&  moment(proposal.finish_date) < moment())
+      // || (proposal.status !=3 &&  moment(proposal.finish_date) < moment())
      
     ) {
       canBeFundFunction();
+      console.log("logged")
+      console.log(parseFloat(toNEAR(proposal.amount_needed)) * 0.25)
     }
   });
 
@@ -108,12 +110,12 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               <div className="">
                 <div className="lg:relative">
                   <div className="flex">
-                    {/* <a href={proposal.pics[0]} target="_blank">
+                    <a href={proposal.pics[0]} target="_blank">
                       <img
                         src={proposal.pics[0]}
                         className="w-full h-96 object-contain"
                       />
-                    </a> */}
+                    </a>
                   </div>
                 </div>
               </div>
