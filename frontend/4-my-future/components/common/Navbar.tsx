@@ -58,7 +58,7 @@ function Navbar() {
       <div className="w-full flex h-14 items-center p-2 justify-between shadow-xs bg-[#7B62D9]">
         <div className="ml-8">
           <img
-            src="../images/near_logo_wht.svg"
+            src="../images/4myfuture.svg"
             width={150}
             onClick={() => {
               router.push(`/`);
