@@ -2,6 +2,7 @@ import { environment } from "./environmet"
 
 export const contractName = environment.CONTRACT_NAME;
 
+
 export function getConfig(env: string) {
   switch (env) {
 
