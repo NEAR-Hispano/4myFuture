@@ -20,13 +20,13 @@ function home() {
 
         const { contract } = await initContract();
         // @ts-ignore: Unreachable code error
-        contract.getAllProposals().then(setProposals);
+        contract.get_proposals().then(setProposals);
         // @ts-ignore: Unreachable code error
-        contract.getAllUsers().then(setUsers);
+        contract.get_users().then(setUsers);
         // @ts-ignore: Unreachable code error
         // contract.getAllPayments().then(setPayments);
         // @ts-ignore: Unreachable code error
-        contract.getAllContributions().then(setContribution);
+        contract.get_contributions().then(setContribution);
     }
 
     React.useEffect(

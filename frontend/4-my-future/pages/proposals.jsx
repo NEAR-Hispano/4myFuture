@@ -77,15 +77,15 @@ function ProposalsAdd() {
     const proposal = {
       title: proposalTitle,
       goal: proposalGoal,
+      link_institution: proposalLinkInstitution,
+      link_pensum: proposalLinkPensum,
+      pics: [urlArr],
+      amount_needed: proposalAmount,
       description: proposalDescription,
-      initDate: moment().format("L"),
-      finishDate: proposalDate,
-      photos: [urlArr],
-      amountNeeded: proposalAmount,
-      linkInstitution: proposalLinkInstitution,
-      linkPensum: proposalLinkPensum,
-      activityStart: moment(proposalActivityStart).format("L"),
-      activityEnd: moment(proposalActivityEnd).format("L"),
+      // initDate: moment().format("L"),
+      finish_date: parseInt(proposalDate),
+      // activityStart: moment(proposalActivityStart).format("L"),
+      // activityEnd: moment(proposalActivityEnd).format("L"),
     };
 
     console.log(proposal);
@@ -96,7 +96,7 @@ function ProposalsAdd() {
     console.log(proposalAmount);
 
     contract
-      .createNewProposal(proposal, 300000000000000, 300000000000000)
+      .create_proposal(proposal)
       .then(() => {
         router.push("/home");
       });
@@ -407,7 +407,7 @@ function ProposalsAdd() {
 
              
 
-              <div>
+              {/* <div>
                 <label className="uppercase text-sm font-bold opacity-70">Time of beginning and end of the academic activity</label>
               <div className="flex items-center">
 
@@ -444,7 +444,7 @@ function ProposalsAdd() {
                   />
                 </div>
               </div>
-              </div>
+              </div> */}
               
 
               <div className="col-span-2">
@@ -470,7 +470,7 @@ function ProposalsAdd() {
                   onChange={(e) => setProposalDate(e.target.value)}
                 >
                   <option>- </option>
-                  <option value={moment().add(5, "minutes").toString()}>
+                  <option value={5}>
                     5 minutes
                   </option>
                   <option value={moment().add(1, "months").toString()}>

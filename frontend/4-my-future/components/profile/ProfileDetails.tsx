@@ -17,10 +17,14 @@ function ProfileDetails({ near }: DetailsProps) {
 
   const getUser = async () => {
     try {
-      const userId = await near.walletConnection.getAccountId();
+      const user_id = await near.walletConnection.getAccountId();
+      console.log(user_id)
+      let ususario ={
+        "user_id": user_id
+      }
 
       // @ts-ignore: Unreachable code error
-      const user = await near.contract.getUser({ userId });
+      const user = await near.contract.get_user(ususario);
       setUser(user);
     } catch (e) {
       console.log(e);

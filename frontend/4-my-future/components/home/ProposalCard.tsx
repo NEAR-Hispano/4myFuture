@@ -15,7 +15,7 @@ interface ProposalCardInfoProps {
   founds: string;
   title: string;
   goal: string;
-  photos: string[];
+  pics: string[];
   initDate: string;
   finishDate: string;
   status: number;
@@ -30,7 +30,7 @@ function ProposalCard({
   founds,
   title,
   goal,
-  photos,
+  pics,
   initDate,
   finishDate,
   status,
@@ -72,7 +72,7 @@ function ProposalCard({
             : "w-full shadow-xl border border-gray-100 rounded-lg text-center hover:shadow-green-300 hover:shadow-lg align-center text-black"
         }
       >
-        <img src={photos[0]} className="h-64 w-48 m-auto object-contain" />
+        <img src={pics[0]} className="h-64 w-48 m-auto object-contain" />
         <div className="w-full justify-center align-middle items-center text-2xl p-2 font-extrabold font-sans">
           <div className="text-base text-[#7B62D9]">{title}</div>
           {fundsLeft > 0 ? `${fundsLeft.toFixed(2)}  NEARs left` : "Finished❤"}

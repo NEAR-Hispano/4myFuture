@@ -1,6 +1,7 @@
 import { keyStores, connect, WalletConnection, utils } from "near-api-js";
 import { getConfig } from '../config';
 import * as nearAPI from 'near-api-js';
+import { environment } from "../environment";
 
 // Initializing contract
 export const initContract = async () => {
@@ -8,7 +9,7 @@ export const initContract = async () => {
 
   // create a keyStore for signing transactions using the user's key
   // which is located in the browser local storage after user logs in
-  const nearConfig = getConfig('mainnet');
+  const nearConfig = getConfig(environment.NODE_ENV);
   const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
   // Initializing connection to the NEAR testnet
@@ -42,9 +43,9 @@ export const initContract = async () => {
     nearConfig.contractName,
     {
       // View methods are read-only – they don't modify the state, but usually return some value
-      viewMethods: ['getAllProposals', 'getProposal', 'getAllUsers', 'getAllPayments', 'getUser', 'getAllContributions', 'getTime'],
+      viewMethods: ['get_proposals', 'get_proposal', 'get_users', 'get_payments', 'get_user', 'get_contributions'],
       // Change methods can modify the state, but you don't receive the returned value when called
-      changeMethods: ['createUser', 'createNewProposal', 'createContribution','fund', 'login'],
+      changeMethods: ['createUser', 'create_proposal', 'contribute','reclaim_funds', 'login'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
       // @ts-ignore: Unreachable code error

@@ -19,7 +19,7 @@ interface ProposalDetailsProps {
 function ProposalDetails({ proposal }: ProposalDetailsProps) {
   const [nearContext] = useNear();
   const fundsLeft =
-    Number(toNEAR(proposal.amountNeeded)) - Number(toNEAR(proposal.founds));
+    Number(toNEAR(proposal.amount_needed)) - Number(toNEAR(proposal.funds));
   const [isOpenEnable, setIsOpenEnable] = React.useState<boolean>(false);
   const handleEnableModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsOpenEnable(true);
@@ -49,7 +49,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
 
     nearContext.contract
       // @ts-ignore: Unreachable code error
-      .fund(proposalId, 300000000000000, 300000000000000)
+      .reclaim_funds(proposalId, 300000000000000, 300000000000000)
       .then(() => {
         router.push("/home");
       });
@@ -62,7 +62,7 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     };
 
     //@ts-ignore: Unreachable code error
-    nearContext.contract.percent();
+   // nearContext.contract.percent();
   };
 
   React.useEffect(() => {
@@ -70,9 +70,9 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
     if (( fundsLeft == 0 &&
       isOwner &&
       proposal.status != 3 &&
-      fundsLeft < parseFloat(toNEAR(proposal.amountNeeded)) * 0.25)
+      fundsLeft < parseFloat(toNEAR(proposal.amount_needed)) * 0.25)
 
-      || (proposal.status !=3 &&  moment(proposal.finishDate) < moment())
+      || (proposal.status !=3 &&  moment(proposal.finish_date) < moment())
      
     ) {
       canBeFundFunction();
@@ -89,17 +89,17 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               #ID Proposal:{proposal.index}
             </div>
             <div className="text-base font-thin">
-              Proposal start: {proposal.initDate}
+              Proposal start: {proposal.init_date}
             </div>
             <div className="text-base font-thin">
-              Proposal end: {moment(proposal.finishDate).format('L')}
+              Proposal end: {(proposal.finish_date)}
             </div>
             <div className="text-base font-thin">
               Time left: {
-            moment(proposal.finishDate) > moment()?
           
-            moment(proposal.finishDate).fromNow(): 
-            ""
+              new Date(parseInt(proposal.finish_date)-parseInt(proposal.init_date)).toString() 
+        
+          
               }
             </div>
           </div>
@@ -108,12 +108,12 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               <div className="">
                 <div className="lg:relative">
                   <div className="flex">
-                    <a href={proposal.photos[0]} target="_blank">
+                    {/* <a href={proposal.pics[0]} target="_blank">
                       <img
-                        src={proposal.photos[0]}
+                        src={proposal.pics[0]}
                         className="w-full h-96 object-contain"
                       />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
@@ -152,10 +152,10 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
               <div className="flex border-t border-gray-200 py-2">
                 <span className="text-gray-500">Required:</span>
                 <span className="ml-auto text-gray-900">
-                  {toNEAR(proposal.amountNeeded)} NEARs
+                  {toNEAR(proposal.amount_needed)} NEARs
                 </span>
               </div>
-              <div className="flex border-t border-gray-200 py-2">
+              {/* <div className="flex border-t border-gray-200 py-2">
                 <span className="text-gray-500">
                   Start of academic activity:
                 </span>
@@ -168,17 +168,17 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 <span className="ml-auto text-gray-900">
                   {proposal.activityEnd}
                 </span>
-              </div>
+              </div> */}
               <div className="flex border-t border-gray-200 py-2">
                 <span className="text-gray-500">Institution:</span>
                 <span className="ml-auto text-gray-900">
                   <a
-                    href={proposal.linkInstitution}
+                    href={proposal.link_institution}
                     target="_blank"
                     className="hover:text-fuchsia-600"
                   >
                     {" "}
-                    {proposal.linkInstitution}
+                    {proposal.link_pensum}
                   </a>
                 </span>
               </div>
@@ -186,11 +186,11 @@ function ProposalDetails({ proposal }: ProposalDetailsProps) {
                 <span className="text-gray-500">Pensum:</span>
                 <span className="ml-auto text-gray-900">
                   <a
-                    href={proposal.linkPensum}
+                    href={proposal.link_pensum}
                     target="_blank"
                     className="hover:text-fuchsia-600"
                   >
-                    {proposal.linkPensum}
+                    {proposal.link_pensum}
                   </a>
                 </span>
               </div>

@@ -21,10 +21,11 @@ function ProposalIdDetails() {
     try {
       if (id) {
         // @ts-ignore: Unreachable code error
-        const proposal = await nearContext.contract.getProposal({
-          proposalId: id,
+        const proposal = await nearContext.contract.get_proposal({
+          proposal_id: parseInt(id)
         });
         setProposal(proposal);
+        console.log(proposal)
       }
     } catch (e) {
       router.push('/home');

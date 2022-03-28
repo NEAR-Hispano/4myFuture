@@ -21,7 +21,7 @@ function Navbar() {
   const init = async () => {
     const { contract } = await initContract();
     // @ts-ignore: Unreachable code error
-    contract.getAllProposals().then(setProposals);
+    contract.get_proposals().then(setProposals);
   };
 
   const handleFilter = (e: any) => {

@@ -25,11 +25,11 @@ const Home: NextPage = () => {
 
   const showStatistics = async () => {
     // @ts-ignore: Unreachable code error
-    var contributionList = await nearContext.contract.getAllContributions();
+    var contributionList = await nearContext.contract.get_contributions();
     // @ts-ignore: Unreachable code error
-    var proposalList = await nearContext.contract.getAllProposals();
+    var proposalList = await nearContext.contract.get_proposals();
     // @ts-ignore: Unreachable code error
-    var userList = await nearContext.contract.getAllUsers();
+    var userList = await nearContext.contract.get_users();
 
     setUsers(userList);
     setProposals(proposalList);

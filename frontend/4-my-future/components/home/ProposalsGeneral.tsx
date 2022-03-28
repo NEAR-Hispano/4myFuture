@@ -9,11 +9,36 @@ interface ProposalGeneralProps {
 
 }
 
+
+
 function ProposalsGeneral({ proposals, type, Ordergoal}: ProposalGeneralProps) {
+  const [indexInf, setIndexInf] = React.useState(0);
+
+  const [paginado] = React.useState(6);
+  const [indexSup, setIndexSup] = React.useState(paginado);
+
+  const previus = async () => {
+    if(indexInf>0){
+   setIndexSup(indexSup-paginado)
+   setIndexInf(indexInf-paginado)
+    }
+   
+  };
+  
+  const next = async () => {
+    if(indexSup<proposals.length){
+     setIndexSup(indexSup+paginado)
+    setIndexInf(indexInf+paginado) 
+    }
+    
+   };
+
   return (
     <div className="">
       <div className="flex w-full flex-wrap p-auto m-auto justify-center items-center align-middle ">
         {proposals?.map((proposal, i) => (
+          ((i >= indexInf) && (i < indexSup)) ?
+          
           <ProposalCard
               key={i}
               title={proposal?.title}
@@ -22,7 +47,7 @@ function ProposalsGeneral({ proposals, type, Ordergoal}: ProposalGeneralProps) {
               index={proposal?.index}
               initDate={proposal?.initDate}
               finishDate={proposal?.finishDate}
-              photos={proposal?.photos}
+              pics={proposal?.pics}
               user={proposal?.user}
               founds={proposal?.founds}
               status={proposal?.status}
@@ -31,10 +56,31 @@ function ProposalsGeneral({ proposals, type, Ordergoal}: ProposalGeneralProps) {
           
               
             /> 
+
+            : ""
+         
            
-          
-        ))}
+        )
+       
+        
+        )}
       </div>
+      <br></br>    
+    {proposals.length > paginado? 
+      <div className="flex items-center w-2/4	m-auto">
+    <button type="button" className="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100"
+    onClick={() => {previus()}}>
+    previous
+    </button>
+    <button type="button" className="w-full p-4 border-t border-b border-r text-base  rounded-r-xl text-gray-600 bg-white hover:bg-gray-100"
+    onClick={() => {next()}}>
+       
+        next
+    </button>
+</div> :
+<div></div>
+    }   
+  
     </div>
   );
 }
