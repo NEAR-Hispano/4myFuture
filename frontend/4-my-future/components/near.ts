@@ -1,6 +1,7 @@
 import { keyStores, connect, WalletConnection, utils } from "near-api-js";
 import { getConfig } from '../config';
 import * as nearAPI from 'near-api-js';
+import { environment } from "../environmet";
 
 // Initializing contract
 export const initContract = async () => {
@@ -8,7 +9,7 @@ export const initContract = async () => {
 
   // create a keyStore for signing transactions using the user's key
   // which is located in the browser local storage after user logs in
-  const nearConfig = getConfig('mainnet');
+  const nearConfig = getConfig(environment.NODE_ENV);
   const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
   // Initializing connection to the NEAR testnet
