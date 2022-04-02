@@ -1,6 +1,4 @@
-import { environment } from "./environmet"
-
-export const contractName = environment.CONTRACT_NAME;
+export const contractName = process.env.NEXT_PUBLIC_CONTRACT_NAME;
 
 
 export function getConfig(env: string) {

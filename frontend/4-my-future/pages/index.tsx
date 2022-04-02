@@ -37,6 +37,7 @@ const Home: NextPage = () => {
   };
 
   React.useEffect(() => {
+  
     if (nearContext) {
       showStatistics();
     }
